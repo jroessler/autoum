@@ -79,7 +79,7 @@ if __name__ == '__main__':
     # Datasets which should be analyzed. You can choose among the following options: Hillstrom, Hillstrom_Women, Hillstrom_Men, Hillstrom_Conversion,
     # Hillstrom_Women_Conversion, Hillstrom_Men_Conversion, Criteo, Criteo_Resampled, Starbucks, Bank_This_Campaign, Bank_Both_Campaigns,
     # Social_Pressure_Neighbors, Lenta, Criteo_v2, Criteo_v2_Resampled
-    _datasets = ["Companye_k"]
+    _datasets = ["Hillstrom_Women"]
 
     # Get date (for saving purposes)
     ts = time.time()
