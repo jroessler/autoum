@@ -5,7 +5,7 @@ data/**/*.csv
 # Ignore pkl files in the data folder
 data/**/*.pkl
 # any content of a subfolder "confidential" within the data folders is ignored
-data/**/confidential/
+autouplift/datasets/data/**/confidential/
 
 # Ignore logging
 logging/*

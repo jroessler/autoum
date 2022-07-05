@@ -1,32 +1,20 @@
-import os
-import sys
 import unittest
 
 import numpy as np
-from dotenv import load_dotenv
 from sklearn.model_selection import train_test_split
 
-load_dotenv()
-root = os.getenv("ROOT_FOLDER")
-sys.path.append(root + "src/")
-
-from pipelines.helper.helper_pipeline import HelperPipeline
-from approaches.helper.helper_approaches import ApproachParameters, DataSetsHelper
-
-# This is the class we want to test in this file
-from approaches.generalized_random_forest import GeneralizedRandomForest
+from autouplift.approaches.generalized_random_forest import GeneralizedRandomForest
+from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
+from autouplift.datasets.utils import get_data_home, get_hillstrom_women_visit
 
 
 class TestGeneralizedRandomForest(unittest.TestCase):
 
     def setUp(self):
-        # Helper
-        helper = HelperPipeline()
-
-        # Dataset
-        dataset_name = "Companye_k"
-
-        df_train, df_test = helper.get_dataframe(dataset_name, 0.2, 123)
+        # Get data
+        data = get_hillstrom_women_visit()
+        data = data.sample(frac=0.5, random_state=123)
+        df_train, df_test = train_test_split(data, test_size=0.2, shuffle=True, random_state=123)
         df_train, df_valid = train_test_split(df_train, test_size=0.2, shuffle=True, random_state=123)
 
         self.df_train = df_train
@@ -34,6 +22,7 @@ class TestGeneralizedRandomForest(unittest.TestCase):
         self.df_test = df_test
 
         ds_helper = DataSetsHelper(df_train=df_train, df_valid=df_valid, df_test=df_test)
+        root = f"{get_data_home()}/testing/models/"
         approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=root, save=False, split_number=0)
         self.ds_helper = ds_helper
         self.approach_params = approach_params

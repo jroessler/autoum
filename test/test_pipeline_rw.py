@@ -1,61 +1,57 @@
-import os
-import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
-from dotenv import load_dotenv
+from sklearn.model_selection import train_test_split
 
-load_dotenv()
-root = os.getenv("ROOT_FOLDER")
-sys.path.append(root + "src/")
-
-from pipelines.helper.helper_pipeline import HelperPipeline
-from evaluation.evaluation import UpliftEvaluation
-
-# This is the class we want to test in this file
-from pipelines.pipeline_rw import PipelineRW
+from autouplift.datasets.utils import get_hillstrom_women_visit
+from autouplift.evaluation.evaluation import UpliftEvaluation
+from autouplift.pipelines.pipeline_rw import PipelineRW
+from autouplift.pipelines.utils import HelperPipeline
 
 
 class TestPipelineRW(unittest.TestCase):
 
     def setUp(self):
+        # Get data
+        data = get_hillstrom_women_visit()
+        self.data = data.sample(frac=0.5, random_state=123)
+        self.df_train, self.df_test = train_test_split(data, test_size=0.2, shuffle=True, stratify=data[['response', 'treatment']], random_state=123)
 
-        # Helper
-        self.helper = HelperPipeline()
-
-        # Dataset
-        self.dataset_name = "Companye_k"
-
-        # Trainings & Test DataFrame
-        self.df_train, self.df_test = self.helper.get_dataframe(dataset_name=self.dataset_name, test_size=0.2, random_seed=123)
-
-    @patch('test_pipeline_rw.PipelineRW.analyze_k_fold_cv', spec_set=True)
-    @patch('test_pipeline_rw.PipelineRW.analyze_single_fold', spec_set=True)
-    @patch('test_pipeline_rw.PipelineRW.calculate_metrics', spec_set=True)
+    @patch('test.test_pipeline_rw.PipelineRW.analyze_k_fold_cv', spec_set=True)
+    @patch('test.test_pipeline_rw.PipelineRW.analyze_single_fold', spec_set=True)
+    @patch('test.test_pipeline_rw.PipelineRW.calculate_metrics', spec_set=True)
     def test_analyze_dataset(self, m_calculate_metrics, m_analyze_single_fold, m_analyze_k_fold_cv):
         for cv_number_splits in [2, 10]:
             with self.subTest(i=cv_number_splits):
                 pipeline = PipelineRW(cv_number_splits=cv_number_splits)
                 # Test function
-                pipeline.analyze_dataset(self.dataset_name)
+                pipeline.analyze_dataset(self.data)
 
                 if cv_number_splits == 10:
                     m_analyze_k_fold_cv.assert_called_once()
-                    self.assertTrue(m_analyze_single_fold.call_args[1]['df_train'].equals(self.df_train))
-                    self.assertTrue(m_analyze_single_fold.call_args[1]['df_test'].equals(self.df_test))
+                    self.assertTrue(m_analyze_k_fold_cv.call_args[1]['df_train'].shape[1] == self.data.shape[1])
+                    self.assertAlmostEqual(m_analyze_k_fold_cv.call_args[1]['df_train'].shape[0], int(self.data.shape[0] * 0.8), delta=2)
+                    self.assertTrue(m_analyze_k_fold_cv.call_args[1]['df_test'].shape[1] == self.data.shape[1])
+                    self.assertAlmostEqual(m_analyze_k_fold_cv.call_args[1]['df_test'].shape[0], int(self.data.shape[0] * 0.2), delta=2)
                 else:
                     m_analyze_single_fold.assert_called_once()
-                    self.assertTrue(m_analyze_single_fold.call_args[1]['df_train'].equals(self.df_train))
-                    self.assertTrue(m_analyze_single_fold.call_args[1]['df_test'].equals(self.df_test))
+                    self.assertTrue(m_analyze_single_fold.call_args[1]['df_train'].shape[1] == self.data.shape[1])
+                    self.assertAlmostEqual(m_analyze_single_fold.call_args[1]['df_train'].shape[0], int(self.data.shape[0] * 0.8), delta=2)
+                    self.assertTrue(m_analyze_single_fold.call_args[1]['df_test'].shape[1] == self.data.shape[1])
+                    self.assertAlmostEqual(m_analyze_single_fold.call_args[1]['df_test'].shape[0], int(self.data.shape[0] * 0.2), delta=2)
 
                 m_calculate_metrics.assert_called_once()
                 m_calculate_metrics.reset_mock()
 
-    @patch('test_pipeline_rw.PipelineRW.train_eval_splits', spec_set=True)
+    def test_analyze_k_fold(self):
+        pass
+
+    @patch('test.test_pipeline_rw.PipelineRW.train_eval_splits', spec_set=True)
     def test_analyze_single_fold(self, m_train_eval_splits):
-        pipeline = PipelineRW(cv_number_splits=2)
-        approaches = ['TWO_MODEL', 'JASKO_JARO']
+        pipeline = PipelineRW(cv_number_splits=2, urf_cts=False)
+        approaches = ["BCF", "CVT", "GRF", "LAIS", "RLEARNER", "SLEARNER", "XLEARNER", "TRADITIONAL", "TREATMENT_DUMMY", "TWO_MODEL", "URF_ED", "URF_KL", "URF_CHI", "URF_DDP",
+                      "URF_IT", "URF_CIT"]
         PipelineRW.create_approach_list_for_single_split = MagicMock(return_value=approaches, spec_set=True)
         # m_create_approach_list_for_single_split.return_value = approaches
         m_train_eval_splits.return_value = ({}, {}, {}, {}, {}, {}, {})
@@ -91,6 +87,9 @@ class TestPipelineRW(unittest.TestCase):
                     self.assertIsInstance(dataframe_pair[2], pd.DataFrame)
                     self.assertIsInstance(dataframe_pair[3], pd.DataFrame)
 
+    def test_create_single_split(self):
+        pass
+
     def test_train_eval_splits(self):
         # Mocking apply_uplift_approaches
         scores_dict = {
@@ -114,7 +113,7 @@ class TestPipelineRW(unittest.TestCase):
             'Uplift_8': 0.0611,
             'Uplift_9': 0.0470,
             'Uplift_10': 0.0454
-            }
+        }
         UpliftEvaluation.calculate_actual_uplift_in_bins = MagicMock(return_value=dict_uplift, spec_set=True)
 
         # Mocking calculate_optimal_uplift_in_bins
@@ -135,29 +134,15 @@ class TestPipelineRW(unittest.TestCase):
         }
         UpliftEvaluation.calculate_optimal_uplift_in_bins.side_effect = [dict_opt_uplift, dict_opt_uplift, dict_opt_uplift, dict_opt_uplift, dict_opt_uplift, dict_opt_uplift]
 
-        # Case 1.1: Direct approach and no optimal qini curve
+        # Case 1.1: Approach (S-Learner) and no optimal qini curve
         pipeline = PipelineRW()
-        metric_qini_coefficient = False
-        args = (0, self.df_test, self.df_test, self.df_test, 'DIRECT', metric_qini_coefficient, 'DDP')
+        args = (0, self.df_test, self.df_test, self.df_test, 'SLEARNER')
         self.check_function(pipeline, dict_uplift, dict_opt_uplift_empty, args)
 
-        # Case 1.2: Direct approach and optimal qini curve
+        # Case 1.2: Approach (S-Learner) and optimal qini curve
         pipeline = PipelineRW(metrics_qini_coefficient=True)
-        metric_qini_coefficient = True
-        args = (0, self.df_test, self.df_test, self.df_test, 'DIRECT', metric_qini_coefficient, 'DDP')
-        self.check_function(pipeline, dict_uplift, dict_opt_uplift, args, metric_qini_coefficient=metric_qini_coefficient)
-
-        # Case 2.1: Not direct approach and no optimal qini curve
-        pipeline = PipelineRW()
-        metric_qini_coefficient = False
-        args = (0, self.df_test, self.df_test, self.df_test, 'TRADITIONAL', metric_qini_coefficient)
-        self.check_function(pipeline, dict_uplift, dict_opt_uplift_empty, args)
-
-        # Case 2.2: Not direct approach and optimal qini curve
-        pipeline = PipelineRW(metrics_qini_coefficient=True)
-        metric_qini_coefficient = True
-        args = (0, self.df_test, self.df_test, self.df_test, 'TRADITIONAL', metric_qini_coefficient)
-        self.check_function(pipeline, dict_uplift, dict_opt_uplift, args, metric_qini_coefficient=metric_qini_coefficient)
+        args = (0, self.df_test, self.df_test, self.df_test, 'SLEARNER')
+        self.check_function(pipeline, dict_uplift, dict_opt_uplift, args, metric_qini_coefficient=True)
 
     def check_function(self, pipeline, dict_uplift, dict_opt_uplift, args, metric_qini_coefficient=False):
         """
@@ -188,6 +173,8 @@ class TestPipelineRW(unittest.TestCase):
 
         # Check if apply_uplift_approaches was called once
         HelperPipeline.apply_uplift_approaches.assert_called_once()
+        # Check if the approach name is equal to the supposed approach name
+        self.assertTrue(HelperPipeline.apply_uplift_approaches.call_args[1]['approach'] == [args[4]])
         # Check if calculate_actual_uplift_in_bins was called 3 times (for training, validation, and testing)
         self.assertEqual(UpliftEvaluation.calculate_actual_uplift_in_bins.call_count, 3)
         # Check if calculate_optimal_uplift_in_bins was called 3 times (if metric_qini_coefficient == True). 0 times otherwise.
@@ -198,6 +185,27 @@ class TestPipelineRW(unittest.TestCase):
         HelperPipeline.apply_uplift_approaches.reset_mock()
         UpliftEvaluation.calculate_actual_uplift_in_bins.reset_mock()
         UpliftEvaluation.calculate_optimal_uplift_in_bins.reset_mock()
+
+    def test_calculate_metrics(self):
+        # TODO
+        pass
+
+    def test_plotting(self):
+        pass
+
+    def test_create_approach_tuples(self):
+        cv_number_splits = 10
+        pipeline = PipelineRW(cv_number_splits=cv_number_splits, urf_ddp=False, two_model=False)
+        dataframe_pairs = pipeline.create_k_splits(df_train=self.df_train, df_test=self.df_test)
+        tuple_list = pipeline.create_approach_tuples(dataframe_pairs)
+        self.assertEqual(len(tuple_list), 15 * cv_number_splits)
+        for _tuple in tuple_list:
+            self.assertEqual(len(_tuple), 5)
+
+    def test_create_approach_list_for_single_split(self):
+        pipeline = PipelineRW(cv_number_splits=2, urf_cts=False)
+        all_approaches = pipeline.create_approach_list_for_single_split()
+        self.assertEqual(len(all_approaches), 16)
 
 
 if __name__ == '__main__':

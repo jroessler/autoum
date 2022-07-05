@@ -1,33 +1,22 @@
 import os
-import pickle
 import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
+from const.const import *
 from dotenv import load_dotenv
 from sklearn.model_selection import train_test_split
 
-from approaches.bayesian_causal_forest import BayesianCausalForest
-from approaches.generalized_random_forest import GeneralizedRandomForest
-from approaches.lais_generalization import LaisGeneralization
-from approaches.r_learner import RLearner
-from approaches.class_variable_transformation import ClassVariableTransformation
-from approaches.s_learner import SLearner
-from approaches.traditional import Traditional
-from approaches.x_learner import XLearner
-from approaches.treatment_dummy import TreatmentDummy
-from approaches.two_model import TwoModel
-from approaches.uplift_random_forest import UpliftRandomForest
-from approaches.helper.helper_approaches import ApproachParameters, DataSetsHelper
-from const.const import *
+from autouplift.approaches import ApproachParameters, BayesianCausalForest, ClassVariableTransformation, DataSetsHelper, GeneralizedRandomForest, LaisGeneralization, RLearner, \
+    SLearner, Traditional, TreatmentDummy, TwoModel, UpliftRandomForest, XLearner
 
 load_dotenv()
 root = os.getenv("ROOT_FOLDER")
 sys.path.append(root + "src/")
 
 # This is the class we want to test in this file
-from pipelines.helper.helper_pipeline import HelperPipeline
+from autouplift.pipelines import HelperPipeline
 
 
 class TestHelperPipeline(unittest.TestCase):
@@ -183,18 +172,10 @@ class TestHelperPipeline(unittest.TestCase):
         df_test.loc[((df_test['treatment'] == 0) & (df_test['response'] == 1)), 'group'] = 2
         df_test.loc[((df_test['treatment'] == 1) & (df_test['response'] == 1)), 'group'] = 3
 
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 0].shape[0] / df_train.shape[0],
-                               second=df_test.loc[df_test.group == 0].shape[0] / df_test.shape[0],
-                               places=3)
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 1].shape[0] / df_train.shape[0],
-                               second=df_test.loc[df_test.group == 1].shape[0] / df_test.shape[0],
-                               places=3)
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 2].shape[0] / df_train.shape[0],
-                               second=df_test.loc[df_test.group == 2].shape[0] / df_test.shape[0],
-                               places=3)
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 3].shape[0] / df_train.shape[0],
-                               second=df_test.loc[df_test.group == 3].shape[0] / df_test.shape[0],
-                               places=3)
+        self.assertAlmostEqual(first=df_train.loc[df_train.group == 0].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 0].shape[0] / df_test.shape[0], places=3)
+        self.assertAlmostEqual(first=df_train.loc[df_train.group == 1].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 1].shape[0] / df_test.shape[0], places=3)
+        self.assertAlmostEqual(first=df_train.loc[df_train.group == 2].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 2].shape[0] / df_test.shape[0], places=3)
+        self.assertAlmostEqual(first=df_train.loc[df_train.group == 3].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 3].shape[0] / df_test.shape[0], places=3)
 
     def test_apply_approaches(self):
         helper = HelperPipeline()
@@ -209,7 +190,12 @@ class TestHelperPipeline(unittest.TestCase):
             "feature_importance": False,
         }
 
-        result_dict = {"score_train": [], "score_valid": [], "score_test": [], "feature_importance": {}}
+        result_dict = {
+            "score_train": [],
+            "score_valid": [],
+            "score_test": [],
+            "feature_importance": {}
+        }
 
         # Create classifier
         classifier_list = [UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="ED"),
@@ -224,12 +210,10 @@ class TestHelperPipeline(unittest.TestCase):
                            LaisGeneralization(self.parameters[LAIS_TITLE + "_parameters"], approach_params),
                            TwoModel(self.parameters[TWO_MODEL_TITLE + "_parameters"], approach_params),
                            Traditional(self.parameters[TRADITIONAL_TITLE + "_parameters"], approach_params),
-                           XLearner(self.parameters[XLEARNER_TITLE + "_parameters"], approach_params),
-                           RLearner(self.parameters[RLEARNER_TITLE + "_parameters"], approach_params),
+                           XLearner(self.parameters[XLEARNER_TITLE + "_parameters"], approach_params), RLearner(self.parameters[RLEARNER_TITLE + "_parameters"], approach_params),
                            TreatmentDummy(self.parameters[TREATMENT_DUMMY_TITLE + "_parameters"], approach_params),
                            GeneralizedRandomForest(self.parameters[GRF_TITLE + "_parameters"], approach_params),
-                           BayesianCausalForest(self.parameters[BCF_TITLE + "_parameters"], approach_params)
-                           ]
+                           BayesianCausalForest(self.parameters[BCF_TITLE + "_parameters"], approach_params)]
 
         for classifier in classifier_list:
             classifier.analyze = MagicMock(return_value=result_dict)
@@ -251,8 +235,8 @@ class TestHelperPipeline(unittest.TestCase):
         result_dict = ([], [], [], {})
         m_apply_approach.return_value = result_dict
 
-        approaches = ['TWO_MODEL', 'URF_ED', 'URF_KL', 'URF_CHI', 'URF_DDP', 'URF_IT', 'URF_CIT', 'URF_CTS', 'TRADITIONAL', 'SLEARNER', 'CVT', 'LAIS', 'XLEARNER',
-                      'RLEARNER', 'TREATMENT_DUMMY', 'GRF', 'BCF']
+        approaches = ['TWO_MODEL', 'URF_ED', 'URF_KL', 'URF_CHI', 'URF_DDP', 'URF_IT', 'URF_CIT', 'URF_CTS', 'TRADITIONAL', 'SLEARNER', 'CVT', 'LAIS', 'XLEARNER', 'RLEARNER',
+                      'TREATMENT_DUMMY', 'GRF', 'BCF']
         for i in approaches:
             with self.subTest(i=i):
                 result = helper.apply_uplift_approaches(df_train, df_valid, df_test, self.parameters, [i], split_number=0)
@@ -296,14 +280,79 @@ class TestHelperPipeline(unittest.TestCase):
 
     def test_cast_to_dataframe(self):
 
-        list_dict = [
-            {'A-0': 0.0, 'A-1': -0.0014, 'A-2': -0.0063, 'A-3': 0.0039, 'A-4': 0.007, 'A-5': 0.003, 'A-6': -0.0085, 'A-7': -0.0156, 'A-8': -0.0087, 'A-9': -0.0093, 'A-10': -0.0149},
-            {'B-0': 0.0, 'B-1': -0.0153, 'B-2': -0.0029, 'B-3': -0.0063, 'B-4': -0.0061, 'B-5': -0.0051, 'B-6': -0.0106, 'B-7': -0.0081, 'B-8': -0.0094, 'B-9': -0.0187, 'B-10': -0.0149},
-            {'A-0': 0.0, 'A-1': -0.008, 'A-2': -0.0064, 'A-3': -0.0113, 'A-4': -0.0219, 'A-5': -0.0195, 'A-6': -0.0172, 'A-7': -0.0083, 'A-8': -0.0102, 'A-9': -0.0151, 'A-10': -0.0149},
-            {'B-0': 0.0, 'B-1': -0.0052, 'B-2': -0.0093, 'B-3': -0.0076, 'B-4': -0.0096, 'B-5': -0.0065, 'B-6': -0.0077, 'B-7': -0.0082, 'B-8': -0.0131, 'B-9': -0.015, 'B-10': -0.0149},
-            {'A-0': 0.0, 'A-1': 0.0016, 'A-2': -0.018, 'A-3': -0.0171, 'A-4': -0.014, 'A-5': -0.015, 'A-6': -0.0176, 'A-7': -0.0131, 'A-8': -0.0129, 'A-9': -0.007, 'A-10': -0.0149},
-            {'B-0': 0.0, 'B-1': 0.0043, 'B-2': -0.0013, 'B-3': -0.0076, 'B-4': -0.0117, 'B-5': -0.0115, 'B-6': -0.0163, 'B-7': -0.0103, 'B-8': -0.0108, 'B-9': -0.0114, 'B-10': -0.0149}
-        ]
+        list_dict = [{
+            'A-0': 0.0,
+            'A-1': -0.0014,
+            'A-2': -0.0063,
+            'A-3': 0.0039,
+            'A-4': 0.007,
+            'A-5': 0.003,
+            'A-6': -0.0085,
+            'A-7': -0.0156,
+            'A-8': -0.0087,
+            'A-9': -0.0093,
+            'A-10': -0.0149
+        }, {
+            'B-0': 0.0,
+            'B-1': -0.0153,
+            'B-2': -0.0029,
+            'B-3': -0.0063,
+            'B-4': -0.0061,
+            'B-5': -0.0051,
+            'B-6': -0.0106,
+            'B-7': -0.0081,
+            'B-8': -0.0094,
+            'B-9': -0.0187,
+            'B-10': -0.0149
+        }, {
+            'A-0': 0.0,
+            'A-1': -0.008,
+            'A-2': -0.0064,
+            'A-3': -0.0113,
+            'A-4': -0.0219,
+            'A-5': -0.0195,
+            'A-6': -0.0172,
+            'A-7': -0.0083,
+            'A-8': -0.0102,
+            'A-9': -0.0151,
+            'A-10': -0.0149
+        }, {
+            'B-0': 0.0,
+            'B-1': -0.0052,
+            'B-2': -0.0093,
+            'B-3': -0.0076,
+            'B-4': -0.0096,
+            'B-5': -0.0065,
+            'B-6': -0.0077,
+            'B-7': -0.0082,
+            'B-8': -0.0131,
+            'B-9': -0.015,
+            'B-10': -0.0149
+        }, {
+            'A-0': 0.0,
+            'A-1': 0.0016,
+            'A-2': -0.018,
+            'A-3': -0.0171,
+            'A-4': -0.014,
+            'A-5': -0.015,
+            'A-6': -0.0176,
+            'A-7': -0.0131,
+            'A-8': -0.0129,
+            'A-9': -0.007,
+            'A-10': -0.0149
+        }, {
+            'B-0': 0.0,
+            'B-1': 0.0043,
+            'B-2': -0.0013,
+            'B-3': -0.0076,
+            'B-4': -0.0117,
+            'B-5': -0.0115,
+            'B-6': -0.0163,
+            'B-7': -0.0103,
+            'B-8': -0.0108,
+            'B-9': -0.0114,
+            'B-10': -0.0149
+        }]
 
         df_uplift = HelperPipeline.cast_to_dataframe(list_dict)
 

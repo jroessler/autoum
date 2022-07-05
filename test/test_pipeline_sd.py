@@ -10,7 +10,7 @@ root = os.getenv("ROOT_FOLDER")
 sys.path.append(root + "src/")
 
 # This is the class we want to test in this file
-from pipelines.pipeline_sd import PipelineSD
+from autouplift.pipelines import PipelineSD
 
 
 class TestPipelineSD(unittest.TestCase):

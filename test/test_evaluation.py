@@ -1,18 +1,10 @@
-import os
-import sys
 import unittest
 from unittest.mock import patch
 
 import numpy as np
 import pandas as pd
-from dotenv import load_dotenv
 
-load_dotenv()
-root = os.getenv("ROOT_FOLDER")
-sys.path.append(root + "src/")
-
-# This is the class we want to test in this file
-from evaluation.evaluation import UpliftEvaluation
+from autouplift.evaluation.evaluation import UpliftEvaluation
 
 
 class TestEvaluation(unittest.TestCase):
@@ -25,7 +17,11 @@ class TestEvaluation(unittest.TestCase):
         self.response = np.random.binomial(n=1, p=0.5, size=[n])
         self.uplift_score = np.random.normal(0.3, 0.1, n)
 
-        self.df = pd.DataFrame(data={'treatment': self.treatment, 'response': self.response, 'uplift_score': self.uplift_score})
+        self.df = pd.DataFrame(data={
+            'treatment': self.treatment,
+            'response': self.response,
+            'uplift_score': self.uplift_score
+        })
 
     def test_separate_treated_control(self):
         df_treated, df_control = UpliftEvaluation.separate_treated_control(df_results=self.df, treatment_col='treatment', response_col='response', uplift_score_col='uplift_score')
@@ -128,8 +124,8 @@ class TestEvaluation(unittest.TestCase):
             # Check if slope first increases to the maximum and decreases after it (that is a typicall characteristic of an optimal curve)
             self.assertTrue(check_slope(uplift))
 
-    @patch('evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
-    @patch('evaluation.evaluation.UpliftEvaluation.calculate_qini_curve')
+    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
+    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.calculate_qini_curve')
     def test_calculate_actual_uplift_in_bins(self, m_calculate_qini_curve, m_store_uplift_in_bins):
         m_calculate_qini_curve.return_value = ([], [], [])
         uplift_in_deciles = UpliftEvaluation.calculate_actual_uplift_in_bins(self.df, bins=10)
@@ -137,8 +133,8 @@ class TestEvaluation(unittest.TestCase):
         m_calculate_qini_curve.assert_called_once()
         m_store_uplift_in_bins.assert_called_once()
 
-    @patch('evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
-    @patch('evaluation.evaluation.UpliftEvaluation.calculate_optimal_qini_curve')
+    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
+    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.calculate_optimal_qini_curve')
     def test_calculate_optimal_uplift_in_bins(self, m_calculate_optimal_qini_curve, m_store_uplift_in_bins):
 
         m_calculate_optimal_qini_curve.return_value = ([], [], [])
@@ -153,10 +149,14 @@ class TestEvaluation(unittest.TestCase):
         opt_uplift_bins = [10., 10., 10., 10., 10., 10., 10., 10., 10., 10., 10.]
         expected_qini_coefficient = 0.4
 
-        df_metrics = pd.DataFrame(data={'test': uplift_bins}).T.reset_index(drop=True)
+        df_metrics = pd.DataFrame(data={
+            'test': uplift_bins
+        }).T.reset_index(drop=True)
         df_metrics.columns = ["TT-0", "TT-1", "TT-2", "TT-3", "TT-4", "TT-5", "TT-6", "TT-7", "TT-8", "TT-9", "TT-10"]
 
-        df_opt_uplift_bins = pd.DataFrame(data={'test': opt_uplift_bins}).T.reset_index(drop=True)
+        df_opt_uplift_bins = pd.DataFrame(data={
+            'test': opt_uplift_bins
+        }).T.reset_index(drop=True)
         df_opt_uplift_bins.columns = ["TT-0", "TT-1", "TT-2", "TT-3", "TT-4", "TT-5", "TT-6", "TT-7", "TT-8", "TT-9", "TT-10"]
 
         qini_coefficients_df = UpliftEvaluation.calculate_qini_coefficient(df_metrics, df_opt_uplift_bins, num_columns=11)
@@ -172,7 +172,9 @@ class TestEvaluation(unittest.TestCase):
         uplift_bins = [10., 10., 10., 10., 10., 10., 10., 10., 10., 10., 10.]
         expected_unscaled_qini_coefficient = 2.0
 
-        df_uplift_bins = pd.DataFrame(data={'test': uplift_bins}).T.reset_index(drop=True)
+        df_uplift_bins = pd.DataFrame(data={
+            'test': uplift_bins
+        }).T.reset_index(drop=True)
         df_uplift_bins.columns = ["TT-0", "TT-1", "TT-2", "TT-3", "TT-4", "TT-5", "TT-6", "TT-7", "TT-8", "TT-9", "TT-10"]
 
         qini_coefficients_df = UpliftEvaluation.calculate_unscaled_qini_coefficient(df_uplift_bins)
