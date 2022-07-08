@@ -40,12 +40,7 @@ class UpliftRandomForest:
         Creates a classifier for the direct uplift approach
 
         :param parameters: The parameters needed for the creation of the base learner
-        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach:
-         Set the following parameters in approach_parameters:
-        -  feature_importance: True, if feature information should be calculated. False otherwise.
-        -  save: True, if model should be saved
-        -  path: Path were the model should be saved
-        -  split_number: Number of the current split
+        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
         :param eval_function: Evaluation function. You can choose among the following evaluation functions:
             "ED": Euclidean Distance
             "KL": Kullback-Leibler Divergence

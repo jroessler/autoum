@@ -28,13 +28,7 @@ class LaisGeneralization:
         Creates a classifier for the transformed outcome approach by Lai's (2015) --> Generalized by Kane (2015).
 
         :param parameters: The parameters needed for the creation of the base learner
-        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach:
-         Set the following parameters in approach_parameters:
-        -  cost sensitive: True, if cost sensitive learning should be considered. False otherwise.
-        -  feature_importance: True, if feature information should be calculated. False otherwise.
-        -  save: True, if model should be saved
-        -  path: Path were the model should be saved
-        -  split_number: Number of the current split
+        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
         """
         self.parameters = parameters
         self.cost_sensitive = approach_parameters.cost_sensitive

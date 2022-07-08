@@ -32,15 +32,10 @@ class BayesianCausalForest:
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):
         """
-        Creates a classifier for the bayesian causal forest
+        Creates a classifier for the Bayesian Causal Forest
 
         :param parameters: The parameters needed for the creation of the base learner
-        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach:
-         Set the following parameters in approach_parameters:
-        -  feature_importance: True, if feature information should be calculated. False otherwise.
-        -  save: True, if model should be saved
-        -  path: Path were the model should be saved
-        -  split_number: Number of the current split
+        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
         """
 
         self.parameters = parameters

@@ -15,7 +15,7 @@ from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
 
 class GeneralizedRandomForest:
     """
-    Generalized Random Forest propoed by Athey et al. (2019)
+    Generalized Random Forest proposed by Athey et al. (2019)
 
     Note: When creating a GeneralizedRandomForest Object you can pass a parameter dictionary including the hyperparameters.
     """
@@ -25,12 +25,7 @@ class GeneralizedRandomForest:
         Creates a classifier for the direct uplift approach
 
         :param parameters: The parameters needed for the creation of the base learner
-        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach:
-         Set the following parameters in approach_parameters:
-        -  feature_importance: True, if feature information should be calculated. False otherwise.
-        -  save: True, if model should be saved
-        -  path: Path were the model should be saved
-        -  split_number: Number of the current split
+        :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
         """
 
         self.parameters = parameters
