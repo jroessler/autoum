@@ -1,34 +1,48 @@
-import os
-import sys
 import unittest
 from unittest.mock import MagicMock, patch
 
 import pandas as pd
-from const.const import *
-from dotenv import load_dotenv
 from sklearn.model_selection import train_test_split
 
-from autouplift.approaches import ApproachParameters, BayesianCausalForest, ClassVariableTransformation, DataSetsHelper, GeneralizedRandomForest, LaisGeneralization, RLearner, \
-    SLearner, Traditional, TreatmentDummy, TwoModel, UpliftRandomForest, XLearner
-
-load_dotenv()
-root = os.getenv("ROOT_FOLDER")
-sys.path.append(root + "src/")
-
-# This is the class we want to test in this file
-from autouplift.pipelines import HelperPipeline
+from autouplift.approaches.bayesian_causal_forest import BayesianCausalForest
+from autouplift.approaches.class_variable_transformation import ClassVariableTransformation
+from autouplift.approaches.generalized_random_forest import GeneralizedRandomForest
+from autouplift.approaches.lais_generalization import LaisGeneralization
+from autouplift.approaches.r_learner import RLearner
+from autouplift.approaches.s_learner import SLearner
+from autouplift.approaches.traditional import Traditional
+from autouplift.approaches.treatment_dummy import TreatmentDummy
+from autouplift.approaches.two_model import TwoModel
+from autouplift.approaches.uplift_random_forest import UpliftRandomForest
+from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
+from autouplift.approaches.x_learner import XLearner
+from autouplift.const.const import *
+from autouplift.datasets.utils import get_hillstrom_women_visit
+from autouplift.pipelines.utils import HelperPipeline
 
 
 class TestHelperPipeline(unittest.TestCase):
 
     def setUp(self):
-        self.dataset_name = "Companye_k"
+        # Get data
+        data = get_hillstrom_women_visit()
+        self.data = data.sample(frac=0.5, random_state=123)
+        self.df_train, self.df_test = train_test_split(data, test_size=0.2, shuffle=True, stratify=data[['response', 'treatment']], random_state=123)
+        self.df_train, self.df_valid = train_test_split(data, test_size=0.2, shuffle=True, stratify=data[['response', 'treatment']], random_state=123)
+
+        self.ds_helper = DataSetsHelper(df_train=self.df_train, df_valid=self.df_valid, df_test=self.df_test)
+        self.approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=None, save=False, split_number=0)
+        self.apply_params = {
+            "data_set_helper": self.ds_helper,
+            "feature_importance": False,
+        }
 
         n_estimators = 100
         max_depth = 5
         max_features = 'auto'
         random_seed = 123
         min_samples_leaf = 5
+        min_samples_treatment = 5
         n_jobs = 1
 
         urf_parameters = {
@@ -36,7 +50,7 @@ class TestHelperPipeline(unittest.TestCase):
             "max_features": None,
             "max_depth": max_depth,
             "min_samples_leaf": min_samples_leaf,
-            "min_samples_treatment": 10,
+            "min_samples_treatment": min_samples_treatment,
             "n_reg": 100,
             "random_state": random_seed,
             "n_jobs": n_jobs,
@@ -157,38 +171,8 @@ class TestHelperPipeline(unittest.TestCase):
             BCF_TITLE + '_parameters': bcf_parameters
         }
 
-    def test_get_dataframe(self):
-        helper = HelperPipeline()
-        test_size = 0.5
-        df_train, df_test = helper.get_dataframe(self.dataset_name, test_size, 123)
-
-        df_train.loc[((df_train['treatment'] == 0) & (df_train['response'] == 0)), 'group'] = 0
-        df_train.loc[((df_train['treatment'] == 1) & (df_train['response'] == 0)), 'group'] = 1
-        df_train.loc[((df_train['treatment'] == 0) & (df_train['response'] == 1)), 'group'] = 2
-        df_train.loc[((df_train['treatment'] == 1) & (df_train['response'] == 1)), 'group'] = 3
-
-        df_test.loc[((df_test['treatment'] == 0) & (df_test['response'] == 0)), 'group'] = 0
-        df_test.loc[((df_test['treatment'] == 1) & (df_test['response'] == 0)), 'group'] = 1
-        df_test.loc[((df_test['treatment'] == 0) & (df_test['response'] == 1)), 'group'] = 2
-        df_test.loc[((df_test['treatment'] == 1) & (df_test['response'] == 1)), 'group'] = 3
-
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 0].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 0].shape[0] / df_test.shape[0], places=3)
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 1].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 1].shape[0] / df_test.shape[0], places=3)
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 2].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 2].shape[0] / df_test.shape[0], places=3)
-        self.assertAlmostEqual(first=df_train.loc[df_train.group == 3].shape[0] / df_train.shape[0], second=df_test.loc[df_test.group == 3].shape[0] / df_test.shape[0], places=3)
-
     def test_apply_approaches(self):
         helper = HelperPipeline()
-
-        df_train, df_test = helper.get_dataframe(self.dataset_name, 0.2, 123)
-        df_train, df_valid = train_test_split(df_train, test_size=0.2, shuffle=True, random_state=123)
-
-        ds_helper = DataSetsHelper(df_train=df_train, df_valid=df_valid, df_test=df_test)
-        approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=root, save=False, split_number=0)
-        apply_params = {
-            "data_set_helper": ds_helper,
-            "feature_importance": False,
-        }
 
         result_dict = {
             "score_train": [],
@@ -198,39 +182,40 @@ class TestHelperPipeline(unittest.TestCase):
         }
 
         # Create classifier
-        classifier_list = [UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="ED"),
-                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="KL"),
-                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="Chi"),
-                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="DDP"),
-                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="IT"),
-                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="CIT"),
-                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], approach_params, eval_function="CTS"),
-                           SLearner(self.parameters[SLEARNER_TITLE + "_parameters"], approach_params),
-                           ClassVariableTransformation(self.parameters[CVT_TITLE + "_parameters"], approach_params),
-                           LaisGeneralization(self.parameters[LAIS_TITLE + "_parameters"], approach_params),
-                           TwoModel(self.parameters[TWO_MODEL_TITLE + "_parameters"], approach_params),
-                           Traditional(self.parameters[TRADITIONAL_TITLE + "_parameters"], approach_params),
-                           XLearner(self.parameters[XLEARNER_TITLE + "_parameters"], approach_params), RLearner(self.parameters[RLEARNER_TITLE + "_parameters"], approach_params),
-                           TreatmentDummy(self.parameters[TREATMENT_DUMMY_TITLE + "_parameters"], approach_params),
-                           GeneralizedRandomForest(self.parameters[GRF_TITLE + "_parameters"], approach_params),
-                           BayesianCausalForest(self.parameters[BCF_TITLE + "_parameters"], approach_params)]
+        classifier_list = [UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], self.approach_params, eval_function="ED"),
+                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], self.approach_params, eval_function="KL"),
+                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], self.approach_params, eval_function="Chi"),
+                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], self.approach_params, eval_function="DDP"),
+                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], self.approach_params, eval_function="IT"),
+                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], self.approach_params, eval_function="CIT"),
+                           UpliftRandomForest(self.parameters[URF_TITLE + "_parameters"], self.approach_params, eval_function="CTS"),
+                           SLearner(self.parameters[SLEARNER_TITLE + "_parameters"], self.approach_params),
+                           ClassVariableTransformation(self.parameters[CVT_TITLE + "_parameters"], self.approach_params),
+                           LaisGeneralization(self.parameters[LAIS_TITLE + "_parameters"], self.approach_params),
+                           TwoModel(self.parameters[TWO_MODEL_TITLE + "_parameters"], self.approach_params),
+                           Traditional(self.parameters[TRADITIONAL_TITLE + "_parameters"], self.approach_params),
+                           XLearner(self.parameters[XLEARNER_TITLE + "_parameters"], self.approach_params),
+                           RLearner(self.parameters[RLEARNER_TITLE + "_parameters"], self.approach_params),
+                           TreatmentDummy(self.parameters[TREATMENT_DUMMY_TITLE + "_parameters"], self.approach_params),
+                           GeneralizedRandomForest(self.parameters[GRF_TITLE + "_parameters"], self.approach_params),
+                           BayesianCausalForest(self.parameters[BCF_TITLE + "_parameters"], self.approach_params)]
 
         for classifier in classifier_list:
-            classifier.analyze = MagicMock(return_value=result_dict)
-            *results, = helper.apply_approach(classifier, **apply_params)
-            classifier.analyze.assert_called_once_with(ds_helper)
+            with self.subTest(i=classifier):
+                classifier.analyze = MagicMock(return_value=result_dict)
+                *results, = helper.apply_approach(classifier, **self.apply_params)
+                classifier.analyze.assert_called_once_with(self.ds_helper)
 
-            self.assertIsInstance(results[0], list)
-            self.assertIsInstance(results[1], list)
-            self.assertIsInstance(results[2], list)
-            self.assertIsInstance(results[3], dict)
+                self.assertIsInstance(results[0], list)
+                self.assertIsInstance(results[1], list)
+                self.assertIsInstance(results[2], list)
+                self.assertIsInstance(results[3], dict)
 
-    @patch('test_helper_pipeline.HelperPipeline.apply_approach')
+                classifier.analyze.reset_mock()
+
+    @patch('test.test_utils_pipelines.HelperPipeline.apply_approach')
     def test_apply_uplift_approaches(self, m_apply_approach):
         helper = HelperPipeline()
-
-        df_train, df_test = helper.get_dataframe(self.dataset_name, 0.2, 123)
-        df_train, df_valid = train_test_split(df_train, test_size=0.2, shuffle=True, random_state=123)
 
         result_dict = ([], [], [], {})
         m_apply_approach.return_value = result_dict
@@ -239,13 +224,13 @@ class TestHelperPipeline(unittest.TestCase):
                       'TREATMENT_DUMMY', 'GRF', 'BCF']
         for i in approaches:
             with self.subTest(i=i):
-                result = helper.apply_uplift_approaches(df_train, df_valid, df_test, self.parameters, [i], split_number=0)
+                result = helper.apply_uplift_approaches(self.df_train, self.df_valid, self.df_test, self.parameters, [i], split_number=0)
 
-                self.assertEqual(result["df_scores_train"].shape[0], df_train.shape[0])
+                self.assertEqual(result["df_scores_train"].shape[0], self.df_train.shape[0])
                 self.assertEqual(result["df_scores_train"].shape[1], 3)
-                self.assertEqual(result["df_scores_valid"].shape[0], df_valid.shape[0])
+                self.assertEqual(result["df_scores_valid"].shape[0], self.df_valid.shape[0])
                 self.assertEqual(result["df_scores_valid"].shape[1], 3)
-                self.assertEqual(result["df_scores_test"].shape[0], df_test.shape[0])
+                self.assertEqual(result["df_scores_test"].shape[0], self.df_test.shape[0])
                 self.assertEqual(result["df_scores_test"].shape[1], 3)
 
                 self.assertIsInstance(result["df_scores_train"], pd.DataFrame)
@@ -361,3 +346,6 @@ class TestHelperPipeline(unittest.TestCase):
 
         # Check if the DataFrame contains 55 columns (11 columns for each approach)
         self.assertEqual(df_uplift.shape[1], 22)
+
+    def test_save_feature_importance(self):
+        pass
