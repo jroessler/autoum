@@ -34,20 +34,21 @@ class PipelineSD(PipelineRW):
         self.threshold = threshold
         self.propensity = propensity
 
-    def analyze_dataset(self, dataset_name="Synthetic"):
+    def analyze_dataset(self, data: pd.DataFrame = None):
         """
-        Apply, compare, and evaluate various uplift modeling approaches on a synthetic data set
+        Apply, compare, and evaluate various uplift modeling approaches on synthetic data
 
-        :param dataset_name:
+        :param data: Dataset to be analyzed. Default: None as we want to analyze a synthetic dataset
         """
         logging.info(f"run_name: {self.run_name}, run_id: {self.run_name}, sigma: {self.sigma}, p: {self.p}, threshold: {self.threshold}, propensity: {self.propensity}")
 
-        self.dataset = dataset_name
-
+        # Set random seed
         np.random.seed(self.random_seed)
 
+        # Set start time
         start = time.time()
 
+        # Create synthetic dataset
         df = self.create_synthetic_dataset()
 
         df_train, df_test = train_test_split(df, test_size=self.test_size, shuffle=True, stratify=df[['response', 'treatment']], random_state=self.random_seed)
@@ -70,7 +71,7 @@ class PipelineSD(PipelineRW):
             dict_uplift = self.analyze_single_fold(df_train=df_train, df_test=df_test)
 
         # Calculate, plot and save metrics
-        self.calculate_metrics(list_feature_importances=dict_uplift["feature_importances"], feature_names=feature_names, dataset_name=dataset_name,
+        self.calculate_metrics(list_feature_importances=dict_uplift["feature_importances"], feature_names=feature_names,
                                list_dict_uplift_train=dict_uplift["list_dict_uplift_train"], list_dict_uplift_valid=dict_uplift["list_dict_uplift_valid"],
                                list_dict_uplift_test=dict_uplift["list_dict_uplift_test"], list_dict_opt_uplift_train=dict_uplift["list_dict_opt_uplift_train"],
                                list_dict_opt_uplift_valid=dict_uplift["list_dict_opt_uplift_valid"], list_dict_opt_uplift_test=dict_uplift["list_dict_opt_uplift_test"])

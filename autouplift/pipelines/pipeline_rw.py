@@ -468,7 +468,7 @@ class PipelineRW:
                           list_dict_opt_uplift_train,
                           list_dict_opt_uplift_valid,
                           list_dict_opt_uplift_test,
-                          feature_names, ):
+                          feature_names):
         """
         Calculate qini related metrics such as unscaled Qini Coefficient (UQC), Qini Coefficient (QC), and Qini Curves
 

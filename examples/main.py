@@ -5,6 +5,7 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 
 from autouplift.pipelines.pipeline_rw import PipelineRW
 from autouplift.pipelines.pipeline_sd import PipelineSD
+from autouplift.datasets.utils import get_hillstrom_women_visit
 
 import datetime
 
@@ -15,7 +16,7 @@ class Main:
     """
 
     @staticmethod
-    def grid_search(datasets, **kwargs):
+    def grid_search(data, **kwargs):
         """
         Grid Search for real-world pipeline
         """
@@ -30,20 +31,18 @@ class Main:
                     kwargs["run_id"] = counter
                     pipeline = PipelineRW(**kwargs)
 
-                    for ds in datasets:
-                        pipeline.analyze_dataset(ds)
+                    pipeline.analyze_dataset(data)
 
                     counter += 1
 
     @staticmethod
-    def single_application(datasets, **kwargs):
+    def single_application(data, **kwargs):
         """
         Single application for real-world pipelineD
         """
         pipeline = PipelineRW(**kwargs)
 
-        for ds in datasets:
-            pipeline.analyze_dataset(ds)
+        pipeline.analyze_dataset(data)
 
     @staticmethod
     def single_application_synthetic(**kwargs):
@@ -67,25 +66,25 @@ class Main:
 
 
 if __name__ == '__main__':
-    ##### Datasets to be calculated #####
-    # Datasets which should be analyzed. You can choose among the following options: Hillstrom, Hillstrom_Women, Hillstrom_Men, Hillstrom_Conversion,
-    # Hillstrom_Women_Conversion, Hillstrom_Men_Conversion, Criteo, Criteo_Resampled, Starbucks, Bank_This_Campaign, Bank_Both_Campaigns,
-    # Social_Pressure_Neighbors, Lenta, Criteo_v2, Criteo_v2_Resampled
-    _datasets = ["Hillstrom_Women"]
+    # TODO
+    data = get_hillstrom_women_visit()
 
     # Get date (for saving purposes)
     ts = time.time()
     date = datetime.datetime.fromtimestamp(ts).strftime('%d-%m-%Y')
 
     parameters = {
+        "bayesian_causal_forest": False,
         "bins": 10,
         "cost_sensitive": False,
-        "cv_number_splits": 10,
+        "cv_number_splits": 2,
+        "class_variable_transformation": False,
         "feature_importance": False,
         "fontsize": 14,
+        "generalized_random_forest": False,
         "honesty": False,
-        "logging_file": True,
-        "logging_level": 3,
+        "lais_generalization": False,
+        "logging_level": 1,
         "max_depth": 5,
         "max_features": 'auto',
         "metrics_calculate_absolute": False,
@@ -102,17 +101,30 @@ if __name__ == '__main__':
         "plot_uqc": True,
         "plot_save_figures": False,
         "pool_capacity": 40,
+        "rlearner": False,
         "run_name": f"{date}_RUN",
         "run_id": 1,
         "random_seed": 123,
         "save_models": False,
+        "slearner": False,
         "show_title": True,
         "test_size": 0.2,
-        "validation_size": 0.2
+        "traditional": False,
+        "treatment_dummy": False,
+        "two_model": False,
+        "urf_ed": False,
+        "urf_kl": False,
+        "urf_chi": False,
+        "urf_ddp": False,
+        "urf_cts": False,
+        "urf_it": False,
+        "urf_cit": False,
+        "validation_size": 0.2,
+        "xlearner": True
     }
 
     # Single Application
-    Main.single_application(datasets=_datasets, **parameters)
+    Main.single_application(data=data, **parameters)
 
     # Grid Application  # Main.grid_search(datasets=_datasets, **parameters)
 

@@ -187,8 +187,54 @@ class TestPipelineRW(unittest.TestCase):
         UpliftEvaluation.calculate_optimal_uplift_in_bins.reset_mock()
 
     def test_calculate_metrics(self):
-        # TODO
-        pass
+        for feature_importance in [True, False]:
+            for metrics_qini_coefficient in [True, False]:
+                for plot_figures in [True, False]:
+                    with self.subTest(i=feature_importance):
+                        list_feature_importances = []
+                        list_dict_uplift_train = list_dict_uplift_valid = list_dict_uplift_test = [{
+                            'Uplift_0': 0.0,
+                            'Uplift_1': 0.0041,
+                            'Uplift_2': 0.0101,
+                            'Uplift_3': 0.02,
+                            'Uplift_4': 0.0301,
+                            'Uplift_5': 0.0368,
+                            'Uplift_6': 0.0391,
+                            'Uplift_7': 0.0438,
+                            'Uplift_8': 0.044,
+                            'Uplift_9': 0.0418,
+                            'Uplift_10': 0.0454
+                        }]
+                        list_dict_opt_uplift_train = list_dict_opt_uplift_valid = list_dict_opt_uplift_test = []
+                        feature_names = ["A", "B", "C"]
+
+                        pipeline = PipelineRW(cv_number_splits=2, feature_importance=feature_importance, metrics_qini_coefficient=metrics_qini_coefficient,
+                                              plot_figures=plot_figures)
+                        PipelineRW.calculate_feature_importance_mean = MagicMock(spec_set=True)
+                        HelperPipeline.cast_to_dataframe = MagicMock(return_value=pd.DataFrame, spec_set=True)
+                        UpliftEvaluation.calculate_unscaled_qini_coefficient = MagicMock(return_value=pd.DataFrame, spec_set=True)
+                        UpliftEvaluation.calculate_qini_coefficient = MagicMock(return_value=pd.DataFrame, spec_set=True)
+                        UpliftEvaluation.calculate_mean = MagicMock(return_value=pd.DataFrame, spec_set=True)
+                        PipelineRW.plotting = MagicMock(spec_set=True)
+
+                        pipeline.calculate_metrics(list_feature_importances, list_dict_uplift_train, list_dict_uplift_valid, list_dict_uplift_test, list_dict_opt_uplift_train,
+                                                   list_dict_opt_uplift_valid, list_dict_opt_uplift_test, feature_names)
+
+                        if feature_importance:
+                            self.assertEqual(PipelineRW.calculate_feature_importance_mean.call_count, 1)
+                        else:
+                            self.assertEqual(PipelineRW.calculate_feature_importance_mean.call_count, 0)
+                        self.assertEqual(HelperPipeline.cast_to_dataframe.call_count, 6)
+                        self.assertEqual(UpliftEvaluation.calculate_unscaled_qini_coefficient.call_count, 3)
+                        if metrics_qini_coefficient:
+                            self.assertEqual(UpliftEvaluation.calculate_qini_coefficient.call_count, 3)
+                        else:
+                            self.assertEqual(UpliftEvaluation.calculate_qini_coefficient.call_count, 0)
+                        self.assertEqual(UpliftEvaluation.calculate_mean.call_count, 3)
+                        if plot_figures:
+                            self.assertEqual(PipelineRW.plotting.call_count, 3)
+                        else:
+                            self.assertEqual(PipelineRW.plotting.call_count, 0)
 
     def test_plotting(self):
         pass
