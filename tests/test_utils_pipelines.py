@@ -213,7 +213,7 @@ class TestHelperPipeline(unittest.TestCase):
 
                 classifier.analyze.reset_mock()
 
-    @patch('test.test_utils_pipelines.HelperPipeline.apply_approach')
+    @patch('tests.test_utils_pipelines.HelperPipeline.apply_approach')
     def test_apply_uplift_approaches(self, m_apply_approach):
         helper = HelperPipeline()
 

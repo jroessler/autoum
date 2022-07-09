@@ -18,9 +18,9 @@ class TestPipelineRW(unittest.TestCase):
         self.data = data.sample(frac=0.5, random_state=123)
         self.df_train, self.df_test = train_test_split(data, test_size=0.2, shuffle=True, stratify=data[['response', 'treatment']], random_state=123)
 
-    @patch('test.test_pipeline_rw.PipelineRW.analyze_k_fold_cv', spec_set=True)
-    @patch('test.test_pipeline_rw.PipelineRW.analyze_single_fold', spec_set=True)
-    @patch('test.test_pipeline_rw.PipelineRW.calculate_metrics', spec_set=True)
+    @patch('tests.test_pipeline_rw.PipelineRW.analyze_k_fold_cv', spec_set=True)
+    @patch('tests.test_pipeline_rw.PipelineRW.analyze_single_fold', spec_set=True)
+    @patch('tests.test_pipeline_rw.PipelineRW.calculate_metrics', spec_set=True)
     def test_analyze_dataset(self, m_calculate_metrics, m_analyze_single_fold, m_analyze_k_fold_cv):
         for cv_number_splits in [2, 10]:
             with self.subTest(i=cv_number_splits):
@@ -47,7 +47,7 @@ class TestPipelineRW(unittest.TestCase):
     def test_analyze_k_fold(self):
         pass
 
-    @patch('test.test_pipeline_rw.PipelineRW.train_eval_splits', spec_set=True)
+    @patch('tests.test_pipeline_rw.PipelineRW.train_eval_splits', spec_set=True)
     def test_analyze_single_fold(self, m_train_eval_splits):
         pipeline = PipelineRW(cv_number_splits=2, urf_cts=False)
         approaches = ["BCF", "CVT", "GRF", "LAIS", "RLEARNER", "SLEARNER", "XLEARNER", "TRADITIONAL", "TREATMENT_DUMMY", "TWO_MODEL", "URF_ED", "URF_KL", "URF_CHI", "URF_DDP",

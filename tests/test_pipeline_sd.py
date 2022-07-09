@@ -13,9 +13,9 @@ class TestPipelineSD(unittest.TestCase):
         self.propensity = 0.5
         self.threshold = 50
 
-    @patch('test.test_pipeline_sd.PipelineSD.analyze_k_fold_cv', spec_set=True)
-    @patch('test.test_pipeline_sd.PipelineSD.analyze_single_fold', spec_set=True)
-    @patch('test.test_pipeline_sd.PipelineSD.calculate_metrics', spec_set=True)
+    @patch('tests.test_pipeline_sd.PipelineSD.analyze_k_fold_cv', spec_set=True)
+    @patch('tests.test_pipeline_sd.PipelineSD.analyze_single_fold', spec_set=True)
+    @patch('tests.test_pipeline_sd.PipelineSD.calculate_metrics', spec_set=True)
     def test_analyze_dataset(self, m_calculate_metrics, m_analyze_single_fold, m_analyze_k_fold_cv):
         for cv_number_splits in [2, 10]:
             with self.subTest(i=cv_number_splits):
