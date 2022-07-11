@@ -57,70 +57,33 @@ The framework contains seven real, publicly available datasets which can be used
 | bank-telemarketing  | not A/B | public           | https://archive.ics.uci.edu/ml/datasets/bank+marketing                                           | `contact`, `contact`*`poutcome` | `y`                              |
 
 
-## Policy Regarding Data Files
-
- * Raw data files should only be committed in compressed form AND using Git LFS https://git-lfs.github.com.
- * Hence, it is necessary to install GIT LFS https://git-lfs.github.com before cloning this repo.
- * After having cloned the repo, compressed data files need to be extracted locally.
- * Usually, uncompressed data files should not be committed (i.e., should be in `.gitignore`; `.csv` already is).
- 
 ## Installation
 
-# For MAC: brew install libomp
- 
-### Git
- 
- ```
-$ git clone https://github.com/jroessler/autouplift.git
-```
+So far, the only the installation with `pip` is availabe. In the future the installation might be available with `conda`.
 
 ### Python
-Python Version: 3.8.10
 
-### Virtual Environment
-Create a new virtual environment and install the necessary packages
+Python Version: >=3.8.10
+
+### Install using `pip`
 ```
-$ cd autouplift
-$ python3 -m venv autouplift_env
-$ source autouplift_env/bin/activate
-$ pip config set global.disable-pip-version-check true
-$ pip --no-cache-dir install -r requirements.txt 
-$ pip --no-cache-dir install econml==0.12.0
-$ pip --no-cache-dir install xbcausalforest==0.1.3
-$ cd ..
-$ git clone -b v0.12.3 https://github.com/uber/causalml.git
-$ cp autouplift/src/approaches/causalml_src/uplift.pyx causalml/causalml/inference/tree/
-$ cd causalml
-$ python setup.py build_ext --inplace
-$ python setup.py install
-$ cd ..
-$ rm -rf causalml
-$ cd autouplift
+$ pip install autouplift
 ```
-### Development Environment
-Create `.env` file (for more information see https://pypi.org/project/python-dotenv/) in root directory with the following content: 
-```
-ROOT_FOLDER=$PATH$
-```
-where $PATH$ is the path to your root directory (e.g., ROOT_FOLDER=/home/jroessler/autouplift/)
 
-### Data
-* Execute `src/preparation/preparation_main.py` in order to unzip, pre-process and create all publicly available datasets.
+For MacOS it might be necessary to run `brew install libomp`
 
-## Get started
+## Quick Start
 
-You can use various pipelines to evaluate different algorithms
+## License
 
-* `pipeline_rw`: This pipeline evaluates various uplift modeling approaches on the real-world datasets<br>
-* `pipeline_sd`: This pipeline evaluates various uplift modeling approaches on synthetic datasets<br>
+This project is licensed under the Apache 2.0 License - see the [LICENSE](https://github.com/jroessler/autouplift/blob/main/LICENSE) file 
+for details.
 
-All of these Pipelines should be executed via the `src/main/Main.py` class.
+## References
 
-Global variables, constants, and similar can be configured in  `src/const/const.py`.
+### Documentation
 
-## Own Data
+### Citation
 
-To use your own datasets, do the following steps:
-1. Create a new folder in `data/` and place the new dataset inside the folder
-2. Define the dataset name and its path in `src/pipelines/helper/helper_pipeline`'s `get_dataframe` method
-3. In `src/main.py`, set `_datasets` equal to your name defined in step 2
+To cite AutoUplift in publications, you can refer to the following paper:
+TODO add
