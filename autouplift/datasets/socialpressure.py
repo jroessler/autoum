@@ -8,7 +8,7 @@ pd.set_option('display.width', None)
 
 class SocialPressure:
 
-    def __init__(self, path_folder):
+    def __init__(self, path_folder: str):
         ## Define paths
         self.social_pressure_original_path = path_folder + "social_pressure.csv"
         self.social_pressure_neighbors_path = path_folder + "social_pressure_neighbors.csv"

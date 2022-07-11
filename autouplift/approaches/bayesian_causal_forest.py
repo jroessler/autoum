@@ -17,22 +17,18 @@ class BayesianCausalForest:
     Bayesian Causal Forest (BCF) algorithm proposed by Hahn et al. (2020)
 
     This algorithm is built on Bayesian additive regression tree (BART)
-
-    An important insight is that the specifcation of the causal model is a sum of two parts:
+    An important insight is that the specification of the causal model is a sum of two parts:
     E[Y=y | X=x, T=t]= μ(x) + τ(x)t
 
     The first part μ(x) is a BART model to estimate the expected outcome from a set of covariates and, if required, an estimate of the probability to receive treatment.
     The parameters for this BART model are denoted with pr for ‘prognostic’, e.g. num_trees_pr.
-
     The second part τ(x) is a BART model that estimates the treatment effect conditional on some covariates, with its parameters denoted by trt as in ‘treatment’,
     e.g., num_trees_trt
-
-    Note: When creating a BayesianCausalForest Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):
         """
-        Creates a classifier for the Bayesian Causal Forest
+        Creates a classifier for the Bayesian Causal Forest (Hahn et al, 2020)
 
         :param parameters: The parameters needed for the creation of the base learner
         :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
@@ -46,7 +42,7 @@ class BayesianCausalForest:
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
-        Calculate the score (ITE/Uplift/CATE) for each sample using the BayesianCausalForest.
+        Calculate the score (ITE/Uplift/CATE) for each sample using the Bayesian causal forest.
 
         :param data_set_helper: A DataSetsHelper comprising the training, validation (optional) and test data set
         :return: Dictionary containing, scores and feature importance

@@ -13,13 +13,11 @@ class Traditional:
     Traditional Response Modeling Approach
 
     Here, only the treatment group is used for training the classifier
-
-    Note: When creating a Traditional Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):
         """
-        Creates a classifier for the single model approach
+        Creates a classifier for the traditional approach
 
         :param parameters: The parameters needed for the creation of the base learner
         :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
@@ -34,7 +32,7 @@ class Traditional:
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
-        Calculate the score (ITE/Uplift/CATE) for each sample using the TraditionalModelRFClassifier.
+        Calculate the score (ITE/Uplift/CATE) for each sample using the traditional approach.
 
         :param data_set_helper: A DataSetsHelper comprising the training, validation (optional) and test data set
         :return: Dictionary containing, scores and feature importance

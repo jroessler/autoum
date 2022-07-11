@@ -10,7 +10,7 @@ pd.set_option('display.width', 320)
 
 class Bank_Telemarketing:
 
-    def __init__(self, path_folder):
+    def __init__(self, path_folder: str):
         ## Define paths
         self.bank_additional_original_path = path_folder + "bank-additional-full.csv"
         self.bank_additional_path_1 = path_folder + "Bank-Telemarketing_1.csv"

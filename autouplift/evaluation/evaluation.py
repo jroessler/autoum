@@ -251,13 +251,13 @@ class UpliftEvaluation:
             return UpliftEvaluation.store_uplift_in_bins(uplift_pct, 'Optimal-Uplift_')
 
     @staticmethod
-    def store_uplift_in_bins(uplift, col_name: str):
+    def store_uplift_in_bins(uplift: list, col_name: str):
         """
         Stores the given uplift values in a dictionary containing the column name and bin number as key and the uplift value as vaue
 
         :param uplift: List of uplift values
         :param col_name: Name of the key
-        :return: Dictionary containg the uplift values for each bin
+        :return: Dictionary containing the uplift values for each bin
         """
         uplift_in_deciles = {}
 

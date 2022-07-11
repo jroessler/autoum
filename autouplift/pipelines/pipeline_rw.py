@@ -25,57 +25,57 @@ class PipelineRW:
     """
 
     def __init__(self,
-                 bayesian_causal_forest=True,
-                 bins=10,
-                 cost_sensitive=False,
-                 cv_number_splits=5,
-                 class_variable_transformation=True,
-                 feature_importance=False,
-                 fontsize=14,
-                 generalized_random_forest=True,
-                 honesty=False,
-                 lais_generalization=True,
-                 logging_level=1,
-                 max_depth=25,
-                 max_features='auto',
-                 metrics_calculate_absolute=False,
-                 metrics_qini_coefficient=False,
-                 metrics_save_metrics=False,
-                 min_samples_leaf=50,
-                 min_samples_treatment=10,
-                 normalization=True,
-                 n_estimators=200,
-                 n_jobs_=20,
-                 n_reg=100,
-                 plot_figures=True,
-                 plot_optimum=False,
-                 plot_grayscale=False,
-                 plot_uqc=True,
-                 plot_save_figures=False,
-                 pool_capacity=40,
-                 rlearner=True,
-                 run_name="RUN",
-                 run_id=1,
-                 random_seed=123,
-                 save_models=False,
-                 slearner=True,
-                 show_title=False,
-                 test_size=0.2,
-                 traditional=True,
-                 treatment_dummy=True,
-                 two_model=True,
-                 urf_ed=True,
-                 urf_kl=True,
-                 urf_chi=True,
-                 urf_ddp=True,
-                 urf_cts=True,
-                 urf_it=True,
-                 urf_cit=True,
-                 validation_size=0.2,
-                 xlearner=True):
+                 bayesian_causal_forest: bool=True,
+                 bins: int=10,
+                 cost_sensitive: bool=False,
+                 cv_number_splits: int=5,
+                 class_variable_transformation: bool=True,
+                 feature_importance: bool=False,
+                 fontsize: int=14,
+                 generalized_random_forest: bool=True,
+                 honesty: bool=False,
+                 lais_generalization: bool=True,
+                 logging_level: int=1,
+                 max_depth: int=25,
+                 max_features: str='auto',
+                 metrics_calculate_absolute: bool=False,
+                 metrics_qini_coefficient: bool=False,
+                 metrics_save_metrics: bool=False,
+                 min_samples_leaf: int=50,
+                 min_samples_treatment: int=10,
+                 normalization: bool=True,
+                 n_estimators: int=200,
+                 n_jobs_: int=20,
+                 n_reg: int=100,
+                 plot_figures: bool=True,
+                 plot_optimum: bool=False,
+                 plot_grayscale: bool=False,
+                 plot_uqc: bool=True,
+                 plot_save_figures: bool=False,
+                 pool_capacity: int=40,
+                 rlearner: bool=True,
+                 run_name: str="RUN",
+                 run_id: int=1,
+                 random_seed: int=123,
+                 save_models: bool=False,
+                 slearner: bool=True,
+                 show_title: bool=False,
+                 test_size: int=0.2,
+                 traditional: bool=True,
+                 treatment_dummy: bool=True,
+                 two_model: bool=True,
+                 urf_ed: bool=True,
+                 urf_kl: bool=True,
+                 urf_chi: bool=True,
+                 urf_ddp: bool=True,
+                 urf_cts: bool=True,
+                 urf_it: bool=True,
+                 urf_cit: bool=True,
+                 validation_size: float=0.2,
+                 xlearner: bool=True):
         """
         Creates a pipeline that can be used to analyze real-world data sets
-        fontsize, show_title
+
         :param bayesian_causal_forest: True, if Bayesian Causal Forest should be applied. False otherwise. Default: True
         :param bins: Number of bins. Default: 10
         :param cost_sensitive: True if cost sensitive learning shall be performed during training. False otherwise. Default: False
@@ -461,13 +461,13 @@ class PipelineRW:
         return dict_uplift_train, dict_uplift_valid, dict_uplift_test, dict_opt_uplift_train, dict_opt_uplift_valid, dict_opt_uplift_test, scores_dict["feature_importances"]
 
     def calculate_metrics(self,
-                          list_feature_importances,
-                          list_dict_uplift_train,
-                          list_dict_uplift_valid,
-                          list_dict_uplift_test,
-                          list_dict_opt_uplift_train,
-                          list_dict_opt_uplift_valid,
-                          list_dict_opt_uplift_test,
+                          list_feature_importances: list,
+                          list_dict_uplift_train: list,
+                          list_dict_uplift_valid: list,
+                          list_dict_uplift_test: list,
+                          list_dict_opt_uplift_train: list,
+                          list_dict_opt_uplift_valid: list,
+                          list_dict_opt_uplift_test: list,
                           feature_names):
         """
         Calculate qini related metrics such as unscaled Qini Coefficient (UQC), Qini Coefficient (QC), and Qini Curves
@@ -538,7 +538,7 @@ class PipelineRW:
             # Test
             self.plotting(df_metrics_mean_test, df_optimal_uplift_test, split="Test")
 
-    def plotting(self, df_metrics, df_optimal_uplift, split="Train"):
+    def plotting(self, df_metrics: pd.DataFrame, df_optimal_uplift: pd.DataFrame, split: str="Train"):
         """
         Plot (average) qini curve for each approach
 
@@ -684,7 +684,7 @@ class PipelineRW:
 
         return all_approaches
 
-    def calculate_feature_importance_mean(self, feature_importances, feature_names):
+    def calculate_feature_importance_mean(self, feature_importances: dict, feature_names):
         """
         For each feature, calculate its mean feature importance
 

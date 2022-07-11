@@ -7,7 +7,7 @@ pd.set_option('display.max_columns', 100)
 
 class Starbucks:
 
-    def __init__(self, path_folder):
+    def __init__(self, path_folder: str):
         # Define paths
         self.starbucks_train_path = path_folder + "Training.csv"
         self.starbucks_test_path = path_folder + "Test.csv"

@@ -24,7 +24,7 @@ class PipelineSD(PipelineRW):
     Either use k-fold Cross Validation or regular training/test split
     """
 
-    def __init__(self, n, p, sigma, threshold, propensity, **kwargs):
+    def __init__(self, n: int, p: int, sigma: float, threshold: float, propensity: float, **kwargs):
         # Inheritance from parent class (PipelineRW)
         super().__init__(**kwargs)
 

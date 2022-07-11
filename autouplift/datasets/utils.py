@@ -18,7 +18,7 @@ from autouplift.datasets.socialpressure import SocialPressure
 from autouplift.datasets.starbucks import Starbucks
 
 
-def get_data_home(data_home=None) -> str:
+def get_data_home(data_home: str=None) -> str:
     """Return the path of the autouplift data directory.
 
     This folder is used by some large dataset loaders to avoid downloading the data several times.
@@ -39,7 +39,7 @@ def get_data_home(data_home=None) -> str:
     return data_home
 
 
-def unpack_zip(zip_file_path, dest_path):
+def unpack_zip(zip_file_path: str, dest_path: str):
     """
     Unpack a zip file
 
@@ -52,7 +52,7 @@ def unpack_zip(zip_file_path, dest_path):
             zip_file.extractall(dest_path)
 
 
-def unpack_gz(gz_file_path, dest_path, dest_file):
+def unpack_gz(gz_file_path: str, dest_path: str, dest_file: str):
     """
     Unpack a gz file
 
@@ -67,7 +67,7 @@ def unpack_gz(gz_file_path, dest_path, dest_file):
                 shutil.copyfileobj(f_in, f_out)
 
 
-def unpack_tar(tar_file_path, dest_path):
+def unpack_tar(tar_file_path: str, dest_path: str):
     """
     Unpack a tar file
 

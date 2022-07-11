@@ -35,7 +35,7 @@ class HelperPipeline:
         pass
 
     @staticmethod
-    def apply_approach(classifier, data_set_helper, feature_importance):
+    def apply_approach(classifier, data_set_helper: DataSetsHelper, feature_importance: bool):
         """
         You can pass classifiers for every approach:
          - S-Learner
@@ -234,7 +234,7 @@ class HelperPipeline:
         }
 
     @staticmethod
-    def cast_to_dataframe(_ds):
+    def cast_to_dataframe(_ds: list):
         """
         Cast the given dictionaries to one dataframe
 

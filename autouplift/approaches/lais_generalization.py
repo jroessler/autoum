@@ -11,7 +11,7 @@ from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Help
 
 class LaisGeneralization:
     """
-    Lais Generalization propoed by Kane et al. (2014)
+    Lais Generalization proposed by Kane et al. (2014)
 
     A new target variable is created using an arbitrary transformation.
 
@@ -19,13 +19,11 @@ class LaisGeneralization:
     P(T=1) = P(T=1) = 1/2 !!
 
     Thanks to Kane (2015) we can cope with any P(T) and P(C) this is often refered to as "Lais Generalization"
-
-    Note: When creating a LaisGeneralization Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):
         """
-        Creates a classifier for the transformed outcome approach by Lai's (2015) --> Generalized by Kane (2015).
+        Creates a classifier for Lai's (Lais 2015) generalization (Kane et al, 2015)
 
         :param parameters: The parameters needed for the creation of the base learner
         :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
@@ -40,7 +38,7 @@ class LaisGeneralization:
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
-        Calculate the score (ITE/Uplift/CATE) for each sample using the transformed outcome approach by Lai's (2015) --> Generalized by Kane (2015).
+        Calculate the score (ITE/Uplift/CATE) for each sample using Lai's generalization
 
         :param data_set_helper: A DataSetsHelper comprising the training, validation (optional) and test data set
         :return: Dictionary containing, scores and feature importance

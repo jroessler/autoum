@@ -8,7 +8,7 @@ pd.set_option('display.max_columns', 100)
 
 class Hillstrom:
 
-    def __init__(self, path_folder):
+    def __init__(self, path_folder: str):
 
         self.hillstrom_original_path = path_folder + "hillstrom.csv"
         self.hillstrom_visit_path = path_folder + "Hillstrom_Email_visit.csv"
@@ -18,7 +18,7 @@ class Hillstrom:
         self.hillstrom_w_conversion_path = path_folder + "Hillstrom_Email_w_conversion.csv"
         self.hillstrom_m_conversion_path = path_folder + "Hillstrom_Email_m_conversion.csv"
 
-    def prep(self, only_women=False, only_men=False, visit=True):
+    def prep(self, only_women: bool=False, only_men: bool=False, visit: bool=True):
         """
         Prepare the Hillstrom dataset and store the csv files in the filesystem.
 

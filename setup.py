@@ -1,10 +1,32 @@
 from setuptools import find_packages, setup
+from setuptools.command.install import install
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
 with open("requirements.txt") as f:
     requirements = f.readlines()
 
-setup(name='autouplift', version='1.0.0', description='A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects',
-      url='https://github.com/jroessler/autouplift/tree/autoumpip', author='Jannik Rößler', author_email="", packages=packages, python_requires=">=3.8",
-      install_requires=requirements, classifiers=["Programming Language :: Python3.8", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"])
+
+class PostInstallCommand(install):
+    """Post-installation for installation mode."""
+
+    def run(self):
+        install.run(self)
+        check_call("git clone -b v0.12.3 https://github.com/jroessler/causalml.git".split())
+        check_call("cd causalml".split())
+        check_call("python setup.py build_ext --inplace".split())
+        check_call("python setup.py install".split())
+        check_call("cd ..".split())
+        check_call("rm -rf causalml".split())
+
+setup(name='autouplift',
+      version='1.0.0',
+      description='A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects',
+      url='https://github.com/jroessler/autouplift/tree/autoumpip',
+      author='Jannik Rößler',
+      author_email="",
+      packages=packages,
+      cmdclass={'install': PostInstallCommand},
+      python_requires=">=3.8",
+      install_requires=requirements,
+      classifiers=["Programming Language :: Python3.8", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"])

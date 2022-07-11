@@ -1,6 +1,7 @@
 import logging
 import pickle
 from datetime import datetime
+import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
 
@@ -29,7 +30,7 @@ class TwoModel:
         self.split_number = approach_parameters.split_number
         self.log = logging.getLogger(type(self).__name__)
 
-    def training(self, x, y, group):
+    def training(self, x, y, group: str):
         """
         Train & create a classifier
 
@@ -56,7 +57,7 @@ class TwoModel:
 
         return clf
 
-    def save_model(self, clf, group):
+    def save_model(self, clf: TwoModel, group: str):
         """
         Save the given model as pickle file.
 
@@ -69,7 +70,7 @@ class TwoModel:
         pickle.dump(clf, open(filename, 'wb'))
 
     @staticmethod
-    def prediction(clf_treat, clf_non_treat, x):
+    def prediction(clf_treat: TwoModel, clf_non_treat: TwoModel, x):
         """
         Predict the probabilities for responding using the Treatment and the Control model
 
@@ -83,7 +84,7 @@ class TwoModel:
 
         return score_train_treat, score_train_non_treat
 
-    def validate_results(self, prob_treat, prob_non_treat, sample):
+    def validate_results(self, prob_treat, prob_non_treat, sample: str):
         """
         Sanity check for the results. Check if the groups (i.e., Treatment responder, Treatment non responder, control responder, and control non responder) are well represented.
 

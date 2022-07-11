@@ -19,13 +19,11 @@ class ClassVariableTransformation:
     P(T=0) = P(T=1) = 1/2 !!
 
     The classifier is based on Random Forest algorithm.
-
-    Note: When creating a ClassVariableTransformation Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):
         """
-        Creates a classifier for the transformed outcome approach by Jaskowski & Jaroszewicz (2012)
+        Creates a classifier for the class variable transformation (Jaskowski & Jaroszewicz, 2012))
 
         :param parameters: The parameters needed for the creation of the base learner
         :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
@@ -40,7 +38,7 @@ class ClassVariableTransformation:
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
-        Calculate the score (ITE/Uplift/CATE) for each sample using the JaskowskiJaroszewicz transformed outcome approach.
+        Calculate the score (ITE/Uplift/CATE) for each sample using class variable transformation
 
         :param data_set_helper: A DataSetsHelper comprising the training, validation (optional) and test data set
         :return: Dictionary containing, scores and feature importance

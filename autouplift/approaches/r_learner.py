@@ -17,7 +17,7 @@ class RLearner:
     """
     R-Learner proposed by Nie and Wager (2020)
 
-    R-Learner is a two-step algorith for heterogeneous treatment effect estimation.
+    R-Learner is a two-step algorithm for heterogeneous treatment effect estimation.
 
     1. Step:
     Estimate main effect m*(x) (marginal effect) and treatment propensity e*(x) using (cross-validation) and any machine learning algorithm to form the "R-loss"
@@ -27,8 +27,6 @@ class RLearner:
 
     2. Step:
     Optimize/Minimize the R-Loss Function using m* and e* using any machine learning algorithm
-
-    Note: When creating a LaisGeneralization Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):
@@ -45,7 +43,7 @@ class RLearner:
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
-         Calculate the score (CATE) for each sample using the R-Learner.
+        Calculate the score (ITE/Uplift/CATE) for each sample using the R-Learner.
 
         Side note: For randomized controlled experiments, we can use the "observed propensity score", that is, the ratio between the individuals who were subject to a treatment
         and the individuals who were not subject to a treatment. For observational data, we need to estimate the propensity score.

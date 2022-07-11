@@ -19,4 +19,3 @@ packaging
 torch
 pyro-ppl
 graphviz
-causalml @ git+ssh://git@github.com/jroessler/causalml@master#egg=causalml

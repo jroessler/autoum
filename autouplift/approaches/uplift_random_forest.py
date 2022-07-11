@@ -31,13 +31,11 @@ class UpliftRandomForest:
     "CTS": Contextual Treatment Selection
     "IT": Interaction Tree (Su et al., 2009)
     "CIT": Causal Inference Tree (Su et al., 2012)
-
-    Note: When creating a UpliftRandomForest Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters, eval_function: str):
         """
-        Creates a classifier for the direct uplift approach
+        Creates a classifier for the uplift random forest
 
         :param parameters: The parameters needed for the creation of the base learner
         :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
@@ -61,7 +59,7 @@ class UpliftRandomForest:
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
-        Calculate the score (ITE/Uplift/CATE) for each sample using the UpliftRandomForestClassifier.
+        Calculate the score (ITE/Uplift/CATE) for each sample using uplift random forest
 
         :param data_set_helper: A DataSetsHelper comprising the training, validation (optional) and test data set
         :return: Dictionary containing, scores and feature importance

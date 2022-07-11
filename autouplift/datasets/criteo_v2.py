@@ -7,13 +7,13 @@ pd.set_option('display.max_columns', 100)
 
 class CriteoV2:
 
-    def __init__(self, path_folder):
+    def __init__(self, path_folder: str):
         # Define paths
         self.criteo_v2_path_original = path_folder + "criteo-uplift-v2.1.csv"
         self.criteo_v2_path = path_folder + "criteo_uplift_v2.csv"
         self.criteo_v2_path_resampled = path_folder + "criteo_uplift_v2_resampled.csv"
 
-    def prep(self, resample=False):
+    def prep(self, resample: bool=False):
         """
         Prepare the Criteo_V2 dataset and store the csv files in the filesystem.
 
@@ -21,6 +21,8 @@ class CriteoV2:
         2. Downsample majority class (treatment group)
         3. Delete unnecessary columns (visit, exposure)
         4. Drop duplicates
+
+        :param resample: True if the dataset should be downsampled. False otherwise. Default: False.
         """
 
         if resample:

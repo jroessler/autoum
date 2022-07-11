@@ -46,8 +46,6 @@ class XLearner:
     𝜏(𝑥)=𝑔(𝑥)𝜏0(𝑥)+(1−𝑔(𝑥))𝜏1(𝑥)
 
     where 𝑔∈[0,1] is a weight funciton. We can use propensity scores for 𝑔(𝑥).
-
-    Note: When creating a XLearner Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):

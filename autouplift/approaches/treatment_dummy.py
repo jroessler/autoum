@@ -10,13 +10,11 @@ from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Help
 class TreatmentDummy:
     """
     Treatment dummy approach with Logistic Regression proposed by Lo (2002)
-
-    Note: When creating a TreatmentDummy Object you can pass a parameter dictionary including the hyperparameters.
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters):
         """
-        Creates a classifier for the logistic regression approach
+        Creates a classifier for the treatment dummy approach with logistic regression
 
         :param parameters: The parameters needed for the creation of the base learner
         :param approach_parameters: Pass an approach_parameters object that contains all parameters necessary to execute the approach
@@ -32,7 +30,7 @@ class TreatmentDummy:
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
-        Calculate the score (ITE/Uplift/CATE) for each sample using the LogisticRegressionClassifier.
+        Calculate the score (ITE/Uplift/CATE) for each sample using the treatment dummy approach.
 
         :param data_set_helper: A DataSetsHelper comprising the training, validation (optional) and test data set
         :return: Dictionary containing, scores and feature importance
@@ -91,7 +89,7 @@ class TreatmentDummy:
         return response_dict
 
     @staticmethod
-    def prediction(clf, df_with_interactions):
+    def prediction(clf: TreatmentDummy, df_with_interactions: pd.DataFrame):
         """
         Predict the uplift scores for the given data set
 

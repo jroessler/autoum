@@ -8,7 +8,7 @@ pd.set_option('display.max_columns', 100)
 
 class Lenta:
 
-    def __init__(self, path_folder):
+    def __init__(self, path_folder: str):
         # Define paths
 
         self.lena_path_original = path_folder + "lenta_dataset.csv"
