@@ -65,6 +65,8 @@ The framework contains seven real, publicly available datasets which can be used
  * Usually, uncompressed data files should not be committed (i.e., should be in `.gitignore`; `.csv` already is).
  
 ## Installation
+
+# For MAC: brew install libomp
  
 ### Git
  
