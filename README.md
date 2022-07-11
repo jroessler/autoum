@@ -59,7 +59,7 @@ The framework contains seven real, publicly available datasets which can be used
 
 ## Installation
 
-So far, the only the installation with `pip` is availabe. In the future the installation might be available with `conda`.
+So far, only the installation with `pip` is availabe. In the future the installation might be available with `conda`.
 
 ### Python
 
@@ -71,6 +71,14 @@ $ pip install autouplift
 ```
 
 For MacOS it might be necessary to run `brew install libomp`
+
+### Install using source
+
+```
+$ git clone https://github.com/jroessler/autouplift.git
+$ cd autouplift
+$ pip install .
+```
 
 ## Quick Start
 
