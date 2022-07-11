@@ -69,7 +69,7 @@ The framework contains seven real, publicly available datasets which can be used
 ### Git
  
  ```
-$ git clone https://github.com/jroessler/autouplift.git
+$ git clone -b intmar https://github.com/jroessler/autouplift.git
 ```
 
 ### Python
