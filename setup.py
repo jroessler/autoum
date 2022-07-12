@@ -1,4 +1,4 @@
-from subprocess import check_call
+from subprocess import CalledProcessError, STDOUT, check_call
 
 from setuptools import find_packages, setup
 from setuptools.command.install import install
@@ -14,11 +14,13 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        check_call("git clone https://github.com/jroessler/causalml.git .".split())
-        check_call("cd causalml".split())
-        check_call("pip install causalml".split())
-        check_call("cd ..".split())
-        check_call("rm -rf causalml".split())
+        try:
+            check_call("git clone https://github.com/jroessler/causalml.git .".split(), stderr=STDOUT)
+            check_call("cd causalml".split())
+            check_call("pip install causalml".split())
+        except CalledProcessError as e:
+            print("Exception on process, rc=", e.returncode, "output=", e.output)
+
 
 setup(name='autouplift',
       version='1.0.0',
