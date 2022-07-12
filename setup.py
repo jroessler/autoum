@@ -5,6 +5,7 @@ from setuptools.command.install import install
 
 import os
 cwd = os.getcwd()
+print("CHECK THIS OUT")
 print(cwd)
 
 packages = find_packages(exclude=["tests", "tests.*"])
@@ -18,6 +19,7 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
+        os.chdir(cwd)
         try:
             check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd=cwd)
             check_call("cd causalml".split(), cwd=cwd)
