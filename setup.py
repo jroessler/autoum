@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 from setuptools.command.install import install
 
 import os
-root = os.path.abspath(__file__)
+root = os.path.dirname(os.path.abspath(__file__))
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
@@ -17,6 +17,7 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
+        print(root)
         check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd=root)
         #os.chdir("/home/jroessler/jupyterlab/04_autouplift/autouplift/causalml")
         # check_call("cd causalml".split())
