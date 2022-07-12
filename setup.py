@@ -4,9 +4,6 @@ from setuptools import find_packages, setup
 from setuptools.command.install import install
 
 import os
-cwd = os.getcwd()
-print("CHECK THIS OUT")
-print(cwd)
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
@@ -19,15 +16,12 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        os.chdir("/home/jroessler/jupyterlab/04_autouplift/autouplift")
-        try:
-            check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT)
-            check_call("cd causalml".split())
-            check_call("pip install causalml/causalml".split())
-        except CalledProcessError as e:
-            print("Exception on process, rc=", e.returncode, "output=", e.output)
-            print("CHECK THIS OUT")
-            print(cwd)
+        check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/")
+        #os.chdir("/home/jroessler/jupyterlab/04_autouplift/autouplift/causalml")
+        # check_call("cd causalml".split())
+        check_call("pip install causalml/causalml".split(), cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/causalml")
+
+        os.system("pwd")
 
 
 setup(name='autouplift',
