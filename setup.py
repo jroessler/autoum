@@ -1,7 +1,6 @@
 from subprocess import check_call
 
 from setuptools import find_packages, setup
-from setuptools.command.build_ext import build_ext
 from setuptools.command.install import install
 
 packages = find_packages(exclude=["tests", "tests.*"])
@@ -21,16 +20,6 @@ class PostInstallCommand(install):
         check_call("cd ..".split())
         check_call("rm -rf causalml".split())
 
-class git_clone_external(build_ext):
-    def run(self):
-        check_call("git clone https://github.com/jroessler/causalml.git".split())
-        check_call("cd causalml".split())
-        check_call("pip install causalml".split())
-        check_call("cd ..".split())
-        check_call("rm -rf causalml".split())
-        build_ext.run(self)
-
-
 setup(name='autouplift',
       version='1.0.0',
       description='A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects',
@@ -38,8 +27,7 @@ setup(name='autouplift',
       author='Jannik Rößler',
       author_email="",
       packages=packages,
-      # cmdclass={'install': PostInstallCommand},
-      cmdclass={'build_ext': git_clone_external},
+      cmdclass={'install': PostInstallCommand},
       python_requires=">=3.8",
       install_requires=requirements,
       classifiers=["Programming Language :: Python3.8", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"]
