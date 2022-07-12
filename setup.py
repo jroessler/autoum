@@ -4,7 +4,7 @@ from setuptools import find_packages, setup
 from setuptools.command.install import install
 
 import os
-root = os.getcwd()
+root = os.path.abspath(__file__)
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
@@ -37,3 +37,5 @@ setup(name='autouplift',
       install_requires=requirements,
       classifiers=["Programming Language :: Python3.8", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"]
       )
+
+print("Finished!")
