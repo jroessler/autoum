@@ -19,7 +19,7 @@ class PostInstallCommand(install):
         check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/")
         #os.chdir("/home/jroessler/jupyterlab/04_autouplift/autouplift/causalml")
         # check_call("cd causalml".split())
-        check_call("pip install causalml/causalml".split(), cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/causalml")
+        check_call("pip install causalml".split(), cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/causalml")
 
         os.system("pwd")
 
