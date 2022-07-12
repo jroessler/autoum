@@ -14,9 +14,10 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        check_call("git clone https://github.com/uber/causalml.git".split())
+        check_call("git clone https://github.com/jroessler/causalml.git".split())
         check_call("cd causalml".split())
         check_call("pip install causalml".split())
+        check_call("cd ..".split())
         check_call("rm -rf causalml".split())
 
 
