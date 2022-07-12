@@ -16,8 +16,8 @@ class PostInstallCommand(install):
         install.run(self)
         try:
             check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/")
-            check_call("cd causalml".split(), cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/")
-            check_call("pip install causalml".split(), cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/")
+            # check_call("cd causalml".split(), cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/")
+            check_call("pip install causalml/causalml".split(), cwd="/home/jroessler/jupyterlab/04_autouplift/autouplift/")
         except CalledProcessError as e:
             print("Exception on process, rc=", e.returncode, "output=", e.output)
 
