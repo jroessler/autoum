@@ -19,13 +19,15 @@ class PostInstallCommand(install):
 
     def run(self):
         install.run(self)
-        os.chdir(cwd)
+        os.chdir("/home/jroessler/jupyterlab/04_autouplift/autouplift")
         try:
-            check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd=cwd)
-            check_call("cd causalml".split(), cwd=cwd)
-            check_call("pip install causalml/causalml".split(), cwd=cwd)
+            check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT)
+            check_call("cd causalml".split())
+            check_call("pip install causalml/causalml".split())
         except CalledProcessError as e:
             print("Exception on process, rc=", e.returncode, "output=", e.output)
+            print("CHECK THIS OUT")
+            print(cwd)
 
 
 setup(name='autouplift',
