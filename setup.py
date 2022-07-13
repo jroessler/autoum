@@ -1,8 +1,17 @@
 import os
+
+from subprocess import check_call
+
 root = os.getcwd()
 
-from setuptools import find_packages, setup
+from setuptools import find_packages, setup, dist
 from setuptools.command.install import install
+
+try:
+    from numpy import get_include as np_get_include
+except ImportError:
+    dist.Distribution().fetch_build_eggs(["numpy"])
+    from numpy import get_include as np_get_include
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
@@ -13,8 +22,8 @@ class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
         install.run(self)
-        #check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
-        #check_call("pip install causalml".split(), cwd=root + "/causalml")
+        check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
+        check_call("pip install causalml".split(), cwd=root + "/causalml")
         #check_call("pip --no-cache-dir install numpy==1.21.5 --force-reinstall".split(), cwd=root + "/causalml")
 
 

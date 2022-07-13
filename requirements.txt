@@ -1,6 +1,6 @@
 setuptools>=41.0.0
 pip>=10.0
-numpy>=1.18.5<=1.22.0
+numpy==1.21.5
 scipy>=1.4.1
 matplotlib
 pandas>=0.24.1
@@ -19,9 +19,3 @@ packaging
 torch
 pyro-ppl
 graphviz
-scikit-posthocs==0.6.7
-python-dotenv==0.14.0
-pytest==6.2.5
-plotnine==0.7.1
-Deprecated==1.2.10
-ipython==8.0.0
