@@ -1,7 +1,7 @@
 import os
 root = os.getcwd()
 
-from subprocess import STDOUT, check_call
+from subprocess import check_call
 
 from setuptools import find_packages, setup
 from setuptools.command.install import install
@@ -12,14 +12,14 @@ with open("requirements.txt") as f:
     requirements = f.readlines()
 
 
-class PostInstallCommand(install):
+class PreInstallCommand(install):
     """Post-installation for installation mode."""
 
     def run(self):
-        install.run(self)
-        check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd=root)
+        check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
+        check_call("pip install -r requirements.txt".split(), cwd=root + "/causalml")
         check_call("pip install causalml".split(), cwd=root + "/causalml")
-        check_call("pip --no-cache-dir install numpy==1.21.5 --force-reinstall".split(), cwd=root + "/causalml")
+        install.run(self)
 
 
 setup(name='autouplift',
@@ -29,7 +29,7 @@ setup(name='autouplift',
       author='Jannik Rößler',
       author_email="",
       packages=packages,
-      cmdclass={'install': PostInstallCommand},
+      cmdclass={'install': PreInstallCommand},
       python_requires=">=3.8",
       install_requires=requirements,
       classifiers=["Programming Language :: Python3.8", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"]
