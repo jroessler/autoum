@@ -1,7 +1,7 @@
 import os
 root = os.getcwd()
 
-from subprocess import CalledProcessError, STDOUT, check_call
+from subprocess import STDOUT, check_call
 
 from setuptools import find_packages, setup
 from setuptools.command.install import install
@@ -19,6 +19,7 @@ class PostInstallCommand(install):
         install.run(self)
         check_call("git clone https://github.com/jroessler/causalml.git".split(), stderr=STDOUT, cwd=root)
         check_call("pip install causalml".split(), cwd=root + "/causalml")
+        check_call("pip install -I numpy=1.21.5".split(), cwd=root + "/causalml")
 
 
 setup(name='autouplift',
@@ -33,5 +34,3 @@ setup(name='autouplift',
       install_requires=requirements,
       classifiers=["Programming Language :: Python3.8", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"]
       )
-
-print("Finished!")
