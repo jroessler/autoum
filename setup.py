@@ -1,15 +1,8 @@
 import os
 root = os.getcwd()
 
-from setuptools import find_packages, setup, dist
+from setuptools import find_packages, setup
 from setuptools.command.install import install
-
-try:
-    from numpy import get_include as np_get_include
-except ImportError:
-    dist.Distribution().fetch_build_eggs(["numpy"])
-    from numpy import get_include as np_get_include
-
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
