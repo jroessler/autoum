@@ -1,8 +1,6 @@
 import os
 root = os.getcwd()
 
-from subprocess import check_call
-
 from setuptools import find_packages, setup, dist
 from setuptools.command.install import install
 
@@ -18,14 +16,14 @@ packages = find_packages(exclude=["tests", "tests.*"])
 with open("requirements.txt") as f:
     requirements = f.readlines()
 
-
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
     def run(self):
         install.run(self)
-        check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
-        check_call("pip install causalml".split(), cwd=root + "/causalml")
+        #check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
+        #check_call("pip install causalml".split(), cwd=root + "/causalml")
         #check_call("pip --no-cache-dir install numpy==1.21.5 --force-reinstall".split(), cwd=root + "/causalml")
+
 
 setup(name='autouplift',
       version='1.0.0',
