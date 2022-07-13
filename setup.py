@@ -17,6 +17,7 @@ class PreInstallCommand(install):
 
     def run(self):
         check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
+        check_call("pip install -r requirements.txt".split(), cwd=root + "/causalml")
         check_call("python setup.py build_ext --inplace".split(), cwd=root + "/causalml")
         check_call("python setup.py install".split(), cwd=root + "/causalml")
         install.run(self)
