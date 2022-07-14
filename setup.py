@@ -1,9 +1,7 @@
-import os
-
 from subprocess import check_call
 from sys import platform
 
-root = os.getcwd()
+root = "/Users/jannik/PyCharmProjects/test/autouplift"
 
 from setuptools import find_packages, setup
 from setuptools.command.install import install
