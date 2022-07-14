@@ -264,6 +264,7 @@ class TestHelperPipeline(unittest.TestCase):
         self.assertEqual(m_apply_approach.call_count, len(approaches))
 
     def test_cast_to_dataframe(self):
+        helper = HelperPipeline()
 
         list_dict = [{
             'A-0': 0.0,
@@ -339,7 +340,7 @@ class TestHelperPipeline(unittest.TestCase):
             'B-10': -0.0149
         }]
 
-        df_uplift = HelperPipeline.cast_to_dataframe(list_dict)
+        df_uplift = helper.cast_to_dataframe(list_dict)
 
         # Check if type equals pd.DataFrame
         self.assertEqual(type(df_uplift), pd.DataFrame)
