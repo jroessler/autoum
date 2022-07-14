@@ -4,15 +4,13 @@ from subprocess import check_call
 
 root = os.getcwd()
 
-from setuptools import find_packages, setup, dist
+from setuptools import find_packages, setup
 from setuptools.command.install import install
 
-try:
-    from numpy import get_include as np_get_include
-except ImportError:
-    dist.Distribution().fetch_build_eggs(["numpy"])
-    from numpy import get_include as np_get_include
-
+# WORKS
+# 1. TRY TO REMOVE THIS BLOCK
+# TRY ON LINUX
+# TRY ON MAC
 packages = find_packages(exclude=["tests", "tests.*"])
 
 with open("requirements.txt") as f:
@@ -25,8 +23,6 @@ class PostInstallCommand(install):
         check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
         check_call("python setup.py build_ext --inplace".split(), cwd=root + "/causalml")
         check_call("python setup.py install".split(), cwd=root + "/causalml")
-        # check_call("pip install causalml".split(), cwd=root + "/causalml")
-        #check_call("pip --no-cache-dir install numpy==1.21.5 --force-reinstall".split(), cwd=root + "/causalml")
 
 
 setup(name='autouplift',
