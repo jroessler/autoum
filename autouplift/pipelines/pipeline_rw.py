@@ -538,7 +538,7 @@ class PipelineRW:
             # Test
             self.plotting(df_metrics_mean_test, df_optimal_uplift_test, split="Test")
 
-    def plotting(self, df_metrics: pd.DataFrame, df_optimal_uplift: pd.DataFrame, split: str="Train"):
+    def plotting(self, df_metrics: pd.DataFrame, df_optimal_uplift: pd.DataFrame, split: str = "Train"):
         """
         Plot (average) qini curve for each approach
 

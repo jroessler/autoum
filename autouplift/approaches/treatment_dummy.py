@@ -89,7 +89,7 @@ class TreatmentDummy:
         return response_dict
 
     @staticmethod
-    def prediction(clf: TreatmentDummy, df_with_interactions: pd.DataFrame):
+    def prediction(clf, df_with_interactions: pd.DataFrame):
         """
         Predict the uplift scores for the given data set
 
