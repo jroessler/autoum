@@ -2,6 +2,7 @@ import logging
 import pickle
 from datetime import datetime
 
+import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Helper
