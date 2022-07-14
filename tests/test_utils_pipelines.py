@@ -340,7 +340,10 @@ class TestHelperPipeline(unittest.TestCase):
             'B-10': -0.0149
         }]
 
+        print("##### LIST DICT #####")
+        print(list_dict)
         df_uplift = helper.cast_to_dataframe(list_dict)
+        print("##### DATAFRAME #####")
         print(df_uplift)
 
         # Check if type equals pd.DataFrame
