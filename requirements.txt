@@ -19,7 +19,6 @@ packaging
 torch
 pyro-ppl
 graphviz
-
 scikit-posthocs==0.6.7
 pytest==6.2.5
 plotnine==0.7.1

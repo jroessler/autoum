@@ -7,10 +7,6 @@ root = os.getcwd()
 from setuptools import find_packages, setup
 from setuptools.command.install import install
 
-# WORKS
-# 1. TRY TO REMOVE THIS BLOCK
-# TRY ON LINUX
-# TRY ON MAC
 packages = find_packages(exclude=["tests", "tests.*"])
 
 with open("requirements.txt") as f:
