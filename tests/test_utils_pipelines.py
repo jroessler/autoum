@@ -341,6 +341,7 @@ class TestHelperPipeline(unittest.TestCase):
         }]
 
         df_uplift = helper.cast_to_dataframe(list_dict)
+        print(df_uplift)
 
         # Check if type equals pd.DataFrame
         self.assertEqual(type(df_uplift), pd.DataFrame)
