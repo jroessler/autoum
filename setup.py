@@ -21,7 +21,7 @@ class PostInstallCommand(install):
         if platform == "linux" or platform == "linux2":
             check_call("python setup.py install".split(), cwd=root + "/causalml")
         else:
-            check_call("pip install causalml".split(), cwd=root + "/causalml")
+            check_call("pip install --no-cache-dir .".split(), cwd=root + "/causalml")
         check_call("pip install xbcausalforest==0.1.3".split())
 
 
