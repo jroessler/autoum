@@ -25,68 +25,68 @@ class PipelineRW:
     """
 
     def __init__(self,
-                 bayesian_causal_forest: bool=True,
-                 bins: int=10,
-                 cost_sensitive: bool=False,
-                 cv_number_splits: int=5,
-                 class_variable_transformation: bool=True,
-                 feature_importance: bool=False,
-                 fontsize: int=14,
-                 generalized_random_forest: bool=True,
-                 honesty: bool=False,
-                 lais_generalization: bool=True,
-                 logging_level: int=1,
-                 max_depth: int=25,
-                 max_features: str='auto',
-                 metrics_calculate_absolute: bool=False,
-                 metrics_qini_coefficient: bool=False,
-                 metrics_save_metrics: bool=False,
-                 min_samples_leaf: int=50,
-                 min_samples_treatment: int=10,
-                 normalization: bool=True,
-                 n_estimators: int=200,
-                 n_jobs_: int=20,
-                 n_reg: int=100,
-                 plot_figures: bool=True,
-                 plot_optimum: bool=False,
-                 plot_grayscale: bool=False,
-                 plot_uqc: bool=True,
-                 plot_save_figures: bool=False,
-                 pool_capacity: int=40,
-                 rlearner: bool=True,
-                 run_name: str="RUN",
-                 run_id: int=1,
-                 random_seed: int=123,
-                 save_models: bool=False,
-                 slearner: bool=True,
-                 show_title: bool=False,
-                 test_size: int=0.2,
-                 traditional: bool=True,
-                 treatment_dummy: bool=True,
-                 two_model: bool=True,
-                 urf_ed: bool=True,
-                 urf_kl: bool=True,
-                 urf_chi: bool=True,
-                 urf_ddp: bool=True,
-                 urf_cts: bool=True,
-                 urf_it: bool=True,
-                 urf_cit: bool=True,
-                 validation_size: float=0.2,
-                 xlearner: bool=True):
+                 bayesian_causal_forest: bool = False,
+                 bins: int = 10,
+                 cost_sensitive: bool = False,
+                 cv_number_splits: int = 5,
+                 class_variable_transformation: bool = False,
+                 feature_importance: bool = False,
+                 fontsize: int = 14,
+                 generalized_random_forest: bool = False,
+                 honesty: bool = False,
+                 lais_generalization: bool = False,
+                 logging_level: int = 1,
+                 max_depth: int = 25,
+                 max_features='auto',
+                 metrics_calculate_absolute: bool = False,
+                 metrics_qini_coefficient: bool = False,
+                 metrics_save_metrics: bool = False,
+                 min_samples_leaf: int = 50,
+                 min_samples_treatment: int = 10,
+                 normalization: bool = True,
+                 n_estimators: int = 200,
+                 n_jobs_: int = 20,
+                 n_reg: int = 100,
+                 plot_figures: bool = True,
+                 plot_optimum: bool = False,
+                 plot_grayscale: bool = False,
+                 plot_uqc: bool = True,
+                 plot_save_figures: bool = False,
+                 pool_capacity: int = 40,
+                 rlearner: bool = False,
+                 run_name: str = "RUN",
+                 run_id: int = 1,
+                 random_seed: int = 123,
+                 save_models: bool = False,
+                 slearner: bool = False,
+                 show_title: bool = False,
+                 test_size: int = 0.2,
+                 traditional: bool = False,
+                 treatment_dummy: bool = False,
+                 two_model: bool = True,
+                 urf_ed: bool = False,
+                 urf_kl: bool = False,
+                 urf_chi: bool = False,
+                 urf_ddp: bool = False,
+                 urf_cts: bool = False,
+                 urf_it: bool = False,
+                 urf_cit: bool = False,
+                 validation_size: float = 0.2,
+                 xlearner: bool = False):
         """
         Creates a pipeline that can be used to analyze real-world data sets
 
-        :param bayesian_causal_forest: True, if Bayesian Causal Forest should be applied. False otherwise. Default: True
+        :param bayesian_causal_forest: True, if Bayesian Causal Forest should be applied. False otherwise. Default: False
         :param bins: Number of bins. Default: 10
         :param cost_sensitive: True if cost sensitive learning shall be performed during training. False otherwise. Default: False
         :param cv_number_splits: If cv_number_splits == 2, use a single training/test split with validation_size. Otherwise, use cv_number_splits folds. Default: 5
-        :param class_variable_transformation: True, if Class Variable Transformation should be applied. False otherwise. Default: True
+        :param class_variable_transformation: True, if Class Variable Transformation should be applied. False otherwise. Default: False
         :param feature_importance: True if the feature importances of the classifiers shall be returned. False otherwise. Default: False
         :param fontsize: Size of each element in the graphics. Default: 14.
-        :param generalized_random_forest: True, if Generalized Random Forest should be applied. False otherwise. Default: True
+        :param generalized_random_forest: True, if Generalized Random Forest should be applied. False otherwise. Default: False
         :param honesty: True if the honest approach based on "Athey, S., & Imbens, G. (2016) shall be performed - Note: This only applies to direct uplift approaches.
             Default: False
-        :param lais_generalization: True, if Lais Generalization should be applied. False otherwise. Default: True
+        :param lais_generalization: True, if Lais Generalization should be applied. False otherwise. Default: False
         :param logging_level: Pass 1 for only logging warning, 2 for also logging informational statements and 3 for also logging debugging statements. Default: 1
         :param max_depth: The maximum depth of a decision tree that is created during training. Default: 25
         :param max_features: The number os features that shall be chosen randomly from all features when looking for the best split during decision tree creation. Default: 'auto'
@@ -108,27 +108,27 @@ class PipelineRW:
         :param plot_uqc: True if the UQC value for a curve should be included in the plot legend. False otherwise. Default: True
         :param plot_save_figures: True if the resulting qini figures shall be saved. False otherwise. Default: False
         :param pool_capacity: Set this to the maximum number of free kernels for the calculation. Default 40
-        :param rlearner: True, if R-Learner should be applied. False otherwise. Default: True
+        :param rlearner: True, if R-Learner should be applied. False otherwise. Default: False
         :param run_id: Id of the run (For logging and saving purposes). Default: 1
         :param run_name: Name of the run (For logging and saving purposes). Default: "RUN"
         :param random_seed: The integer random_seed will ensure that the splits created will be the same in every run. If the k splits shall be created randomly, set random_seed
             to None. Default: 123
         :param save_models: True if the models generated during training shall be saved. False otherwise. Default: False
-        :param slearner: True, if S-Learner should be applied. False otherwise. Default: True
+        :param slearner: True, if S-Learner should be applied. False otherwise. Default: False
         :param show_title: True, if the graphics should contain a title. False otherwise. Default: False.
         :param test_size: Size of the Test set. Default: 0.2
-        :param traditional: True, if Traditional approach (without control group) should be applied. False otherwise. Default: True
-        :param treatment_dummy: True, if Treatment Dummy approach should be applied. False otherwise. Default: True
+        :param traditional: True, if Traditional approach (without control group) should be applied. False otherwise. Default: False
+        :param treatment_dummy: True, if Treatment Dummy approach should be applied. False otherwise. Default: False
         :param two_model: True, if Two Model approach should be applied. False otherwise. Default: True
-        :param urf_ed: True, if Uplift Random Forest with Euclidean Distance should be applied. False otherwise. Default: True
-        :param urf_kl: True, if Uplift Random Forest with Kullback-Leibler Divergence should be applied. False otherwise. Default: True
-        :param urf_chi: True, if Uplift Random Forest with Chi-Squared Divergence should be applied. False otherwise. Default: True
-        :param urf_ddp: True, if Uplift Random Forest with DDP criterion should be applied. False otherwise. Default: True
-        :param urf_it: True, if Uplift Random Forest with Interaction Tree criterion should be applied. False otherwise. Default: True
-        :param urf_cit: True, if Uplift Random Forest with Causal Inference Tree criterion should be applied. False otherwise. Default: True
-        :param urf_cts: True, if Uplift Random Forest with Contextual Treatment Selection should be applied. False otherwise. Default: True
+        :param urf_ed: True, if Uplift Random Forest with Euclidean Distance should be applied. False otherwise. Default: False
+        :param urf_kl: True, if Uplift Random Forest with Kullback-Leibler Divergence should be applied. False otherwise. Default: False
+        :param urf_chi: True, if Uplift Random Forest with Chi-Squared Divergence should be applied. False otherwise. Default: False
+        :param urf_ddp: True, if Uplift Random Forest with DDP criterion should be applied. False otherwise. Default: False
+        :param urf_it: True, if Uplift Random Forest with Interaction Tree criterion should be applied. False otherwise. Default: False
+        :param urf_cit: True, if Uplift Random Forest with Causal Inference Tree criterion should be applied. False otherwise. Default: False
+        :param urf_cts: True, if Uplift Random Forest with Contextual Treatment Selection should be applied. False otherwise. Default: False
         :param validation_size: Only use this parameter if cv_number_splits == 2. Sets the size of the validation set for a single split. Default: 0.2
-        :param xlearner: True, if X-Learner should be applied. False otherwise. Default: True
+        :param xlearner: True, if X-Learner should be applied. False otherwise. Default: False
         """
 
         self.bcf = bayesian_causal_forest

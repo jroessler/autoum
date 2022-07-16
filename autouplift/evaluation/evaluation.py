@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -8,6 +9,7 @@ from deprecated import deprecated
 from matplotlib import pyplot as plt
 
 from autouplift.const.const import *
+from autouplift.datasets.utils import get_data_home
 
 logging = logging.getLogger(__name__)
 
@@ -544,7 +546,11 @@ class UpliftEvaluation:
         if save_figure:
             now = datetime.now()
             now_date = now.date()
-            plt.savefig(path + "/results/figures/" + title.replace(" ", "_") + "_" + str(now_date) + ".png", facecolor=fig.get_facecolor(), transparent=True)
+
+            directory = f"{get_data_home()}/results/figures/"
+            if not os.path.exists(directory):
+                os.makedirs(directory)
+            plt.savefig(directory + title.replace(" ", "_") + "_" + str(now_date) + ".png", facecolor=fig.get_facecolor(), transparent=True)
 
         plt.tight_layout()
         plt.show()
