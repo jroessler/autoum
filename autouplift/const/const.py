@@ -106,3 +106,8 @@ NAMING_SCHEMA = {
     URF_CIT_TITLE: "CIT",
     XLEARNER_TITLE: "XL"
 }
+
+############################## FOLDERS ##############################
+RESULS = "/results/"
+METRICS = RESULS + "metrics/"
+FIGURES = RESULS + "figures/"

@@ -1,4 +1,5 @@
 import logging
+import os
 from datetime import datetime
 from decimal import Decimal, ROUND_HALF_UP
 
@@ -542,9 +543,11 @@ class UpliftEvaluation:
             axes.set_title(title)
 
         if save_figure:
+            if not os.path.exists(path):
+                os.makedirs(path)
             now = datetime.now()
             now_date = now.date()
-            plt.savefig(path + "/results/figures/" + title.replace(" ", "_") + "_" + str(now_date) + ".png", facecolor=fig.get_facecolor(), transparent=True)
+            plt.savefig(path + title.replace(" ", "_") + "_" + str(now_date) + ".png", facecolor=fig.get_facecolor(), transparent=True)
 
         plt.tight_layout()
         plt.show()
