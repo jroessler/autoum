@@ -2,6 +2,7 @@ import logging
 import pickle
 from datetime import datetime
 
+import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
 from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Helper
@@ -89,7 +90,7 @@ class TreatmentDummy:
         return response_dict
 
     @staticmethod
-    def prediction(clf: TreatmentDummy, df_with_interactions: pd.DataFrame):
+    def prediction(clf, df_with_interactions: pd.DataFrame):
         """
         Predict the uplift scores for the given data set
 

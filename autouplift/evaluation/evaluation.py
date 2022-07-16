@@ -251,7 +251,7 @@ class UpliftEvaluation:
             return UpliftEvaluation.store_uplift_in_bins(uplift_pct, 'Optimal-Uplift_')
 
     @staticmethod
-    def store_uplift_in_bins(uplift: list, col_name: str):
+    def store_uplift_in_bins(uplift: np.ndarray, col_name: str):
         """
         Stores the given uplift values in a dictionary containing the column name and bin number as key and the uplift value as vaue
 

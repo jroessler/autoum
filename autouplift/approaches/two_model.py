@@ -1,7 +1,6 @@
 import logging
 import pickle
 from datetime import datetime
-import numpy as np
 
 from sklearn.ensemble import RandomForestClassifier
 
@@ -57,7 +56,7 @@ class TwoModel:
 
         return clf
 
-    def save_model(self, clf: TwoModel, group: str):
+    def save_model(self, clf, group: str):
         """
         Save the given model as pickle file.
 
@@ -70,7 +69,7 @@ class TwoModel:
         pickle.dump(clf, open(filename, 'wb'))
 
     @staticmethod
-    def prediction(clf_treat: TwoModel, clf_non_treat: TwoModel, x):
+    def prediction(clf_treat, clf_non_treat, x):
         """
         Predict the probabilities for responding using the Treatment and the Control model
 
