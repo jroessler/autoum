@@ -552,7 +552,7 @@ class PipelineRW:
 
         UpliftEvaluation.plot_qini_curve(df_metrics=df_metrics, df_opt_uplift_bins=df_optimal_uplift, plot_optimum=self.plot_optimum, fontsize=self.fontsize,
                                          absolute=self.metrics_calculate_absolute, title=f"{self.run_name} Qini Curves {split}", show_title=self.show_title,
-                                         save_figure=self.plot_save_figures, path=self.data_home + FIGURES + self.run_name, plot_grayscale=self.plot_grayscale, plot_uqc=self.plot_uqc, bins=self.bins,
+                                         save_figure=self.plot_save_figures, path=self.data_home + FIGURES + self.run_name + "/", plot_grayscale=self.plot_grayscale, plot_uqc=self.plot_uqc, bins=self.bins,
                                          qc=self.metrics_qini_coefficient)
 
     def create_approach_tuples(self, dataframe_pairs: list):
@@ -709,13 +709,13 @@ class PipelineRW:
             for key, value in feature_importances_sum_dict.items():
                 importance = value / self.cv_number_splits
                 HelperPipeline.save_feature_importance(importance, feature_names, "Feature_importance_{}".format(key), self.plot_save_figures, self.plot_figures,
-                                                       self.data_home + FIGURES + self.run_name)
+                                                       self.data_home + FIGURES + self.run_name + "/")
         else:
             # Case single approach single split
             for key, value in feature_importances.items():
                 importance = np.array(feature_importances[key])
                 HelperPipeline.save_feature_importance(importance, feature_names, "Feature_importance_{}".format(key), self.plot_save_figures, self.plot_figures,
-                                                       self.data_home + FIGURES + self.run_name)
+                                                       self.data_home + FIGURES + self.run_name + "/")
 
     def set_parameters(self, n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed):
         """
