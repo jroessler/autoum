@@ -1,11 +1,11 @@
 import os
-
 from subprocess import check_call
-
-root = os.getcwd()
+from sys import platform
 
 from setuptools import find_packages, setup
 from setuptools.command.install import install
+
+root = os.getcwd()
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
@@ -17,11 +17,11 @@ class PostInstallCommand(install):
     def run(self):
         install.run(self)
         check_call("git clone https://github.com/jroessler/causalml.git".split(), cwd=root)
-        # if platform == "linux" or platform == "linux2":
         check_call("python setup.py build_ext --inplace".split(), cwd=root + "/causalml")
-        check_call("python setup.py install".split(), cwd=root + "/causalml")
-        # else:
-        #     check_call("pip install causalml".split(), cwd=root + "/causalml")
+        if platform == "linux" or platform == "linux2":
+            check_call("python setup.py install".split(), cwd=root + "/causalml")
+        else:
+            check_call("pip install causalml".split(), cwd=root + "/causalml")
         check_call("pip install xbcausalforest==0.1.3".split())
 
 
