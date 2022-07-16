@@ -5,7 +5,7 @@ File containing constants
 ############################## APPROACH NAMES ##############################
 
 BCF_TITLE = "BCF"
-CVT_TITLE = "Jasko_Jaro"
+CVT_TITLE = "CVT"
 GRF_TITLE = "GRF"
 LAIS_TITLE = "Lais"
 RLEARNER_TITLE = "R_Learner"
