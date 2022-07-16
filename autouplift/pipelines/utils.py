@@ -258,7 +258,7 @@ class HelperPipeline:
         return df
 
     @staticmethod
-    def save_feature_importance(importances, feature_names, title, save_figure, plot_figure):
+    def save_feature_importance(importances, feature_names, title, save_figure, plot_figure, path):
         """
         Save feature importance plot
 
@@ -267,6 +267,7 @@ class HelperPipeline:
         :param title: Title of the plot
         :param save_figure: True, if figure should be saved. False otherwise
         :param plot_figure: True, if figure should be plotted. False otherwise
+        :param path: Path were the plot should be stores.
         """
         indices = np.argsort(importances)
 
@@ -280,7 +281,9 @@ class HelperPipeline:
         now = datetime.now()
         now_date = now.date()
         if save_figure:
-            plt.savefig(os.getenv("ROOT_FOLDER") + "results/figures/" + title + "_" + str(now_date) + ".png")
+            if not os.path.exists(path):
+                os.makedirs(path)
+            plt.savefig(path + title + "_" + str(now_date) + ".png")
 
         if plot_figure:
             plt.show()
