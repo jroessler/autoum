@@ -85,7 +85,7 @@ $ pip install .
 * Please make sure to keep `pip` and `setuptools` up-to-date
 * AutoUplift was only tested with MacOS and Linux
 * For MacOS it might be necessary to run `brew install libomp`
-* Try running it with `pip --no-cache-dir install`
+* Try running the installation with `pip --no-cache-dir install`
 
 ## Quick Start
 
@@ -128,6 +128,10 @@ pipeline = PipelineRW(
 
 pipeline.analyze_dataset(data)
 ```
+
+<div align="center">
+  <img width="629px" height="618px" src="https://raw.githubusercontent.com/uber/causalml/master/docs/_static/img/shap_vis.png">
+</div>
 
 See the [Real-World Pipeline Notebook](https://github.com/jroessler/autouplift/blob/main/examples/pipeline_with_real_world_data.ipynb) 
 for details.
