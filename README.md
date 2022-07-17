@@ -1,15 +1,22 @@
-# AutoUplift: A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects
+# Bridging the Gap – A Systematic Benchmarking of Uplift Modeling and Heterogeneous Treatment Effects Methods
 
-This Python framework can be used to evaluate multiple methods that predict the potential benefit of a treatment at an individual level. It
-provides an interface that allows to estimate the Uplift (also called Conditional Average Treatment Effect (CATE), or Individual Treatment
-Effect (ITE)) from **experimental data** with a **binary treatment** indiciator (customers are either treated or not) and a **binary response**
-variable (customers either respond or not).
+### Abstract
+Choosing the correct method to predict the incremental effect of a treatment on customer response is critical  to optimize targeting 
+policies in many important applications such as churn management and patient care.  Two research streams, uplift modeling and 
+heterogeneous treatment effects, have emerged recently that scrutinize the incremental effect of a treatment on customer response. So 
+far, these research streams mostly remain independent, with hardly anything in the literature about comparing methods across these 
+communities. However, if the goal is to estimate the incremental effect in the best possible way, or make a  new contribution in the 
+context of targeting policies, ignoring either uplift modeling or heterogeneous  treatment effects methods is a serious omission. To 
+fill this research gap, we benchmark 15 methods from  both literatures on synthetic and real-world datasets. We perform the benchmarking 
+first to contrast the  performance of different methods from both research streams, and second to highlight the importance of evaluating 
+methods from uplift modeling and heterogeneous treatment effects. Our study results show, first,  that while most methods 
+suffer from volatility, some methods perform better and are more robust than  others. Second, we demonstrate that using the incremental 
+effect can substantially improve a targeting  policy, but only if academics and practitioners evaluate various methods from both uplift 
+modeling and heterogeneous treatment effects.
 
-Typical use cases include:
-
-* (Proactive) churn prevention
-* Up-/Cross-selling
-* Customer acquisition
+### Introduction
+This Python Framework is released as part of the publication of the paper <i>Bridging the Gap - A Systematic Benchmarking of Uplift 
+Modeling and Heterogeneous Treatment Effects Methods</i> in <i>Journal of Interactive Marketing</i>.
 
 ## Algorithms and Packages
 
