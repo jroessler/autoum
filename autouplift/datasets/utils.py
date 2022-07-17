@@ -30,7 +30,7 @@ def get_data_home(data_home: str=None) -> str:
     If the folder does not already exist, it is automatically created.
 
     :param data_home: The path to autouplift's data directory. If `None`, the default path is `~/sklearn_learn_data`.
-    :return The path to autouplift data directory
+    :return: The path to autouplift data directory
     """
     if data_home is None:
         data_home = environ.get("AUTOUPLIFT_DATA", join("~", "autouplift_output"))

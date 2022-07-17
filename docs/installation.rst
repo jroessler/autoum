@@ -12,7 +12,7 @@ Install using ``pip``
     $ pip install autouplift
 
 Install using ``source``
------------------------
+------------------------
 
 .. code-block:: bash
 
@@ -21,7 +21,7 @@ Install using ``source``
     $ pip install .
 
 Troubleshooting
------------------------
+---------------
 
 - Please make sure to keep ``pip`` and ``setuptools`` up-to-date
 - AutoUplift was only tested with MacOS and Linux

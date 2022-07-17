@@ -1,7 +1,8 @@
-import numpy as np
 import itertools as it
+
+import numpy as np
 import pandas as pd
-from scipy.stats import rankdata, f, studentized_range
+from scipy.stats import f, rankdata, studentized_range
 
 
 class Statistics:
@@ -103,7 +104,7 @@ class Statistics:
         4. Check the Table of critical value for the F distribution using a significance value alpha and the degrees of freedom
         5. Reject the null hypothesis if the calculated F-Distribution is equal to or greater than the table critical chi-squared value at the prespecified level of significance
 
-        :param: args (list of array, each containing the performance on an algorithm over the n data sets)
+        :param args: (list of array, each containing the performance on an algorithm over the n data sets)
         :return: The p-value
         """
         k = len(args)

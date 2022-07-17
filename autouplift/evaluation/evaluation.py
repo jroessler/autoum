@@ -408,10 +408,9 @@ class UpliftEvaluation:
         """
 
         :param df_metrics: DataFrame containing the uplift values for each bin, approach, and fold
-        :param qc: True, if the qini coefficient was calculated during the evaluation. False otherwise. Default: False
         :param bins: Number of bins. Default 10 (Deciles)
-        :return: DataFrame which contains the geometric mean uplift values (for each bin), arithmetic mean unscaled qini coefficient, and (optionally) the arithmetic mean qini
-        coefficient for each approach and split
+        :param qc: True, if the qini coefficient was calculated during the evaluation. False otherwise. Default: False
+        :return: DataFrame which contains the geometric mean uplift values (for each bin), arithmetic mean unscaled qini coefficient, and (optionally) the arithmetic mean qini coefficient for each approach and split
         """
         df_metrics_mean = pd.DataFrame()
 
