@@ -15,20 +15,20 @@ Typical use cases include:
 
 The framework currently supports the following approaches:
 
-* "General" Two Model Approach (e.g., Künzel et al. 2019)
-* X-Learner (Künzel et al. 2019)
-* Lai's Generalization (Kane et al. 2014)
-* Class Variable Transformation (Jaskowski and Jaroszewicz 2012)
-* Delta-Delta Pi (DDP) (Hansotia & Rukstales 2002)
-* Uplift Random Forest with KL-, ED-, CHI- based splitting criterion (Rzepakowski and Jaroszewicz 2012)
-* Contextual Treatment Selection (Zhao et al. 2017)
-* Interaction Tree (Su et al. 2009)
-* Conditional Interaction Tree (Su et al. 2012)
-* Generalized Random Forest (Athey et al. 2019)
-* S-Learner (e.g., Künzel et al. 2019)
-* Treatment Dummy Approach (Lo 2002)
-* Bayesian Causal Forest (Hahn et al. 2020)
-* R-Learner (Nie and Wager 2020)
+* "General" Two Model Approach [[1]](#Literature)
+* X-Learner (Künzel et al. 2019) [[1]](#Literature)
+* Lai's Generalization (Kane et al. 2014) [[2]](#Literature)
+* Class Variable Transformation (Jaskowski and Jaroszewicz 2012) [[3]](#Literature)
+* Delta-Delta Pi (DDP) (Hansotia & Rukstales 2002) [[4]](#Literature)
+* Uplift Random Forest with KL-, ED-, CHI- based splitting criterion (Rzepakowski and Jaroszewicz 2012) [[5]](#Literature)
+* Contextual Treatment Selection (Zhao et al. 2017) [[6]](#Literature)
+* Interaction Tree (Su et al. 2009) [[7]](#Literature)
+* Conditional Interaction Tree (Su et al. 2012) [[8]](#Literature)
+* Generalized Random Forest (Athey et al. 2019) [[9]](#Literature)
+* S-Learner (e.g., Künzel et al. 2019) [[1]](#Literature)
+* Treatment Dummy Approach (Lo 2002) [[10]](#Literature)
+* Bayesian Causal Forest (Hahn et al. 2020) [[11]](#Literature)
+* R-Learner (Nie and Wager 2020) [[12]](#Literature)
 * Traditional Approach (without control group)
 
 There are different statistical approaches to approximate the ITE and several packages in R and Python that implement these. This framework
@@ -60,7 +60,6 @@ The framework contains seven real, publicly available datasets which can be used
 ## Installation
 
 So far, only the installation with `pip` is availabe. In the future the installation might be available with `conda`.
-Further, please make sure that you are using the latest version of `pip` and `setuptools`.
 
 ### Python
 
@@ -71,7 +70,7 @@ Python Version: >=3.8.10
 $ pip install autouplift
 ```
 
-For MacOS it might be necessary to run `brew install libomp`
+
 
 ### Install using source
 
@@ -80,6 +79,13 @@ $ git clone https://github.com/jroessler/autouplift.git
 $ cd autouplift
 $ pip install .
 ```
+
+### Troubleshooting
+
+* Please make sure to keep `pip` and `setuptools` up-to-date
+* AutoUplift was only tested with MacOS and Linux
+* For MacOS it might be necessary to run `brew install libomp`
+* Try running it with `pip --no-cache-dir install`
 
 ## Quick Start
 
@@ -171,9 +177,21 @@ for details.
 
 ## References
 
-### Documentation
+### Literature
 
-### Citation
+1. Künzel, S. R., Sekhon, J. S., Bickel, P. J., & Yu, B. (2019). Metalearners for estimating heterogeneous treatment effects using machine learning. Proceedings of the national academy of sciences, 116(10), 4156-4165.
+2. Kane, K., Lo, V. S., & Zheng, J. (2014). Mining for the truly responsive customers and prospects using true-lift modeling: Comparison of new and existing methods. Journal of Marketing Analytics, 2(4), 218-238.
+3. Jaskowski, M., & Jaroszewicz, S. (2012, June). Uplift modeling for clinical trial data. In ICML Workshop on Clinical Data Analysis (Vol. 46, pp. 79-95).
+4. Hansotia, B., & Rukstales, B. (2002). Incremental value modeling. Journal of Interactive Marketing, 16(3), 35-46.
+5. Rzepakowski, P., & Jaroszewicz, S. (2012). Decision trees for uplift modeling with single and multiple treatments. Knowledge and Information Systems, 32(2), 303-327.
+6. Zhao, Y., Fang, X., & Simchi-Levi, D. (2017, June). Uplift modeling with multiple treatments and general response types. In Proceedings of the 2017 SIAM International Conference on Data Mining (pp. 588-596). Society for Industrial and Applied Mathematics.
+7. Su, X., Tsai, C. L., Wang, H., Nickerson, D. M., & Li, B. (2009). Subgroup analysis via recursive partitioning. Journal of Machine Learning Research, 10(2).
+8. Su, X., Kang, J., Fan, J., Levine, R. A., & Yan, X. (2012). Facilitating score and causal inference trees for large observational studies. Journal of Machine Learning Research, 13, 2955.
+9. Athey, S., Tibshirani, J., & Wager, S. (2019). Generalized random forests. The Annals of Statistics, 47(2), 1148-1178.
+10. Lo, V. S. (2002). The true lift model: a novel data mining approach to response modeling in database marketing. ACM SIGKDD Explorations Newsletter, 4(2), 78-86.
+11. Hahn, P. R., Murray, J. S., & Carvalho, C. M. (2020). Bayesian regression tree models for causal inference: Regularization, confounding, and heterogeneous effects (with discussion). Bayesian Analysis, 15(3), 965-1056.
+12. Nie, X., & Wager, S. (2021). Quasi-oracle estimation of heterogeneous treatment effects. Biometrika, 108(2), 299-319.
 
-To cite AutoUplift in publications, you can refer to the following paper:
-TODO add
+### More about Uplift Modeling
+
+[Uplift Modeling — An Explanation of the Unknown Challenger in Marketing Campaigns](https://medium.com/@jroessl/uplift-modeling-an-explanation-of-the-unknown-challenger-in-marketing-campaigns-146993613947)
