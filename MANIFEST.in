@@ -1,0 +1,6 @@
+# Include markdowns and text files
+include *.txt *.md
+recursive-include docs *.txt
+
+# Include the license file
+include LICENSE

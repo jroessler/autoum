@@ -1,3 +1,4 @@
+import codecs
 import os
 from subprocess import check_call
 from sys import platform
@@ -11,6 +12,19 @@ packages = find_packages(exclude=["tests", "tests.*"])
 
 with open("requirements.txt") as f:
     requirements = f.readlines()
+
+def read(rel_path):
+    here = os.path.abspath(os.path.dirname(__file__))
+    with codecs.open(os.path.join(here, rel_path), 'r') as fp:
+        return fp.read()
+
+def get_version(rel_path):
+    for line in read(rel_path).splitlines():
+        if line.startswith('__version__'):
+            delim = '"' if '"' in line else "'"
+            return line.split(delim)[1]
+    else:
+        raise RuntimeError("Unable to find version string.")
 
 class PostInstallCommand(install):
     """Post-installation for installation mode."""
@@ -26,7 +40,7 @@ class PostInstallCommand(install):
 
 
 setup(name='autouplift',
-      version='1.0.0',
+      version=get_version("autouplift/__init__.py"),
       description='A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects',
       url='https://github.com/jroessler/autouplift/tree/autoumpip',
       author='Jannik Rößler',
@@ -35,5 +49,5 @@ setup(name='autouplift',
       cmdclass={'install': PostInstallCommand},
       python_requires=">=3.8",
       install_requires=requirements,
-      classifiers=["Programming Language :: Python3.8", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"]
+      classifiers=["Programming Language :: Python", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"]
       )
