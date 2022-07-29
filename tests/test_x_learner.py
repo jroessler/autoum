@@ -3,9 +3,9 @@ import unittest
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
-from autouplift.approaches.x_learner import XLearner
-from autouplift.datasets.utils import get_data_home, get_hillstrom_women_visit
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper
+from autoum.approaches.x_learner import XLearner
+from autoum.datasets.utils import get_data_home, get_hillstrom_women_visit
 
 
 class TestXLearner(unittest.TestCase):

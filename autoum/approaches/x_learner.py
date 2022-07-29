@@ -6,7 +6,7 @@ import numpy as np
 from causalml.inference.meta import BaseXClassifier
 from sklearn.ensemble import RandomForestClassifier, RandomForestRegressor
 
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Helper
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper, Helper
 
 
 # TODO: Cost sensitive learning

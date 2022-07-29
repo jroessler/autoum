@@ -8,7 +8,7 @@ import pandas as pd
 from deprecated import deprecated
 from matplotlib import pyplot as plt
 
-from autouplift.const.const import *
+from autoum.const.const import *
 
 logging = logging.getLogger(__name__)
 

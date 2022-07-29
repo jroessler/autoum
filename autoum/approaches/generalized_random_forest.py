@@ -6,7 +6,7 @@ import numpy as np
 from econml.dml import CausalForestDML
 from sklearn.linear_model import LassoCV
 
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper
 
 
 # TODO: Cost sensitive learning

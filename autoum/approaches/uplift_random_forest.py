@@ -5,7 +5,7 @@ from datetime import datetime
 import numpy as np
 from causalml.inference.tree import UpliftRandomForestClassifier
 
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Helper
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper, Helper
 
 
 # TODO: Cost sensitive learning

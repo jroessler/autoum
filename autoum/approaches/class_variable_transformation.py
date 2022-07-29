@@ -5,7 +5,7 @@ from datetime import datetime
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Helper
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper, Helper
 
 
 class ClassVariableTransformation:

@@ -3,9 +3,9 @@ import unittest
 import numpy as np
 from sklearn.model_selection import train_test_split
 
-from autouplift.approaches.class_variable_transformation import ClassVariableTransformation
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
-from autouplift.datasets.utils import get_data_home, get_hillstrom_women_visit
+from autoum.approaches.class_variable_transformation import ClassVariableTransformation
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper
+from autoum.datasets.utils import get_data_home, get_hillstrom_women_visit
 
 
 class TestClassVariableTransformation(unittest.TestCase):

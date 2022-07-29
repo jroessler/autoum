@@ -4,9 +4,9 @@ import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from autouplift.approaches.lais_generalization import LaisGeneralization
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
-from autouplift.datasets.utils import get_data_home, get_hillstrom_women_visit
+from autoum.approaches.lais_generalization import LaisGeneralization
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper
+from autoum.datasets.utils import get_data_home, get_hillstrom_women_visit
 
 
 class TestLaisGeneralization(unittest.TestCase):

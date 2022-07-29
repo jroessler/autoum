@@ -4,7 +4,7 @@ from unittest.mock import patch
 import numpy as np
 import pandas as pd
 
-from autouplift.evaluation.evaluation import UpliftEvaluation
+from autoum.evaluation.evaluation import UpliftEvaluation
 
 
 class TestEvaluation(unittest.TestCase):
@@ -124,8 +124,8 @@ class TestEvaluation(unittest.TestCase):
             # Check if slope first increases to the maximum and decreases after it (that is a typicall characteristic of an optimal curve)
             self.assertTrue(check_slope(uplift))
 
-    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
-    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.calculate_qini_curve')
+    @patch('autoum.evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
+    @patch('autoum.evaluation.evaluation.UpliftEvaluation.calculate_qini_curve')
     def test_calculate_actual_uplift_in_bins(self, m_calculate_qini_curve, m_store_uplift_in_bins):
         m_calculate_qini_curve.return_value = ([], [], [])
         uplift_in_deciles = UpliftEvaluation.calculate_actual_uplift_in_bins(self.df, bins=10)
@@ -133,8 +133,8 @@ class TestEvaluation(unittest.TestCase):
         m_calculate_qini_curve.assert_called_once()
         m_store_uplift_in_bins.assert_called_once()
 
-    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
-    @patch('autouplift.evaluation.evaluation.UpliftEvaluation.calculate_optimal_qini_curve')
+    @patch('autoum.evaluation.evaluation.UpliftEvaluation.store_uplift_in_bins')
+    @patch('autoum.evaluation.evaluation.UpliftEvaluation.calculate_optimal_qini_curve')
     def test_calculate_optimal_uplift_in_bins(self, m_calculate_optimal_qini_curve, m_store_uplift_in_bins):
 
         m_calculate_optimal_qini_curve.return_value = ([], [], [])

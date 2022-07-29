@@ -5,7 +5,7 @@ from datetime import datetime
 import numpy as np
 from xbcausalforest import XBCF
 
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper
 
 
 # TODO: Cost sensitive learning

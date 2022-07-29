@@ -6,7 +6,7 @@ import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper, Helper
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper, Helper
 
 
 class LaisGeneralization:

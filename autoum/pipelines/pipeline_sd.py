@@ -11,8 +11,8 @@ warnings.filterwarnings("ignore", category=FutureWarning)
 pd.options.mode.chained_assignment = None
 pd.set_option('display.max_columns', 10)
 
-from autouplift.pipelines.pipeline_rw import PipelineRW
-from autouplift.const.const import *
+from autoum.pipelines.pipeline_rw import PipelineRW
+from autoum.const.const import *
 
 
 class PipelineSD(PipelineRW):

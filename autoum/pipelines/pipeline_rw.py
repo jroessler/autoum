@@ -10,10 +10,10 @@ from sklearn.model_selection import StratifiedKFold, train_test_split
 
 warnings.filterwarnings("ignore", category=FutureWarning)
 
-from autouplift.evaluation.evaluation import UpliftEvaluation
-from autouplift.const.const import *
-from autouplift.pipelines.utils import HelperPipeline
-from autouplift.datasets.utils import get_data_home
+from autoum.evaluation.evaluation import UpliftEvaluation
+from autoum.const.const import *
+from autoum.pipelines.utils import HelperPipeline
+from autoum.datasets.utils import get_data_home
 
 pd.options.mode.chained_assignment = None
 pd.set_option('display.max_columns', 10)

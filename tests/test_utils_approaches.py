@@ -3,7 +3,7 @@ import unittest
 import pandas as pd
 
 # This is the class we want to test in this file
-from autouplift.approaches.utils import Helper
+from autoum.approaches.utils import Helper
 
 
 class TestHelperApproaches(unittest.TestCase):

@@ -4,21 +4,21 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from autouplift.approaches.bayesian_causal_forest import BayesianCausalForest
-from autouplift.approaches.class_variable_transformation import ClassVariableTransformation
-from autouplift.approaches.generalized_random_forest import GeneralizedRandomForest
-from autouplift.approaches.lais_generalization import LaisGeneralization
-from autouplift.approaches.r_learner import RLearner
-from autouplift.approaches.s_learner import SLearner
-from autouplift.approaches.traditional import Traditional
-from autouplift.approaches.treatment_dummy import TreatmentDummy
-from autouplift.approaches.two_model import TwoModel
-from autouplift.approaches.uplift_random_forest import UpliftRandomForest
-from autouplift.approaches.utils import ApproachParameters, DataSetsHelper
-from autouplift.approaches.x_learner import XLearner
-from autouplift.const.const import *
-from autouplift.datasets.utils import get_hillstrom_women_visit
-from autouplift.pipelines.utils import HelperPipeline
+from autoum.approaches.bayesian_causal_forest import BayesianCausalForest
+from autoum.approaches.class_variable_transformation import ClassVariableTransformation
+from autoum.approaches.generalized_random_forest import GeneralizedRandomForest
+from autoum.approaches.lais_generalization import LaisGeneralization
+from autoum.approaches.r_learner import RLearner
+from autoum.approaches.s_learner import SLearner
+from autoum.approaches.traditional import Traditional
+from autoum.approaches.treatment_dummy import TreatmentDummy
+from autoum.approaches.two_model import TwoModel
+from autoum.approaches.uplift_random_forest import UpliftRandomForest
+from autoum.approaches.utils import ApproachParameters, DataSetsHelper
+from autoum.approaches.x_learner import XLearner
+from autoum.const.const import *
+from autoum.datasets.utils import get_hillstrom_women_visit
+from autoum.pipelines.utils import HelperPipeline
 
 
 class TestHelperPipeline(unittest.TestCase):

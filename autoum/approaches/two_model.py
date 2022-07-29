@@ -4,7 +4,7 @@ from datetime import datetime
 
 from sklearn.ensemble import RandomForestClassifier
 
-from autouplift.approaches.utils import DataSetsHelper, Helper
+from autoum.approaches.utils import DataSetsHelper, Helper
 
 
 class TwoModel:

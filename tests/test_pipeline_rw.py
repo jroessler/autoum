@@ -4,10 +4,10 @@ from unittest.mock import MagicMock, patch
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from autouplift.datasets.utils import get_hillstrom_women_visit
-from autouplift.evaluation.evaluation import UpliftEvaluation
-from autouplift.pipelines.pipeline_rw import PipelineRW
-from autouplift.pipelines.utils import HelperPipeline
+from autoum.datasets.utils import get_hillstrom_women_visit
+from autoum.evaluation.evaluation import UpliftEvaluation
+from autoum.pipelines.pipeline_rw import PipelineRW
+from autoum.pipelines.utils import HelperPipeline
 
 
 class TestPipelineRW(unittest.TestCase):

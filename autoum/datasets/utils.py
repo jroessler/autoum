@@ -9,31 +9,31 @@ from os import environ, makedirs, path
 from os.path import expanduser, join
 from zipfile import ZipFile
 
-from autouplift.datasets.bank_telemarketing import Bank_Telemarketing
-from autouplift.datasets.criteo import Criteo
-from autouplift.datasets.criteo_v2 import CriteoV2
-from autouplift.datasets.hillstrom import Hillstrom
-from autouplift.datasets.lenta import Lenta
-from autouplift.datasets.socialpressure import SocialPressure
-from autouplift.datasets.starbucks import Starbucks
+from autoum.datasets.bank_telemarketing import Bank_Telemarketing
+from autoum.datasets.criteo import Criteo
+from autoum.datasets.criteo_v2 import CriteoV2
+from autoum.datasets.hillstrom import Hillstrom
+from autoum.datasets.lenta import Lenta
+from autoum.datasets.socialpressure import SocialPressure
+from autoum.datasets.starbucks import Starbucks
 
 
 def get_data_home(data_home: str=None) -> str:
-    """Return the path of the autouplift data directory.
+    """Return the path of the autoum data directory.
 
     This folder is used by some large dataset loaders to avoid downloading the data several times.
-    By default, the data directory is set to a folder named 'autouplift_data' in the user home folder.
+    By default, the data directory is set to a folder named 'autoum_data' in the user home folder.
 
-    Alternatively, it can be set by the 'AUTOUPLIFT_DATA' environment variable or programmatically by giving an explicit folder path.
+    Alternatively, it can be set by the 'AUTOUM_DATA' environment variable or programmatically by giving an explicit folder path.
     The '~' symbol is expanded to the user home folder.
 
     If the folder does not already exist, it is automatically created.
 
-    :param data_home: The path to autouplift's data directory. If `None`, the default path is `~/sklearn_learn_data`.
-    :return: The path to autouplift data directory
+    :param data_home: The path to autoum's data directory. If `None`, the default path is `~/sklearn_learn_data`.
+    :return: The path to autoum data directory
     """
     if data_home is None:
-        data_home = environ.get("AUTOUPLIFT_DATA", join("~", "autouplift_output"))
+        data_home = environ.get("AUTOUM_DATA", join("~", "autoum_output"))
     data_home = expanduser(data_home)
     makedirs(data_home, exist_ok=True)
     return data_home
@@ -119,7 +119,7 @@ def get_hillstrom(only_women: bool, only_men: bool, visit: bool):
     :param visit: True, if the feature "visit" shall be used as response variable. False if the feature "conversion" shall be used as response variable.
     """
     # Unzip
-    hillstrom_path_zip = "autouplift/datasets/data/hillstrom.csv.zip"
+    hillstrom_path_zip = "autoum/datasets/data/hillstrom.csv.zip"
     path_folder = get_data_home() + "/data/hillstrom-email/"
     unpack_zip(hillstrom_path_zip, path_folder)
 
@@ -137,7 +137,7 @@ def get_bank_telemarketing(prep_contact: bool):
     :param prep_contact: True, if the "contract" feature shall be used as repsonse. False, if the "contact" and "outcome" column shall be used as response
     """
     # Unzip
-    bank_telemarketing_path_zip = "autouplift/datasets/data/bank-additional-full.csv.zip"
+    bank_telemarketing_path_zip = "autoum/datasets/data/bank-additional-full.csv.zip"
     path_folder = get_data_home() + "/data/bank-telemarketing/"
     unpack_zip(bank_telemarketing_path_zip, path_folder)
 
@@ -168,7 +168,7 @@ def get_criteo_v1(resample: bool):
     :param resample: True, if the dataset should be resampled. False otherwise
     """
     # Unzip
-    criteo_path_zip = "autouplift/datasets/data/criteo-uplift.csv.gz"
+    criteo_path_zip = "autoum/datasets/data/criteo-uplift.csv.gz"
     path_folder = get_data_home() + "/data/criteo-v1/"
     file_name = "criteo-uplift.csv"
     unpack_gz(criteo_path_zip, path_folder, file_name)
@@ -198,7 +198,7 @@ def get_criteo_v2(resample: bool):
     :param resample: True, if the dataset should be resampled. False otherwise
     """
     # Unzip
-    criteo_path_zip = "autouplift/datasets/data/criteo-uplift-v2.1.csv.gz"
+    criteo_path_zip = "autoum/datasets/data/criteo-uplift-v2.1.csv.gz"
     path_folder = get_data_home() + "/data/criteo-v2/"
     file_name = "criteo-uplift-v2.1.csv"
     unpack_gz(criteo_path_zip, path_folder, file_name)
@@ -226,7 +226,7 @@ def get_lenta():
     Get the Lenta dataset
     """
     # Unzip
-    lenta_path_zip = "autouplift/datasets/data/lenta_dataset.csv.gz"
+    lenta_path_zip = "autoum/datasets/data/lenta_dataset.csv.gz"
     path_folder = get_data_home() + "/data/lenta/"
     file_name = "lenta_dataset.csv"
     unpack_gz(lenta_path_zip, path_folder, file_name)
@@ -241,7 +241,7 @@ def get_social_pressure():
     Get the Social Pressure dataset
     """
     # Unzip
-    social_pressure_path_zip = "autouplift/datasets/data/data.zip"
+    social_pressure_path_zip = "autoum/datasets/data/data.zip"
     path_folder = get_data_home() + "/data/social-pressure/"
     unpack_zip(social_pressure_path_zip, path_folder)
 
@@ -255,7 +255,7 @@ def get_starbucks():
     Get the Starbucks dataset
     """
     # Unzip
-    starbucks_path_zip = "autouplift/datasets/data/data.tar.gz"
+    starbucks_path_zip = "autoum/datasets/data/data.tar.gz"
     path_folder = get_data_home() + "/data/starbucks/"
     unpack_tar(starbucks_path_zip, path_folder)
 

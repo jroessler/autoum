@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from autouplift.pipelines.pipeline_sd import PipelineSD
+from autoum.pipelines.pipeline_sd import PipelineSD
 
 
 class TestPipelineSD(unittest.TestCase):
