@@ -42,7 +42,7 @@ class PostInstallCommand(install):
 setup(name='autouplift',
       version=get_version("autouplift/__init__.py"),
       description='A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects',
-      url='https://github.com/jroessler/autouplift/tree/autoumpip',
+      url='https://github.com/jroessler/autouplift',
       author='Jannik Rößler',
       author_email="",
       packages=packages,
