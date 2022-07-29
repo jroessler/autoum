@@ -44,7 +44,7 @@ Pipeline for Real-World Datasets
 
     pipeline.analyze_dataset(data)
 
-.. image:: _static/img/Real_World_Qini_Curve.png
+.. image:: ../_static/img/Real_World_Qini_Curve.png
     :width: 630
 
 Pipeline for Synthetic Datasets
@@ -84,5 +84,5 @@ Pipeline for Synthetic Datasets
     data = pipeline.create_synthetic_dataset()
     pipeline.analyze_dataset(data)
 
-.. image:: _static/img/Synthetic_Real_World_Qini_Curve.png
+.. image:: ../_static/img/Synthetic_Real_World_Qini_Curve.png
     :width: 630
