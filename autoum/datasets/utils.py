@@ -8,6 +8,7 @@ import tarfile
 from os import environ, makedirs, path
 from os.path import expanduser, join
 from zipfile import ZipFile
+from importlib import resources
 
 from autoum.datasets.bank_telemarketing import Bank_Telemarketing
 from autoum.datasets.criteo import Criteo
@@ -16,6 +17,8 @@ from autoum.datasets.hillstrom import Hillstrom
 from autoum.datasets.lenta import Lenta
 from autoum.datasets.socialpressure import SocialPressure
 from autoum.datasets.starbucks import Starbucks
+
+DATA_MODULE = "autoum.datasets.data"
 
 
 def get_data_home(data_home: str=None) -> str:
@@ -39,17 +42,18 @@ def get_data_home(data_home: str=None) -> str:
     return data_home
 
 
-def unpack_zip(zip_file_path: str, dest_path: str):
+def unpack_zip(zip_file_name: str, dest_path: str):
     """
     Unpack a zip file
 
-    :param zip_file_path: Path of the zip file
+    :param zip_file_name: Path of the zip file
     :param dest_path: Path where the zip file should be unzipped
     """
     if not path.isdir(dest_path):
         makedirs(dest_path, exist_ok=True)
-        with ZipFile(zip_file_path, 'r') as zip_file:
-            zip_file.extractall(dest_path)
+        with resources.open_binary(DATA_MODULE, zip_file_name) as compressed_file:
+            with ZipFile(compressed_file, 'r') as zip_file:
+                zip_file.extractall(dest_path)
 
 
 def unpack_gz(gz_file_path: str, dest_path: str, dest_file: str):
@@ -119,7 +123,7 @@ def get_hillstrom(only_women: bool, only_men: bool, visit: bool):
     :param visit: True, if the feature "visit" shall be used as response variable. False if the feature "conversion" shall be used as response variable.
     """
     # Unzip
-    hillstrom_path_zip = "autoum/datasets/data/hillstrom.csv.zip"
+    hillstrom_path_zip = "hillstrom.csv.zip"
     path_folder = get_data_home() + "/data/hillstrom-email/"
     unpack_zip(hillstrom_path_zip, path_folder)
 
