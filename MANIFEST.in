@@ -4,3 +4,6 @@ recursive-include docs *.txt
 
 # Include the license file
 include LICENSE
+
+# Include data files
+autoum/datasets/data/*
