@@ -7,8 +7,6 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   autoum.datasets.data
-
 Submodules
 ----------
 
