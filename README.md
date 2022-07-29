@@ -177,6 +177,9 @@ for details.
 
 ## References
 
+### Documentation
+* [AutoUplift API documentation](https://autouplift.readthedocs.io/en/latest/index.html)
+
 ### Literature
 
 1. Künzel, S. R., Sekhon, J. S., Bickel, P. J., & Yu, B. (2019). Metalearners for estimating heterogeneous treatment effects using machine learning. Proceedings of the national academy of sciences, 116(10), 4156-4165.
