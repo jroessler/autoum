@@ -8,7 +8,6 @@ Subpackages
    :maxdepth: 4
 
    autoum.approaches
-   autoum.const
    autoum.datasets
    autoum.evaluation
    autoum.pipelines
