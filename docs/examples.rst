@@ -1,15 +1,15 @@
 Examples
 ========
 
-Working example notebooks are available in the `example folder <https://github.com/jroessler/autouplift/tree/main/examples>`_.
+Working example notebooks are available in the `example folder <https://github.com/jroessler/autoum/tree/main/examples>`_.
 
 Pipeline for Real-World Datasets
 --------------------------------
 
 .. code-block:: python
 
-    from autouplift.datasets.utils import get_hillstrom_women_visit
-    from autouplift.pipelines.pipeline_rw import PipelineRW
+    from autoum.datasets.utils import get_hillstrom_women_visit
+    from autoum.pipelines.pipeline_rw import PipelineRW
 
     data = get_hillstrom_women_visit()
     pipeline = PipelineRW(
@@ -25,7 +25,7 @@ Pipeline for Real-World Datasets
         plot_figures=True,
         plot_uqc=True,
         rlearner=True,
-        run_name="AutoUplift",
+        run_name="AutoUM",
         run_id=1,
         slearner=True,
         show_title=True,
@@ -52,7 +52,7 @@ Pipeline for Synthetic Datasets
 
 .. code-block:: python
 
-    from autouplift.pipelines.pipeline_sd import PipelineSD
+    from autoum.pipelines.pipeline_sd import PipelineSD
 
     n_samples = 20000  # 20.000 samples / rows
     n_covariates = 20  # 20 covariates / columns

@@ -1,4 +1,4 @@
-autouplift package
+autoum package
 ==================
 
 Subpackages
@@ -7,16 +7,16 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   autouplift.approaches
-   autouplift.const
-   autouplift.datasets
-   autouplift.evaluation
-   autouplift.pipelines
+   autoum.approaches
+   autoum.const
+   autoum.datasets
+   autoum.evaluation
+   autoum.pipelines
 
 Module contents
 ---------------
 
-.. automodule:: autouplift
+.. automodule:: autoum
    :members:
    :undoc-members:
    :show-inheritance:

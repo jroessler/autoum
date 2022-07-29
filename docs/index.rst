@@ -1,18 +1,19 @@
-.. AutoUplift documentation master file, created by
-   sphinx-quickstart on Sun Jul 17 17:40:44 2022.
+.. AutoUM documentation master file, created by
+   sphinx-quickstart on Fri Jul 29 11:20:45 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to AutoUplift's documentation!
-======================================
+Welcome to AutoUM's documentation!
+==================================
 
 .. toctree::
    :maxdepth: 2
+   :caption: Contents:
 
    about
    installation
    examples
-   autouplift
+   autoum
 
 Indices and tables
 ==================
