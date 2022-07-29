@@ -18,7 +18,7 @@ import autoum
 
 # -- Project information -----------------------------------------------------
 
-project = 'AutoUplift'
+project = 'AutoUM'
 copyright = '2022, Jannik Rößler'
 author = 'Jannik Rößler'
 
