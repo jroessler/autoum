@@ -16,6 +16,7 @@ sys.path.insert(0, os.path.abspath('..'))
 
 import autoum
 
+
 # -- Project information -----------------------------------------------------
 
 project = 'AutoUM'
@@ -23,7 +24,7 @@ copyright = '2022, Jannik Rößler'
 author = 'Jannik Rößler'
 
 # The full version, including alpha/beta/rc tags
-release = '17.07.2022'
+release = '29.07.2022'
 
 version = autoum.__version__
 
@@ -33,10 +34,7 @@ version = autoum.__version__
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = [
-    'sphinx.ext.autodoc',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.autosectionlabel'
+extensions = ['sphinx.ext.autodoc', 'sphinx.ext.viewcode', 'sphinx.ext.autosectionlabel'
 ]
 
 # Add any paths that contain templates here, relative to this directory.
