@@ -42,7 +42,7 @@ class PostInstallCommand(install):
 setup(name='autoum',
       version=get_version("autoum/__init__.py"),
       description='A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects',
-      url='https://github.com/jroessler/autouplift',
+      url='https://github.com/jroessler/autoum',
       author='Jannik Rößler',
       author_email="",
       packages=packages,
