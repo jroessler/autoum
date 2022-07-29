@@ -178,7 +178,7 @@ for details.
 ## References
 
 ### Documentation
-* [AutoUplift API documentation](https://autouplift.readthedocs.io/en/latest/index.html)
+[AutoUplift API documentation](https://autouplift.readthedocs.io/en/latest/index.html)
 
 ### Literature
 
