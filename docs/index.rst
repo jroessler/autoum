@@ -14,6 +14,7 @@ Welcome to AutoUM's documentation!
    installation
    examples
    autoum
+   modules
 
 Indices and tables
 ==================

@@ -4,18 +4,20 @@ Base IO code for all datasets
 
 import gzip
 import shutil
-import tarfile
+from importlib import resources
 from os import environ, makedirs, path
 from os.path import expanduser, join
 from zipfile import ZipFile
 
-from autoum.datasets.bank_telemarketing import Bank_Telemarketing
+import requests
+
 from autoum.datasets.criteo import Criteo
-from autoum.datasets.criteo_v2 import CriteoV2
 from autoum.datasets.hillstrom import Hillstrom
 from autoum.datasets.lenta import Lenta
 from autoum.datasets.socialpressure import SocialPressure
 from autoum.datasets.starbucks import Starbucks
+
+DATA_MODULE = "autoum.datasets.data"
 
 
 def get_data_home(data_home: str=None) -> str:
@@ -39,17 +41,21 @@ def get_data_home(data_home: str=None) -> str:
     return data_home
 
 
-def unpack_zip(zip_file_path: str, dest_path: str):
+def download_url(url, save_path, filename, chunk_size=128):
     """
-    Unpack a zip file
+    Download the given (zip) file and save it in the given save_path location
 
-    :param zip_file_path: Path of the zip file
-    :param dest_path: Path where the zip file should be unzipped
+    :param url: Url of the file, which should be downloaded
+    :param save_path: Path were the file should be stored
+    :param filename:  Name of the file
+    :param chunk_size: Chunk size
     """
-    if not path.isdir(dest_path):
-        makedirs(dest_path, exist_ok=True)
-        with ZipFile(zip_file_path, 'r') as zip_file:
-            zip_file.extractall(dest_path)
+    if not path.exists(save_path + filename):
+        makedirs(save_path, exist_ok=True)
+        r = requests.get(url, stream=True)
+        with open(save_path + filename, 'wb') as fd:
+            for chunk in r.iter_content(chunk_size=chunk_size):
+                fd.write(chunk)
 
 
 def unpack_gz(gz_file_path: str, dest_path: str, dest_file: str):
@@ -67,17 +73,18 @@ def unpack_gz(gz_file_path: str, dest_path: str, dest_file: str):
                 shutil.copyfileobj(f_in, f_out)
 
 
-def unpack_tar(tar_file_path: str, dest_path: str):
+def unpack_zip(zip_file_name: str, dest_path: str):
     """
-    Unpack a tar file
+    Unpack a zip file
 
-    :param tar_file_path: Path of the tar file
-    :param dest_path: Path where the tar file should be unzipped
+    :param zip_file_name: Path of the zip file
+    :param dest_path: Path where the zip file should be unzipped
     """
-    if not path.isdir(dest_path):
+    if not path.exists(dest_path):
         makedirs(dest_path, exist_ok=True)
-        with tarfile.open(tar_file_path) as my_tar:
-            my_tar.extractall(dest_path)
+        with resources.open_binary(DATA_MODULE, zip_file_name) as compressed_file:
+            with ZipFile(compressed_file, 'r') as zip_file:
+                zip_file.extractall(dest_path)
 
 
 def get_hillstrom_women_visit():
@@ -119,7 +126,7 @@ def get_hillstrom(only_women: bool, only_men: bool, visit: bool):
     :param visit: True, if the feature "visit" shall be used as response variable. False if the feature "conversion" shall be used as response variable.
     """
     # Unzip
-    hillstrom_path_zip = "autoum/datasets/data/hillstrom.csv.zip"
+    hillstrom_path_zip = "hillstrom.csv.zip"
     path_folder = get_data_home() + "/data/hillstrom-email/"
     unpack_zip(hillstrom_path_zip, path_folder)
 
@@ -129,49 +136,21 @@ def get_hillstrom(only_women: bool, only_men: bool, visit: bool):
 
     return data
 
-
-def get_bank_telemarketing(prep_contact: bool):
+def get_criteo(resample: bool):
     """
-    Get the Bank Telemarketing dataset
-
-    :param prep_contact: True, if the "contract" feature shall be used as repsonse. False, if the "contact" and "outcome" column shall be used as response
-    """
-    # Unzip
-    bank_telemarketing_path_zip = "autoum/datasets/data/bank-additional-full.csv.zip"
-    path_folder = get_data_home() + "/data/bank-telemarketing/"
-    unpack_zip(bank_telemarketing_path_zip, path_folder)
-
-    # Prepare
-    bank_telemarketing = Bank_Telemarketing(path_folder)
-    if prep_contact:
-        data = bank_telemarketing.prep_contact()
-    else:
-        data = bank_telemarketing.prep_outcome()
-
-    return data
-
-
-def get_bank_telemarketing_contact():
-    """Return Bank Telemarketing dataset with contact as response variable"""
-    return get_bank_telemarketing(prep_contact=True)
-
-
-def get_bank_telemarketing_outcome():
-    """Return Bank Telemarketing dataset with contact and outcome as response variable"""
-    return get_bank_telemarketing(prep_contact=False)
-
-
-def get_criteo_v1(resample: bool):
-    """
-    Get the Criteo V1 dataset
+    Get the Criteo dataset
 
     :param resample: True, if the dataset should be resampled. False otherwise
     """
+    # Download zip
+    path_folder = get_data_home() + "/data/criteo/"
+    zip_name = "criteo-uplift-v2.1.csv.gz"
+    criteo_url = "http://go.criteo.net/criteo-research-uplift-v2.1.csv.gz"
+    download_url(criteo_url, path_folder, zip_name)
+
     # Unzip
-    criteo_path_zip = "autoum/datasets/data/criteo-uplift.csv.gz"
-    path_folder = get_data_home() + "/data/criteo-v1/"
-    file_name = "criteo-uplift.csv"
-    unpack_gz(criteo_path_zip, path_folder, file_name)
+    file_name = "criteo-uplift-v2.1.csv"
+    unpack_gz(path_folder + zip_name, path_folder, file_name)
 
     # Prepare
     criteo = Criteo(path_folder)
@@ -181,55 +160,30 @@ def get_criteo_v1(resample: bool):
         return criteo.prep(resample=False)
 
 
-def get_criteo_v1_full():
-    """Return Criteo V1 dataset"""
-    return get_criteo_v1(resample=False)
+def get_criteo_full():
+    """Return Criteo dataset"""
+    return get_criteo(resample=False)
 
 
-def get_criteo_v1_resampled():
-    """Return Criteo V1 dataset with resampling"""
-    return get_criteo_v1(resample=True)
-
-
-def get_criteo_v2(resample: bool):
-    """
-    Get the Criteo V2 dataset
-
-    :param resample: True, if the dataset should be resampled. False otherwise
-    """
-    # Unzip
-    criteo_path_zip = "autoum/datasets/data/criteo-uplift-v2.1.csv.gz"
-    path_folder = get_data_home() + "/data/criteo-v2/"
-    file_name = "criteo-uplift-v2.1.csv"
-    unpack_gz(criteo_path_zip, path_folder, file_name)
-
-    # Prepare
-    criteo = CriteoV2(path_folder)
-    if resample:
-        return criteo.prep(resample=True)
-    else:
-        return criteo.prep(resample=False)
-
-
-def get_criteo_v2_full():
-    """Return Criteo V2 dataset"""
-    return get_criteo_v2(resample=False)
-
-
-def get_criteo_v2_resampled():
-    """Return Criteo V2 dataset with resampling"""
-    return get_criteo_v2(resample=True)
+def get_criteo_resampled():
+    """Return Criteo dataset with resampling"""
+    return get_criteo(resample=True)
 
 
 def get_lenta():
     """
     Get the Lenta dataset
     """
-    # Unzip
-    lenta_path_zip = "autoum/datasets/data/lenta_dataset.csv.gz"
+
+    # Download zip
     path_folder = get_data_home() + "/data/lenta/"
+    zip_name = "lenta_dataset.csv.gz"
+    lenta_url = "https://sklift.s3.eu-west-2.amazonaws.com/lenta_dataset.csv.gz"
+    download_url(lenta_url, path_folder, zip_name)
+
+    # Unzip
     file_name = "lenta_dataset.csv"
-    unpack_gz(lenta_path_zip, path_folder, file_name)
+    unpack_gz(path_folder + zip_name, path_folder, file_name)
 
     # Prepare
     lenta = Lenta(path_folder)
@@ -241,7 +195,7 @@ def get_social_pressure():
     Get the Social Pressure dataset
     """
     # Unzip
-    social_pressure_path_zip = "autoum/datasets/data/data.zip"
+    social_pressure_path_zip = "data.zip"
     path_folder = get_data_home() + "/data/social-pressure/"
     unpack_zip(social_pressure_path_zip, path_folder)
 
@@ -255,10 +209,10 @@ def get_starbucks():
     Get the Starbucks dataset
     """
     # Unzip
-    starbucks_path_zip = "autoum/datasets/data/data.tar.gz"
+    starbucks_zip = "starbucks.zip"
     path_folder = get_data_home() + "/data/starbucks/"
-    unpack_tar(starbucks_path_zip, path_folder)
+    unpack_zip(starbucks_zip, path_folder)
 
     # Prepare
-    starbucks = Starbucks(path_folder)
+    starbucks = Starbucks(path_folder + 'data/')
     return starbucks.prep()

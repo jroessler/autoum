@@ -44,17 +44,15 @@ is mainly build on top of the `CausalML` - Framework.
 
 ## Datasets
 
-The framework contains seven real, publicly available datasets which can be used "on the fly" (see further information below).
+The framework contains five real, publicly available datasets which can be used "on the fly" (see further information below).
 
 | dataset             | Type    | Confidentiallity | Source                                                                                           | Treatment                       | Outcome                          |
 |---------------------|---------|------------------|--------------------------------------------------------------------------------------------------|---------------------------------|----------------------------------|
-| criteo-marketing    | A/B     | public           | https://s3.us-east-2.amazonaws.com/criteo-uplift-dataset/criteo-uplift.csv.gz                    | `treatment`                     | `conversion`                     |
+| criteo-marketing    | A/B     | public           | https://ailab.criteo.com/criteo-uplift-prediction-dataset/                                       | `treatment`                     | `conversion`                     |
 | hillstrom-email     | A/B     | public           | https://blog.minethatdata.com/2008/03/minethatdata-e-mail-analytics-and-data.html                | `segment`                       | `spend`, `conversion` or `visit` |
 | starbucks           | A/B     | public           | https://github.com/joshxinjie/Data_Scientist_Nanodegree/tree/master/starbucks_portfolio_exercise | `Promotion`                     | `Purchase`                       |
 | social-pressure     | A/B     | public           | https://isps.yale.edu/research/data/d001                                                         | `treatment` _(neighbors)_       | `voted`                          |
 | lenta               | A/B     | public           | https://www.uplift-modeling.com/en/latest/api/datasets/fetch_lenta.html                          | `group`                         | `response_att`                   |
-| criteo-marketing_v2 | A/B     | public           | http://go.criteo.net/criteo-research-uplift-v2.1.csv.gz                                          | `treatment`                     | `conversion`                     |
-| bank-telemarketing  | not A/B | public           | https://archive.ics.uci.edu/ml/datasets/bank+marketing                                           | `contact`, `contact`*`poutcome` | `y`                              |
 
 
 ## Installation
@@ -96,10 +94,33 @@ from autoum.datasets.utils import get_hillstrom_women_visit
 from autoum.pipelines.pipeline_rw import PipelineRW
 
 data = get_hillstrom_women_visit()
-pipeline = PipelineRW(bayesian_causal_forest=True, cv_number_splits=10, class_variable_transformation=True, generalized_random_forest=True,
-    lais_generalization=True, max_depth=5, min_samples_leaf=50, min_samples_treatment=10, n_estimators=20, plot_figures=True, plot_uqc=True,
-    rlearner=True, run_name="AutoUM", run_id=1, slearner=True, show_title=True, traditional=True, treatment_dummy=True, two_model=True,
-    urf_ed=True, urf_kl=True, urf_chi=True, urf_ddp=True, urf_cts=True, urf_it=True, urf_cit=True, xlearner=True)
+pipeline = PipelineRW(bayesian_causal_forest=True,
+                      cv_number_splits=10, 
+                      class_variable_transformation=True,
+                      generalized_random_forest=True, 
+                      lais_generalization=True,
+                      max_depth=5,
+                      min_samples_leaf=50,
+                      min_samples_treatment=10,
+                      n_estimators=20,
+                      plot_figures=True,
+                      plot_uqc=True,
+                      rlearner=True,
+                      run_name="AutoUM",
+                      run_id=1,
+                      slearner=True,
+                      show_title=True,
+                      traditional=True,
+                      treatment_dummy=True,
+                      two_model=True,
+                      urf_ed=True,
+                      urf_kl=True,
+                      urf_chi=True,
+                      urf_ddp=True,
+                      urf_cts=True,
+                      urf_it=True,
+                      urf_cit=True,
+                      xlearner=True)
 
 pipeline.analyze_dataset(data)
 ```
@@ -118,9 +139,24 @@ sigma = 0.5  # Covariance of 0.5
 treatment_propensity = 0.5  # treatment propensity of 0.5 (i.e. 50:50)
 response_rate = 20  # 20% response rate
 
-pipeline = PipelineSD(n=n_samples, p=n_covariates, sigma=sigma, threshold=response_rate, propensity=treatment_propensity,
-    cv_number_splits=5, generalized_random_forest=True, max_depth=5, min_samples_leaf=50, min_samples_treatment=10, n_estimators=20,
-    plot_figures=True, plot_uqc=True, run_name="Synthetic_Example", show_title=True, traditional=True, two_model=True, urf_ed=True)
+pipeline = PipelineSD(n=n_samples,
+                      p=n_covariates,
+                      sigma=sigma,
+                      threshold=response_rate,
+                      propensity=treatment_propensity,
+                      cv_number_splits=5,
+                      generalized_random_forest=True,
+                      max_depth=5,
+                      min_samples_leaf=50,
+                      min_samples_treatment=10,
+                      n_estimators=20, 
+                      plot_figures=True,
+                      plot_uqc=True,
+                      run_name="Synthetic_Example",
+                      show_title=True,
+                      traditional=True,
+                      two_model=True,
+                      urf_ed=True)
 
 data = pipeline.create_synthetic_dataset()
 pipeline.analyze_dataset(data)

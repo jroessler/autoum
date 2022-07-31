@@ -10,6 +10,8 @@ root = os.getcwd()
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
+extra_setuptools_args = dict(zip_safe=True, include_package_data=True)
+
 with open("requirements.txt") as f:
     requirements = f.readlines()
 
@@ -49,5 +51,6 @@ setup(name='autoum',
       cmdclass={'install': PostInstallCommand},
       python_requires=">=3.8",
       install_requires=requirements,
-      classifiers=["Programming Language :: Python", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"]
+      classifiers=["Programming Language :: Python", "License :: OSI Approved :: Apache Software License", "Operating System :: OS Independent"],
+      **extra_setuptools_args
       )

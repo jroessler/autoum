@@ -4,26 +4,10 @@ autoum.datasets package
 Submodules
 ----------
 
-autoum.datasets.bank\_telemarketing module
-------------------------------------------
-
-.. automodule:: autoum.datasets.bank_telemarketing
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 autoum.datasets.criteo module
 -----------------------------
 
 .. automodule:: autoum.datasets.criteo
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-autoum.datasets.criteo\_v2 module
----------------------------------
-
-.. automodule:: autoum.datasets.criteo_v2
    :members:
    :undoc-members:
    :show-inheritance:
