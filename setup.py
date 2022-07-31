@@ -10,7 +10,7 @@ root = os.getcwd()
 
 packages = find_packages(exclude=["tests", "tests.*"])
 
-extra_setuptools_args = dict(zip_safe=False, include_package_data=True)
+extra_setuptools_args = dict(zip_safe=True, include_package_data=True)
 
 with open("requirements.txt") as f:
     requirements = f.readlines()

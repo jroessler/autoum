@@ -9,9 +9,8 @@ class Criteo:
 
     def __init__(self, path_folder: str):
         # Define paths
-        self.criteo_path_original = path_folder + "criteo-uplift.csv"
+        self.criteo_path_original = path_folder + "criteo-uplift-v2.1.csv"
         self.criteo_path = path_folder + "criteo_uplift.csv"
-        # Resample
         self.criteo_path_resampled = path_folder + "criteo_uplift_resampled.csv"
 
     def prep(self, resample: bool=False):
@@ -38,7 +37,7 @@ class Criteo:
         # 1. Rename "conversion" column to "response"
         data.rename(columns={
             "conversion": "response"
-        }, inplace=True)
+            }, inplace=True)
 
         # 2. Downsample the treatment group
         if resample:
@@ -46,9 +45,7 @@ class Criteo:
             data_treatment = data.loc[data.treatment == 1]
 
             frac = round(data_no_treatment.shape[0] / data_treatment.shape[0], 3)
-
             data_treatment = data_treatment.sample(frac=frac)
-
             data = pd.concat([data_treatment, data_no_treatment]).sample(frac=1)
 
         # 3. Delete unnecessary columns

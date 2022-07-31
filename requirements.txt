@@ -25,3 +25,4 @@ plotnine==0.7.1
 Deprecated==1.2.10
 ipython==8.0.0
 econml==0.12.0
+requests

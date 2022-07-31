@@ -6,4 +6,4 @@ recursive-include docs *.txt
 include LICENSE
 
 # Include data files
-autoum/datasets/data/*
+recursive-include autoum/datasets/data/ *.tar.gz *csv.zip *.zip
