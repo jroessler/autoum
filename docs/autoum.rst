@@ -11,11 +11,3 @@ Subpackages
    autoum.datasets
    autoum.evaluation
    autoum.pipelines
-
-Module contents
----------------
-
-.. automodule:: autoum
-   :members:
-   :undoc-members:
-   :show-inheritance:
