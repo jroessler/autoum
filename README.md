@@ -1,3 +1,7 @@
+<div align="center">
+  <a href="https://github.com/jroessler/autoum"><img width="380px" height="140px" src="https://raw.githubusercontent.com/jroessler/autoum/main/docs/_static/img/AutoUM.png"></a>
+</div>
+
 # AutoUM: A Python Framework for Automatically Evaluating various Uplift Modeling Algorithms to Estimate Individual Treatment Effects
 
 This Python framework can be used to evaluate multiple methods that predict the potential benefit of a treatment at an individual level. It
@@ -124,6 +128,10 @@ pipeline = PipelineRW(bayesian_causal_forest=True,
 
 pipeline.analyze_dataset(data)
 ```
+
+<div align="center">
+  <img width="629px" height="618px" src="https://raw.githubusercontent.com/jroessler/autoum/main/docs/_static/img/Real_World_Qini_Curve.png">
+</div>
 
 See the [Real-World Pipeline Notebook](https://github.com/jroessler/autoum/blob/main/examples/pipeline_with_real_world_data.ipynb) 
 for details.
