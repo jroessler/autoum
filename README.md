@@ -129,6 +129,10 @@ pipeline = PipelineRW(bayesian_causal_forest=True,
 pipeline.analyze_dataset(data)
 ```
 
+<div align="center">
+  <a href="https://github.com/jroessler/autoum"><img alt='AutoUM' src="https://github.com/jroessler/autoum/blob/main/docs/_static/img/Real_World_Qini_Curve_All.png?raw=true"></a>
+</div>
+
 See the [Real-World Pipeline Notebook](https://github.com/jroessler/autoum/blob/main/examples/pipeline_with_real_world_data.ipynb) 
 for details.
 
@@ -165,6 +169,11 @@ pipeline = PipelineSD(n=n_samples,
 data = pipeline.create_synthetic_dataset()
 pipeline.analyze_dataset(data)
 ```
+
+<div align="center">
+  <a href="https://github.com/jroessler/autoum"><img alt='AutoUM' src="https://github.com/jroessler/autoum/blob/main/docs/_static/img/Synthetic_Qini_Curve.png?raw=true"></a>
+</div>
+
 See the [Synthetic Pipeline Notebook](https://github.com/jroessler/autoum/blob/main/examples/pipeline_with_synthetic_data.ipynb.ipynb) 
 for details.
 
