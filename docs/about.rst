@@ -1,6 +1,9 @@
 About AutoUM
 ===========================
 
+.. image:: ./_static/img/AutoUM.png
+    :width: 630
+
 ``AutoUM`` is a Python Framework for automatically evaluating various uplift modeling algorithms to estimate individual treatment
 effects. It provides an interface that allows to estimate the Uplift (also called Conditional Average Treatment Effect (CATE), or
 Individual Treatment Effect (ITE)) from **experimental data** with a **binary treatment** indiciator (customers are either treated or
