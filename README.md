@@ -187,6 +187,27 @@ for details.
 ### Documentation
 [AutoUM API documentation](https://autoum.readthedocs.io/en/latest/index.html)
 
+
+### Publications by AutoUM team
+* [Bridging the Gap: A Systematic Benchmarking of Uplift Modeling and Heterogeneous Treatment Effects Methods](https://journals.sagepub.com/doi/abs/10.1177/10949968221111083)
+* [Sharing is Caring: Using Open Data To Improve Targeting Policies](https://aisel.aisnet.org/ecis2022_rp/143/)
+* [To Treat, or Not to Treat: Reducing Volatility in Uplift Modeling Through Weighted Ensembles](https://scholarspace.manoa.hawaii.edu/items/6b6e8d0f-b734-4427-a224-44cb7eb89a27)
+
+### Citation
+To cite AutoUM in publications, you can refer to the following paper:
+
+[Bridging the Gap: A Systematic Benchmarking of Uplift Modeling and Heterogeneous Treatment Effects Methods](https://journals.sagepub.com/doi/abs/10.1177/10949968221111083)
+
+Bibtext:
+> @article{rossler2022bridging,
+>  title={Bridging the Gap: A Systematic Benchmarking of Uplift Modeling and Heterogeneous Treatment Effects Methods},
+>  author={R{\"o}{\ss}ler, Jannik and Schoder, Detlef},
+>  journal={Journal of Interactive Marketing},
+>  year={2022},
+>  doi = {10.1177/10949968221111083},
+>  publisher={SAGE Publications Sage CA: Los Angeles, CA}
+>}
+
 ### Literature
 
 1. Künzel, S. R., Sekhon, J. S., Bickel, P. J., & Yu, B. (2019). Metalearners for estimating heterogeneous treatment effects using machine learning. Proceedings of the national academy of sciences, 116(10), 4156-4165.
