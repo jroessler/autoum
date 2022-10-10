@@ -191,6 +191,7 @@ for details.
 
 
 ### Publications by AutoUM team
+* Upcoming: The Best of Two Worlds: Using Recent Advances from Uplift Modeling and Heterogeneous Treatment Effects to Optimize Targeting Policies
 * [Bridging the Gap: A Systematic Benchmarking of Uplift Modeling and Heterogeneous Treatment Effects Methods](https://journals.sagepub.com/doi/abs/10.1177/10949968221111083)
 * [Sharing is Caring: Using Open Data To Improve Targeting Policies](https://aisel.aisnet.org/ecis2022_rp/143/)
 * [To Treat, or Not to Treat: Reducing Volatility in Uplift Modeling Through Weighted Ensembles](https://scholarspace.manoa.hawaii.edu/items/6b6e8d0f-b734-4427-a224-44cb7eb89a27)
