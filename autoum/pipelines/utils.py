@@ -142,17 +142,24 @@ class HelperPipeline:
             urf_ddp = UpliftRandomForest(parameters[URF_TITLE + "_parameters"], approach_params, eval_function="DDP")
             df_scores_train[URF_DDP_TITLE], df_scores_valid[URF_DDP_TITLE], df_scores_test[URF_DDP_TITLE], _ = HelperPipeline.apply_approach(urf_ddp, **apply_params)
 
-        # 1.5 WITH CONTEXTUAL TREATMENT SELECTION
+        # 1.5 WITH INVARIANT DELTA-DELTA-PI Criterion
+        if "URF_IDDP" in approach:
+            para_dict = parameters[URF_TITLE + "_parameters"].copy()
+            para_dict['honesty'] = True
+            urf_iddp = UpliftRandomForest(para_dict, approach_params, eval_function="IDDP")
+            df_scores_train[URF_IDDP_TITLE], df_scores_valid[URF_IDDP_TITLE], df_scores_test[URF_IDDP_TITLE], _ = HelperPipeline.apply_approach(urf_iddp, **apply_params)
+
+        # 1.6 WITH CONTEXTUAL TREATMENT SELECTION
         if "URF_CTS" in approach:
             urf_cts = UpliftRandomForest(parameters[URF_TITLE + "_parameters"], approach_params, eval_function="CTS")
             df_scores_train[URF_CTS_TITLE], df_scores_valid[URF_CTS_TITLE], df_scores_test[URF_CTS_TITLE], _ = HelperPipeline.apply_approach(urf_cts, **apply_params)
 
-        # 1.6 IT CRITERION
+        # 1.7 IT CRITERION
         if "URF_IT" in approach:
             urf_it = UpliftRandomForest(parameters[URF_TITLE + "_parameters"], approach_params, eval_function="IT")
             df_scores_train[URF_IT_TITLE], df_scores_valid[URF_IT_TITLE], df_scores_test[URF_IT_TITLE], _ = HelperPipeline.apply_approach(urf_it, **apply_params)
 
-        # 1.7 CIT CRITERION
+        # 1.8 CIT CRITERION
         if "URF_CIT" in approach:
             urf_cit = UpliftRandomForest(parameters[URF_TITLE + "_parameters"], approach_params, eval_function="CIT")
             df_scores_train[URF_CIT_TITLE], df_scores_valid[URF_CIT_TITLE], df_scores_test[URF_CIT_TITLE], _ = HelperPipeline.apply_approach(urf_cit, **apply_params)

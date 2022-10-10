@@ -39,21 +39,33 @@ class TreatmentDummy:
 
         df_train_with_interactions = data_set_helper.df_train.copy()
         df_train_with_interactions.drop(['response'], axis=1, inplace=True)
+        df_train_with_interactions_t_1 = df_train_with_interactions.copy()
+        df_train_with_interactions_t_0 = df_train_with_interactions.copy()
         if data_set_helper.valid:
             df_valid_with_interactions = data_set_helper.df_valid.copy()
             df_valid_with_interactions.drop(['response'], axis=1, inplace=True)
+            df_valid_with_interactions_t_1 = df_valid_with_interactions.copy()
+            df_valid_with_interactions_t_0 = df_valid_with_interactions.copy()
         df_test_with_interactions = data_set_helper.df_test.copy()
         df_test_with_interactions.drop(['response'], axis=1, inplace=True)
+        df_test_with_interactions_t_1 = df_test_with_interactions.copy()
+        df_test_with_interactions_t_0 = df_test_with_interactions.copy()
 
         columns = df_test_with_interactions.drop(['treatment'], axis=1).columns
 
         # Calculate interaction effects
         for column in columns:
+
+            df_train_with_interactions_t_1[column + "_x_treatment"] = df_train_with_interactions[column] * 1
+            df_train_with_interactions_t_0[column + "_x_treatment"] = df_train_with_interactions[column] * 0
             df_train_with_interactions[column + "_x_treatment"] = df_train_with_interactions[column] * df_train_with_interactions["treatment"]
-            df_test_with_interactions[column + "_x_treatment"] = df_test_with_interactions[column] * df_test_with_interactions["treatment"]
+
+            df_test_with_interactions_t_1[column + "_x_treatment"] = df_test_with_interactions[column] * 1
+            df_test_with_interactions_t_0[column + "_x_treatment"] = df_test_with_interactions[column] * 0
 
             if data_set_helper.valid:
-                df_valid_with_interactions[column + "_x_treatment"] = df_valid_with_interactions[column] * df_valid_with_interactions["treatment"]
+                df_valid_with_interactions_t_1[column + "_x_treatment"] = df_valid_with_interactions[column] * 1
+                df_valid_with_interactions_t_0[column + "_x_treatment"] = df_valid_with_interactions[column] * 0
 
         if self.cost_sensitive:
             # Calculate class weights
@@ -78,30 +90,29 @@ class TreatmentDummy:
         self.log.debug("Predicting ...")
 
         # Training
-        response_dict["score_train"] = TreatmentDummy.prediction(clf, df_train_with_interactions)
+        response_dict["score_train"] = TreatmentDummy.prediction(clf, df_train_with_interactions_t_1, df_train_with_interactions_t_0)
 
         # Validation
         if data_set_helper.valid:
-            response_dict["score_valid"] = TreatmentDummy.prediction(clf, df_valid_with_interactions)
+            response_dict["score_valid"] = TreatmentDummy.prediction(clf, df_valid_with_interactions_t_1, df_valid_with_interactions_t_0)
 
         # Test
-        response_dict["score_test"] = TreatmentDummy.prediction(clf, df_test_with_interactions)
+        response_dict["score_test"] = TreatmentDummy.prediction(clf, df_test_with_interactions_t_1, df_test_with_interactions_t_0)
 
         return response_dict
 
     @staticmethod
-    def prediction(clf, df_with_interactions: pd.DataFrame):
+    def prediction(clf, df_with_interactions_t_1: pd.DataFrame, df_with_interactions_t_0: pd.DataFrame):
         """
         Predict the uplift scores for the given data set
 
         :param clf: Classifier
-        :param df_with_interactions: DataFrame which should be analyzed
+        :param df_with_interactions_t_1: DataFrame with interaction effect where treatment == 1
+        :param df_with_interactions_t_0: DataFrame with interaction effect where treatment == 0
         :return: Uplift scores
         """
 
-        df_with_interactions["treatment"] = 1
-        score_train_t_1 = clf.predict_proba(df_with_interactions.to_numpy())[:, 1]
-        df_with_interactions["treatment"] = 0
-        score_train_t_0 = clf.predict_proba(df_with_interactions.to_numpy())[:, 1]
+        score_train_t_1 = clf.predict_proba(df_with_interactions_t_1.to_numpy())[:, 1]
+        score_train_t_0 = clf.predict_proba(df_with_interactions_t_0.to_numpy())[:, 1]
 
         return score_train_t_1 - score_train_t_0

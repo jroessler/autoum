@@ -31,6 +31,7 @@ class UpliftRandomForest:
     "CTS": Contextual Treatment Selection
     "IT": Interaction Tree (Su et al., 2009)
     "CIT": Causal Inference Tree (Su et al., 2012)
+    "IDDP": Invariante DDP (Rößler et al. 2022)
     """
 
     def __init__(self, parameters: dict, approach_parameters: ApproachParameters, eval_function: str):
@@ -47,6 +48,7 @@ class UpliftRandomForest:
             "CTS": Contextual Treatment Selection
             "IT": Interaction Tree (Su et al., 2009)
             "CIT": Causal Inference Tree (Su et al., 2012)
+            "IDDP": Invariante DDP (Rößler et al. 2022)
         """
 
         self.parameters = parameters

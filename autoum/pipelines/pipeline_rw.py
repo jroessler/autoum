@@ -68,6 +68,7 @@ class PipelineRW:
                  urf_kl: bool = False,
                  urf_chi: bool = False,
                  urf_ddp: bool = False,
+                 urf_iddp: bool = False,
                  urf_cts: bool = False,
                  urf_it: bool = False,
                  urf_cit: bool = False,
@@ -124,6 +125,7 @@ class PipelineRW:
         :param urf_kl: True, if Uplift Random Forest with Kullback-Leibler Divergence should be applied. False otherwise. Default: False
         :param urf_chi: True, if Uplift Random Forest with Chi-Squared Divergence should be applied. False otherwise. Default: False
         :param urf_ddp: True, if Uplift Random Forest with DDP criterion should be applied. False otherwise. Default: False
+        :param urf_iddp: True, if Uplift Random Forest with IDDP criterion should be applied. False otherwise. Default: False
         :param urf_it: True, if Uplift Random Forest with Interaction Tree criterion should be applied. False otherwise. Default: False
         :param urf_cit: True, if Uplift Random Forest with Causal Inference Tree criterion should be applied. False otherwise. Default: False
         :param urf_cts: True, if Uplift Random Forest with Contextual Treatment Selection should be applied. False otherwise. Default: False
@@ -163,6 +165,7 @@ class PipelineRW:
         self.url_kl = urf_kl
         self.urf_chi = urf_chi
         self.urf_ddp = urf_ddp
+        self.urf_iddp = urf_iddp
         self.urf_cts = urf_cts
         self.urf_it = urf_it
         self.urf_cit = urf_cit
@@ -603,6 +606,10 @@ class PipelineRW:
                 y = list(t)
                 y.append("URF_DDP")
                 tuple_list.append(tuple(y))
+            if self.urf_iddp:
+                y = list(t)
+                y.append("URF_IDDP")
+                tuple_list.append(tuple(y))
             if self.urf_cts:
                 y = list(t)
                 y.append("URF_CTS")
@@ -675,6 +682,8 @@ class PipelineRW:
             all_approaches.append("URF_CHI")
         if self.urf_ddp:
             all_approaches.append("URF_DDP")
+        if self.urf_iddp:
+            all_approaches.append("URF_IDDP")
         if self.urf_cts:
             all_approaches.append("URF_CTS")
         if self.urf_it:

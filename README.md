@@ -33,6 +33,7 @@ The framework currently supports the following approaches:
 * Treatment Dummy Approach (Lo 2002) [[10]](#Literature)
 * Bayesian Causal Forest (Hahn et al. 2020) [[11]](#Literature)
 * R-Learner (Nie and Wager 2020) [[12]](#Literature)
+* IDDP (Rößler et al. 2022) [[13]](#Literature)
 * Traditional Approach (without control group)
 
 There are different statistical approaches to approximate the ITE and several packages in R and Python that implement these. This framework
@@ -121,6 +122,7 @@ pipeline = PipelineRW(bayesian_causal_forest=True,
                       urf_kl=True,
                       urf_chi=True,
                       urf_ddp=True,
+                      urf_iddp=True,
                       urf_cts=True,
                       urf_it=True,
                       urf_cit=True,
@@ -201,6 +203,7 @@ for details.
 10. Lo, V. S. (2002). The true lift model: a novel data mining approach to response modeling in database marketing. ACM SIGKDD Explorations Newsletter, 4(2), 78-86.
 11. Hahn, P. R., Murray, J. S., & Carvalho, C. M. (2020). Bayesian regression tree models for causal inference: Regularization, confounding, and heterogeneous effects (with discussion). Bayesian Analysis, 15(3), 965-1056.
 12. Nie, X., & Wager, S. (2021). Quasi-oracle estimation of heterogeneous treatment effects. Biometrika, 108(2), 299-319.
+13. Rößler, J., Guse R., and Schoder D. (2022). The Best of Two Worlds: Using Recent Advances from Uplift Modeling and Heterogeneous Treatment Effects to Optimize Targeting Policies
 
 ### More about Uplift Modeling
 
