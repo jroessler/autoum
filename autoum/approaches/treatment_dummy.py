@@ -2,7 +2,7 @@ import logging
 import pickle
 from datetime import datetime
 
-import pandas as pd
+import numpy as np
 from sklearn.linear_model import LogisticRegression
 
 from autoum.approaches.utils import ApproachParameters, DataSetsHelper, Helper
@@ -37,35 +37,11 @@ class TreatmentDummy:
         :return: Dictionary containing, scores and feature importance
         """
 
-        df_train_with_interactions = data_set_helper.df_train.copy()
-        df_train_with_interactions.drop(['response'], axis=1, inplace=True)
-        df_train_with_interactions_t_1 = df_train_with_interactions.copy()
-        df_train_with_interactions_t_0 = df_train_with_interactions.copy()
-        if data_set_helper.valid:
-            df_valid_with_interactions = data_set_helper.df_valid.copy()
-            df_valid_with_interactions.drop(['response'], axis=1, inplace=True)
-            df_valid_with_interactions_t_1 = df_valid_with_interactions.copy()
-            df_valid_with_interactions_t_0 = df_valid_with_interactions.copy()
-        df_test_with_interactions = data_set_helper.df_test.copy()
-        df_test_with_interactions.drop(['response'], axis=1, inplace=True)
-        df_test_with_interactions_t_1 = df_test_with_interactions.copy()
-        df_test_with_interactions_t_0 = df_test_with_interactions.copy()
-
-        columns = df_test_with_interactions.drop(['treatment'], axis=1).columns
-
-        # Calculate interaction effects
-        for column in columns:
-
-            df_train_with_interactions_t_1[column + "_x_treatment"] = df_train_with_interactions[column] * 1
-            df_train_with_interactions_t_0[column + "_x_treatment"] = df_train_with_interactions[column] * 0
-            df_train_with_interactions[column + "_x_treatment"] = df_train_with_interactions[column] * df_train_with_interactions["treatment"]
-
-            df_test_with_interactions_t_1[column + "_x_treatment"] = df_test_with_interactions[column] * 1
-            df_test_with_interactions_t_0[column + "_x_treatment"] = df_test_with_interactions[column] * 0
-
-            if data_set_helper.valid:
-                df_valid_with_interactions_t_1[column + "_x_treatment"] = df_valid_with_interactions[column] * 1
-                df_valid_with_interactions_t_0[column + "_x_treatment"] = df_valid_with_interactions[column] * 0
+        # Get training's treatments and features
+        train_treatment = data_set_helper.df_train['treatment'].to_numpy()
+        train_features = data_set_helper.df_train.drop(['treatment', 'response'], axis=1).to_numpy()
+        # Get test's features
+        test_features = data_set_helper.df_test.drop(['treatment', 'response'], axis=1).to_numpy()
 
         if self.cost_sensitive:
             # Calculate class weights
@@ -77,7 +53,8 @@ class TreatmentDummy:
         clf.set_params(**self.parameters)
         self.log.debug("Start fitting Treatment Dummy ...")
 
-        clf.fit(df_train_with_interactions.to_numpy(), data_set_helper.y_train)
+        # Train classifier with features * interaction effects
+        clf.fit(np.append(np.append(train_features, train_features * train_treatment[:, None], axis=1), train_treatment[:, None], axis=1), data_set_helper.y_train)
         self.log.debug(clf)
         response_dict = {}
 
@@ -90,29 +67,32 @@ class TreatmentDummy:
         self.log.debug("Predicting ...")
 
         # Training
-        response_dict["score_train"] = TreatmentDummy.prediction(clf, df_train_with_interactions_t_1, df_train_with_interactions_t_0)
+        response_dict["score_train"] = TreatmentDummy.prediction(clf, train_features)
 
         # Validation
         if data_set_helper.valid:
-            response_dict["score_valid"] = TreatmentDummy.prediction(clf, df_valid_with_interactions_t_1, df_valid_with_interactions_t_0)
+            # Get validation's features
+            valid_features = data_set_helper.df_valid.drop(['treatment', 'response'], axis=1).to_numpy()
+            response_dict["score_valid"] = TreatmentDummy.prediction(clf, valid_features)
 
         # Test
-        response_dict["score_test"] = TreatmentDummy.prediction(clf, df_test_with_interactions_t_1, df_test_with_interactions_t_0)
+        response_dict["score_test"] = TreatmentDummy.prediction(clf, test_features)
 
         return response_dict
 
     @staticmethod
-    def prediction(clf, df_with_interactions_t_1: pd.DataFrame, df_with_interactions_t_0: pd.DataFrame):
+    def prediction(clf, features: np.array):
         """
         Predict the uplift scores for the given data set
 
         :param clf: Classifier
-        :param df_with_interactions_t_1: DataFrame with interaction effect where treatment == 1
-        :param df_with_interactions_t_0: DataFrame with interaction effect where treatment == 0
+        :param features: Numpy array containing the features
         :return: Uplift scores
         """
 
-        score_train_t_1 = clf.predict_proba(df_with_interactions_t_1.to_numpy())[:, 1]
-        score_train_t_0 = clf.predict_proba(df_with_interactions_t_0.to_numpy())[:, 1]
+        # Create an array with features + interaction effects + treatment (==1)
+        score_train_t_1 = clf.predict_proba(np.append(np.append(features, features * np.ones((features.shape[0], 1)), axis=1), np.ones((features.shape[0], 1)), axis=1))[:, 1]
+        # Create an array with features + interaction effects (are all zero because of the treatment) + treatment (==0)
+        score_train_t_0 = clf.predict_proba(np.append(np.append(features, features * np.zeros((features.shape[0], 1)), axis=1), np.zeros((features.shape[0], 1)), axis=1))[:, 1]
 
         return score_train_t_1 - score_train_t_0
