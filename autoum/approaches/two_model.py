@@ -1,3 +1,4 @@
+import os
 import logging
 import pickle
 from datetime import datetime
@@ -65,7 +66,10 @@ class TwoModel:
         """
         self.log.debug(f"Saving {group} Model...")
         date_str = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
-        filename = self.path + f'results/models/{str(self.split_number)}_Two_Model_{group}_{date_str}.pickle'
+        path = self.path + 'results/models/'
+        filename = path + f'{self.split_number}_TM_{group}_{date_str}.pickle'
+        if not os.path.exists(path):
+            os.makedirs(path)
         pickle.dump(clf, open(filename, 'wb'))
 
     @staticmethod

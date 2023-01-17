@@ -1,3 +1,4 @@
+import os
 import logging
 import pickle
 from datetime import datetime
@@ -61,7 +62,10 @@ class TreatmentDummy:
         if self.save:
             self.log.debug("Saving ...")
             date_str = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
-            filename = self.path + 'results/models/{}_Treatment_Dummy_{}.pickle'.format(str(self.split_number), date_str)
+            path = self.path + 'results/models/'
+            filename = path + f'{self.split_number}_TDA_{date_str}.pickle'
+            if not os.path.exists(path):
+                os.makedirs(path)
             pickle.dump(clf, open(filename, 'wb'))
 
         self.log.debug("Predicting ...")
