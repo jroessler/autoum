@@ -216,26 +216,33 @@ class PipelineRW:
         assert 0.1 <= self.validation_size <= 0.9, "Please select 0.1 <= validation_size <= 0.9"
         assert self.n_estimators % 4 == 0, "Please select a multiple of 4 as n_estimators"
 
-    def analyze_dataset(self, data: pd.DataFrame):
+    def analyze_dataset(self, data: pd.DataFrame, test_data: pd.DataFrame = None):
         """
         Apply, compare, and evaluate various uplift modeling approaches on the given data set.
 
         :param data: Dataset to be analyzed
+        :param test_data: (optional) Test Dataset, which the pipeline will use for the test metrics
         """
 
         if not isinstance(data, pd.DataFrame):
             return
 
+        if test_data is not None:
+            assert data.columns.equals(test_data.columns), "The train and test dataset columns are not identical"
+
         start = time.time()
         logging.info("Starting analyzing dataset ... ")
 
-        try:
-            df_train, df_test = train_test_split(data, test_size=self.test_size, shuffle=True, stratify=data[['response', 'treatment']], random_state=self.random_seed)
-            df_train.reset_index(inplace=True, drop=True)
-            df_test.reset_index(inplace=True, drop=True)
-        except ValueError:
-            logging.error("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
-            raise ValueError("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
+        if test_data is not None:
+            df_train, df_test = data.sample(frac=1.0, random_state=self.random_seed), test_data
+        else:
+            try:
+                df_train, df_test = train_test_split(data, test_size=self.test_size, shuffle=True, stratify=data[['response', 'treatment']], random_state=self.random_seed)
+                df_train.reset_index(inplace=True, drop=True)
+                df_test.reset_index(inplace=True, drop=True)
+            except ValueError:
+                logging.error("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
+                raise ValueError("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
 
         # Get feature names
         feature_names = list(df_train.drop(['response', 'treatment'], axis=1).columns.values)
