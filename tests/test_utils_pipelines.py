@@ -1,3 +1,4 @@
+import time
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -240,7 +241,7 @@ class TestHelperPipeline(unittest.TestCase):
 
                 if i == "TWO_MODEL":
                     self.assertTrue(TwoModel.__instancecheck__(m_apply_approach.call_args[0][0]))
-                elif "URF" in i:
+                elif i == "URF":
                     self.assertTrue(UpliftRandomForest.__instancecheck__(m_apply_approach.call_args[0][0]))
                 elif i == "TRADITIONAL":
                     self.assertTrue(Traditional.__instancecheck__(m_apply_approach.call_args[0][0]))
@@ -343,7 +344,7 @@ class TestHelperPipeline(unittest.TestCase):
         df_uplift = helper.cast_to_dataframe(list_dict)
 
         # Check if type equals pd.DataFrame
-        self.assertEqual(type(df_uplift), pd.DataFrame)
+        self.assertEqual(df_uplift.__class__, pd.DataFrame)
 
         # Check if the DataFrame contains 55 columns (11 columns for each approach)
         self.assertEqual(df_uplift.shape[1], 22)
