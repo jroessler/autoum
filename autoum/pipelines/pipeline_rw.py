@@ -53,6 +53,7 @@ class PipelineRW:
                  plot_uqc: bool = True,
                  plot_save_figures: bool = False,
                  pool_capacity: int = 40,
+                 post_prune: bool = False,
                  rlearner: bool = False,
                  run_name: str = "RUN",
                  run_id: int = 1,
@@ -109,6 +110,7 @@ class PipelineRW:
         :param plot_uqc: True if the UQC value for a curve should be included in the plot legend. False otherwise. Default: True
         :param plot_save_figures: True if the resulting qini figures shall be saved. False otherwise. Default: False
         :param pool_capacity: Set this to the maximum number of free kernels for the calculation. Default 40
+        :param post_prune: Prune the uplift models after training, applies to URF_CHI, URF_ED and URF_KL
         :param rlearner: True, if R-Learner should be applied. False otherwise. Default: False
         :param run_id: Id of the run (For logging and saving purposes). Default: 1
         :param run_name: Name of the run (For logging and saving purposes). Default: "RUN"
@@ -152,6 +154,7 @@ class PipelineRW:
         self.plot_uqc = plot_uqc
         self.plot_save_figures = plot_save_figures
         self.pool_capacity = pool_capacity
+        self.post_prune = post_prune
         self.rlearner = rlearner
         self.random_seed = random_seed
         self.save_models = save_models
@@ -184,7 +187,7 @@ class PipelineRW:
 
         # Hyperparameters of different uplift modeling approaches
         self.max_features = max_features
-        self.set_parameters(n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed)
+        self.set_parameters(n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed, post_prune)
 
         # Create helper
         self.helper = HelperPipeline()
@@ -733,7 +736,7 @@ class PipelineRW:
                 HelperPipeline.save_feature_importance(importance, feature_names, "Feature_importance_{}".format(key), self.plot_save_figures, self.plot_figures,
                                                        self.data_home + FIGURES + self.run_name + "/")
 
-    def set_parameters(self, n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed):
+    def set_parameters(self, n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed, post_prune):
         """
         Set the parameters for each approach
         """
@@ -749,7 +752,8 @@ class PipelineRW:
             "n_jobs": n_jobs,
             "control_name": "c",
             "normalization": normalization,
-            "honesty": honesty
+            "honesty": honesty,
+            "post_prune": post_prune
         }
 
         s_learner_parameters = {

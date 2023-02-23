@@ -36,7 +36,8 @@ class TestUpliftRandomForest(unittest.TestCase):
             "n_reg": 100,
             "random_state": 123,
             "n_jobs": 10,
-            "control_name": "c"
+            "control_name": "c",
+            "post_prune": True
         }
 
     def test_analyze(self):

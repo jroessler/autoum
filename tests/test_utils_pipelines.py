@@ -57,7 +57,8 @@ class TestHelperPipeline(unittest.TestCase):
             "n_jobs": n_jobs,
             "control_name": "c",
             "normalization": True,
-            "honesty": False
+            "honesty": False,
+            "post_prune": True
         }
 
         s_learner_parameters = {

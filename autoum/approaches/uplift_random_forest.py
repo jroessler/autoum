@@ -52,13 +52,19 @@ class UpliftRandomForest:
             "IDDP": Invariante DDP (Rößler et al. 2022)
         """
 
-        self.parameters = parameters
+        self.parameters = parameters.copy()
         self.parameters["evaluationFunction"] = eval_function
         self.feature_importance = approach_parameters.feature_importance
         self.save = approach_parameters.save
         self.path = approach_parameters.path
+        self.post_prune = parameters["post_prune"]
         self.split_number = approach_parameters.split_number
         self.log = logging.getLogger(type(self).__name__)
+
+        del self.parameters["post_prune"]
+
+        if eval_function not in ["ED", "KL", "CHI"]:
+            self.post_prune = False
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
@@ -77,6 +83,12 @@ class UpliftRandomForest:
         self.log.debug("Start fitting Uplift Random Forest ...")
 
         urf.fit(X=data_set_helper.x_train, treatment=experiment_groups_col, y=data_set_helper.y_train)
+
+        if self.post_prune:
+            for tree in urf.uplift_forest:
+                tree.prune(data_set_helper.x_valid,
+                           data_set_helper.df_valid["treatment"],
+                           data_set_helper.df_valid["response"])
 
         self.log.debug(urf)
 
