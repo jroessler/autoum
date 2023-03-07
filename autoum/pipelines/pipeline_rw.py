@@ -229,14 +229,12 @@ class PipelineRW:
 
         if not isinstance(data, pd.DataFrame):
             return
-
-        if test_data is not None:
-            assert data.columns.equals(test_data.columns), "The train and test dataset columns are not identical"
-
+            
         start = time.time()
         logging.info("Starting analyzing dataset ... ")
 
         if test_data is not None:
+            assert data.columns.equals(test_data.columns), "The train and test dataset columns are not identical"
             df_train, df_test = data.sample(frac=1.0, random_state=self.random_seed), test_data
         else:
             try:
