@@ -52,16 +52,14 @@ class UpliftRandomForest:
             "IDDP": Invariante DDP (Rößler et al. 2022)
         """
 
-        self.parameters = parameters.copy()
+        self.parameters = parameters
         self.parameters["evaluationFunction"] = eval_function
         self.feature_importance = approach_parameters.feature_importance
         self.save = approach_parameters.save
         self.path = approach_parameters.path
-        self.post_prune = parameters["post_prune"]
+        self.post_prune = approach_parameters.post_prune
         self.split_number = approach_parameters.split_number
         self.log = logging.getLogger(type(self).__name__)
-
-        del self.parameters["post_prune"]
 
         if eval_function not in ["ED", "KL", "CHI"]:
             self.post_prune = False

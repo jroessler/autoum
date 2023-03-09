@@ -187,7 +187,7 @@ class PipelineRW:
 
         # Hyperparameters of different uplift modeling approaches
         self.max_features = max_features
-        self.set_parameters(n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed, post_prune)
+        self.set_parameters(n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed)
 
         # Create helper
         self.helper = HelperPipeline()
@@ -736,7 +736,7 @@ class PipelineRW:
                 HelperPipeline.save_feature_importance(importance, feature_names, "Feature_importance_{}".format(key), self.plot_save_figures, self.plot_figures,
                                                        self.data_home + FIGURES + self.run_name + "/")
 
-    def set_parameters(self, n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed, post_prune):
+    def set_parameters(self, n_estimators, max_depth, min_samples_leaf, min_samples_treatment, n_reg, n_jobs, normalization, honesty, random_seed):
         """
         Set the parameters for each approach
         """
@@ -752,8 +752,7 @@ class PipelineRW:
             "n_jobs": n_jobs,
             "control_name": "c",
             "normalization": normalization,
-            "honesty": honesty,
-            "post_prune": post_prune
+            "honesty": honesty
         }
 
         s_learner_parameters = {

@@ -32,7 +32,7 @@ class TestHelperPipeline(unittest.TestCase):
         self.df_train, self.df_valid = train_test_split(data, test_size=0.2, shuffle=True, stratify=data[['response', 'treatment']], random_state=123)
 
         self.ds_helper = DataSetsHelper(df_train=self.df_train, df_valid=self.df_valid, df_test=self.df_test)
-        self.approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=None, save=False, split_number=0)
+        self.approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=None, post_prune=False, save=False, split_number=0)
         self.apply_params = {
             "data_set_helper": self.ds_helper,
             "feature_importance": False,

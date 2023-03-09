@@ -81,7 +81,8 @@ class HelperPipeline:
                                 split_number: int,
                                 cost_sensitive: bool = False,
                                 feature_importance: bool = False,
-                                save_models: bool = False) -> dict:
+                                save_models: bool = False,
+                                post_prune: bool = False) -> dict:
         """
         Apply given uplift modeling approaches on the given dataframes and return the scores
 
@@ -95,6 +96,7 @@ class HelperPipeline:
         :param cost_sensitive: Set this to true for cost sensitive learning.
         :param feature_importance: Set this to True to return the feature importances of the classifiers
         :param save_models: True if the models generated during training shall be saved. False otherwise.
+        :param post_prune: Set this to true to prune the trees of the URF approaches after training
         :return: Dictionary with the following keys: df_scores_train, df_scores_test, df_train, df_test, feature_importances (empty dictionary if not used)
         """
 
@@ -110,7 +112,7 @@ class HelperPipeline:
         ds_helper = DataSetsHelper(df_train=df_train, df_valid=df_valid, df_test=df_test)
         # ApproachParameters contains alll parameters necessary to initialize an approach classifier
         root = f"{get_data_home()}/models/"
-        approach_params = ApproachParameters(cost_sensitive=cost_sensitive, feature_importance=feature_importance, path=root, save=save_models, split_number=split_number)
+        approach_params = ApproachParameters(cost_sensitive=cost_sensitive, feature_importance=feature_importance, path=root, post_prune=post_prune, save=save_models, split_number=split_number)
 
         # This dictionary is used as wrapper for passing all parameters at once for apply_approach
         apply_params = {
