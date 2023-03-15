@@ -444,7 +444,7 @@ class PipelineRW:
 
         scores_dict = HelperPipeline.apply_uplift_approaches(df_train=df_train, df_valid=df_valid, df_test=df_test, parameters=self.parameters, approach=[approach_name],
                                                              split_number=i, cost_sensitive=self.cost_sensitive, feature_importance=self.feature_importance,
-                                                             save_models=self.save_models)
+                                                             save_models=self.save_models, post_prune=self.post_prune)
 
         logging.info("Start Evaluation. Split number {}".format(i))
 

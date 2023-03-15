@@ -83,10 +83,9 @@ class UpliftRandomForest:
         urf.fit(X=data_set_helper.x_train, treatment=experiment_groups_col, y=data_set_helper.y_train)
 
         if self.post_prune:
-            for tree in urf.uplift_forest:
-                tree.prune(data_set_helper.x_valid,
-                           data_set_helper.df_valid["treatment"],
-                           data_set_helper.df_valid["response"])
+            for list_id, tree in enumerate(urf.uplift_forest):
+                new_tree = tree.prune(data_set_helper.x_valid, data_set_helper.df_valid["treatment"], data_set_helper.df_valid["response"])
+                urf.uplift_forest[list_id] = new_tree
 
         self.log.debug(urf)
 
