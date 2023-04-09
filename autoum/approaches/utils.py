@@ -35,7 +35,7 @@ class Helper:
         """
 
         experiment_groups_col = ["c" if x == 0 else "t" for x in df.treatment]
-        experiment_groups_col = np.array(experiment_groups_col)
+        experiment_groups_col = np.array(experiment_groups_col, dtype=object)
 
         return experiment_groups_col
 

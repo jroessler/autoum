@@ -4,6 +4,7 @@ import pickle
 from datetime import datetime
 
 import numpy as np
+import pandas as pd
 from causalml.inference.tree import UpliftRandomForestClassifier
 
 from autoum.approaches.utils import ApproachParameters, DataSetsHelper, Helper
@@ -84,8 +85,7 @@ class UpliftRandomForest:
 
         if self.post_prune:
             for list_id, tree in enumerate(urf.uplift_forest):
-                new_tree = tree.prune(data_set_helper.x_valid, data_set_helper.df_valid["treatment"], data_set_helper.df_valid["response"])
-                urf.uplift_forest[list_id] = new_tree
+                tree.prune(data_set_helper.x_train, experiment_groups_col, data_set_helper.y_train)
 
         self.log.debug(urf)
 
