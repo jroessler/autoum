@@ -254,7 +254,7 @@ class UpliftEvaluation:
     @staticmethod
     def store_uplift_in_bins(uplift: np.ndarray, col_name: str):
         """
-        Stores the given uplift values in a dictionary containing the column name and bin number as key and the uplift value as vaue
+        Stores the given uplift values in a dictionary containing the column name and bin number as key and the uplift value as value
 
         :param uplift: List of uplift values
         :param col_name: Name of the key
