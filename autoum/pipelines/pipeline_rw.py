@@ -53,6 +53,7 @@ class PipelineRW:
                  plot_uqc: bool = True,
                  plot_save_figures: bool = False,
                  pool_capacity: int = 40,
+                 post_prune: bool = False,
                  rlearner: bool = False,
                  run_name: str = "RUN",
                  run_id: int = 1,
@@ -109,6 +110,7 @@ class PipelineRW:
         :param plot_uqc: True if the UQC value for a curve should be included in the plot legend. False otherwise. Default: True
         :param plot_save_figures: True if the resulting qini figures shall be saved. False otherwise. Default: False
         :param pool_capacity: Set this to the maximum number of free kernels for the calculation. Default 40
+        :param post_prune: Prune the uplift models after training, applies to URF_CHI, URF_ED and URF_KL
         :param rlearner: True, if R-Learner should be applied. False otherwise. Default: False
         :param run_id: Id of the run (For logging and saving purposes). Default: 1
         :param run_name: Name of the run (For logging and saving purposes). Default: "RUN"
@@ -152,6 +154,7 @@ class PipelineRW:
         self.plot_uqc = plot_uqc
         self.plot_save_figures = plot_save_figures
         self.pool_capacity = pool_capacity
+        self.post_prune = post_prune
         self.rlearner = rlearner
         self.random_seed = random_seed
         self.save_models = save_models
@@ -216,26 +219,31 @@ class PipelineRW:
         assert 0.1 <= self.validation_size <= 0.9, "Please select 0.1 <= validation_size <= 0.9"
         assert self.n_estimators % 4 == 0, "Please select a multiple of 4 as n_estimators"
 
-    def analyze_dataset(self, data: pd.DataFrame):
+    def analyze_dataset(self, data: pd.DataFrame, test_data: pd.DataFrame = None):
         """
         Apply, compare, and evaluate various uplift modeling approaches on the given data set.
 
         :param data: Dataset to be analyzed
+        :param test_data: (optional) Test Dataset, which the pipeline will use for the test metrics
         """
 
         if not isinstance(data, pd.DataFrame):
             return
-
+            
         start = time.time()
         logging.info("Starting analyzing dataset ... ")
 
-        try:
-            df_train, df_test = train_test_split(data, test_size=self.test_size, shuffle=True, stratify=data[['response', 'treatment']], random_state=self.random_seed)
-            df_train.reset_index(inplace=True, drop=True)
-            df_test.reset_index(inplace=True, drop=True)
-        except ValueError:
-            logging.error("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
-            raise ValueError("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
+        if test_data is not None:
+            assert data.columns.equals(test_data.columns), "The train and test dataset columns are not identical"
+            df_train, df_test = data.sample(frac=1.0, random_state=self.random_seed), test_data
+        else:
+            try:
+                df_train, df_test = train_test_split(data, test_size=self.test_size, shuffle=True, stratify=data[['response', 'treatment']], random_state=self.random_seed)
+                df_train.reset_index(inplace=True, drop=True)
+                df_test.reset_index(inplace=True, drop=True)
+            except ValueError:
+                logging.error("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
+                raise ValueError("Stratification not possible" + data.groupby(["response", "treatment"]).size().reset_index(name="Counter").to_string())
 
         # Get feature names
         feature_names = list(df_train.drop(['response', 'treatment'], axis=1).columns.values)
@@ -436,7 +444,7 @@ class PipelineRW:
 
         scores_dict = HelperPipeline.apply_uplift_approaches(df_train=df_train, df_valid=df_valid, df_test=df_test, parameters=self.parameters, approach=[approach_name],
                                                              split_number=i, cost_sensitive=self.cost_sensitive, feature_importance=self.feature_importance,
-                                                             save_models=self.save_models)
+                                                             save_models=self.save_models, post_prune=self.post_prune)
 
         logging.info("Start Evaluation. Split number {}".format(i))
 

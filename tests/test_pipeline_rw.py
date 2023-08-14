@@ -241,10 +241,10 @@ class TestPipelineRW(unittest.TestCase):
 
     def test_create_approach_tuples(self):
         cv_number_splits = 10
-        pipeline = PipelineRW(cv_number_splits=cv_number_splits, urf_ddp=False, two_model=False)
+        pipeline = PipelineRW(cv_number_splits=cv_number_splits, slearner=True, two_model=True)
         dataframe_pairs = pipeline.create_k_splits(df_train=self.df_train, df_test=self.df_test)
         tuple_list = pipeline.create_approach_tuples(dataframe_pairs)
-        self.assertEqual(len(tuple_list), 15 * cv_number_splits)
+        self.assertEqual(len(tuple_list), 2 * cv_number_splits)
         for _tuple in tuple_list:
             self.assertEqual(len(_tuple), 5)
 

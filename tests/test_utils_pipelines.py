@@ -1,3 +1,4 @@
+import time
 import unittest
 from unittest.mock import MagicMock, patch
 
@@ -31,7 +32,7 @@ class TestHelperPipeline(unittest.TestCase):
         self.df_train, self.df_valid = train_test_split(data, test_size=0.2, shuffle=True, stratify=data[['response', 'treatment']], random_state=123)
 
         self.ds_helper = DataSetsHelper(df_train=self.df_train, df_valid=self.df_valid, df_test=self.df_test)
-        self.approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=None, save=False, split_number=0)
+        self.approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=None, post_prune=False, save=False, split_number=0)
         self.apply_params = {
             "data_set_helper": self.ds_helper,
             "feature_importance": False,
@@ -56,7 +57,8 @@ class TestHelperPipeline(unittest.TestCase):
             "n_jobs": n_jobs,
             "control_name": "c",
             "normalization": True,
-            "honesty": False
+            "honesty": False,
+            "post_prune": True
         }
 
         s_learner_parameters = {
@@ -240,7 +242,7 @@ class TestHelperPipeline(unittest.TestCase):
 
                 if i == "TWO_MODEL":
                     self.assertTrue(TwoModel.__instancecheck__(m_apply_approach.call_args[0][0]))
-                elif "URF" in i:
+                elif i == "URF":
                     self.assertTrue(UpliftRandomForest.__instancecheck__(m_apply_approach.call_args[0][0]))
                 elif i == "TRADITIONAL":
                     self.assertTrue(Traditional.__instancecheck__(m_apply_approach.call_args[0][0]))
@@ -343,7 +345,7 @@ class TestHelperPipeline(unittest.TestCase):
         df_uplift = helper.cast_to_dataframe(list_dict)
 
         # Check if type equals pd.DataFrame
-        self.assertEqual(type(df_uplift), pd.DataFrame)
+        self.assertEqual(df_uplift.__class__, pd.DataFrame)
 
         # Check if the DataFrame contains 55 columns (11 columns for each approach)
         self.assertEqual(df_uplift.shape[1], 22)

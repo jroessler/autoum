@@ -23,7 +23,7 @@ class TestClassVariableTransformation(unittest.TestCase):
 
         ds_helper = DataSetsHelper(df_train=df_train, df_valid=df_valid, df_test=df_test)
         root = f"{get_data_home()}/testing/models/"
-        approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=root, save=False, split_number=0)
+        approach_params = ApproachParameters(cost_sensitive=False, feature_importance=False, path=root, post_prune=False, save=False, split_number=0)
         self.ds_helper = ds_helper
         self.approach_params = approach_params
 

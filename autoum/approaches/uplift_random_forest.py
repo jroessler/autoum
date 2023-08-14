@@ -4,6 +4,7 @@ import pickle
 from datetime import datetime
 
 import numpy as np
+import pandas as pd
 from causalml.inference.tree import UpliftRandomForestClassifier
 
 from autoum.approaches.utils import ApproachParameters, DataSetsHelper, Helper
@@ -57,8 +58,12 @@ class UpliftRandomForest:
         self.feature_importance = approach_parameters.feature_importance
         self.save = approach_parameters.save
         self.path = approach_parameters.path
+        self.post_prune = approach_parameters.post_prune
         self.split_number = approach_parameters.split_number
         self.log = logging.getLogger(type(self).__name__)
+
+        if eval_function not in ["ED", "KL", "CHI"]:
+            self.post_prune = False
 
     def analyze(self, data_set_helper: DataSetsHelper) -> dict:
         """
@@ -77,6 +82,10 @@ class UpliftRandomForest:
         self.log.debug("Start fitting Uplift Random Forest ...")
 
         urf.fit(X=data_set_helper.x_train, treatment=experiment_groups_col, y=data_set_helper.y_train)
+
+        if self.post_prune:
+            for list_id, tree in enumerate(urf.uplift_forest):
+                tree.prune(data_set_helper.x_train, experiment_groups_col, data_set_helper.y_train)
 
         self.log.debug(urf)
 

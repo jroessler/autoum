@@ -35,7 +35,7 @@ class Helper:
         """
 
         experiment_groups_col = ["c" if x == 0 else "t" for x in df.treatment]
-        experiment_groups_col = np.array(experiment_groups_col)
+        experiment_groups_col = np.array(experiment_groups_col, dtype=object)
 
         return experiment_groups_col
 
@@ -108,7 +108,7 @@ class ApproachParameters:
     Utility class that encompassees all parameters needed to create an approach instance.
     """
 
-    def __init__(self, cost_sensitive: bool, feature_importance: bool, path: str, save: bool, split_number: int):
+    def __init__(self, cost_sensitive: bool, feature_importance: bool, path: str, post_prune: bool, save: bool, split_number: int):
         """
         Utility class that encompassees all parameters needed to create an approach instance.
 
@@ -122,5 +122,6 @@ class ApproachParameters:
         self.cost_sensitive = cost_sensitive
         self.feature_importance = feature_importance
         self.path = path
+        self.post_prune = post_prune
         self.save = save
         self.split_number = split_number
