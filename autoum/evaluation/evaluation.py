@@ -34,9 +34,9 @@ class UpliftEvaluation:
         df_results_treated = df_results.loc[df_results[treatment_col] == 1].copy()
         df_results_control = df_results.loc[df_results[treatment_col] == 0].copy()
 
-        df_results_treated.sort_values(by=[uplift_score_col, response_col], ascending=[treated_asc, treated_asc], inplace=True)
+        df_results_treated.sort_values(by=[uplift_score_col], ascending=[treated_asc], inplace=True)
         df_results_treated.reset_index(drop=True, inplace=True)
-        df_results_control.sort_values(by=[uplift_score_col, response_col], ascending=[control_asc, control_asc], inplace=True)
+        df_results_control.sort_values(by=[uplift_score_col], ascending=[control_asc], inplace=True)
         df_results_control.reset_index(drop=True, inplace=True)
 
         return df_results_treated, df_results_control
@@ -160,7 +160,7 @@ class UpliftEvaluation:
     @staticmethod
     def calculate_group_share(df_treated: pd.DataFrame, df_control: pd.DataFrame, bins: int = 10, response_col: str = 'response'):
         """
-        Calculate the share of groups inherent in any data set: Treatment responder (r_ts), Treatment non-respondes (n_ts), Control responder (r_cs), Control non-responder (n_cs)
+        Calculate the share of groups inherent in any data set: Treatment responder (r_ts), Treatment samples (n_ts), Control responder (r_cs), Control samples (n_cs)
 
         :param df_treated: DataFrame containg the results for the treatment group
         :param df_control: DataFrame containing the results for the control group
@@ -254,7 +254,7 @@ class UpliftEvaluation:
     @staticmethod
     def store_uplift_in_bins(uplift: np.ndarray, col_name: str):
         """
-        Stores the given uplift values in a dictionary containing the column name and bin number as key and the uplift value as vaue
+        Stores the given uplift values in a dictionary containing the column name and bin number as key and the uplift value as value
 
         :param uplift: List of uplift values
         :param col_name: Name of the key
